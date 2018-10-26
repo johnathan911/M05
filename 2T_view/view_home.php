@@ -62,24 +62,27 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     </div>
                                 </div>
                             </div>
-                            <!--<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <div class="info-box-3 bg-blue-grey hover-zoom-effect">
-                                    <div class="icon">
-                                        <i class="material-icons">share</i>
-                                    </div>
-                                    <div class="content">
-                                        <div class="number">VIP SHARE</div>
-                                        <button type="button" class="btn bg-light-green btn-circle waves-effect waves-circle waves-float">
-                                            <i class="material-icons">add_shopping_cart</i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>-->
                         </div>
                     </div>
-                </div>
-            </div>
+					</div>
+				      <div class="card animated bounceIn">
+                        <div class="header">
+                            <h2>
+                               <i class="fa fa-bars" aria-hidden="true"></i> DANH SÁCH CÁC BÀI VIẾT MỚI<small>Danh sách các bài viết của các đối tượng</small>
+                            </h2>
+                            <ul class="header-dropdown m-r--5" style="display: none;" id="btn-action">
+                                <button type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target="#edit-vip"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</button>
+                                <!--<button type="button" class="btn btn-danger waves-effect" onclick="del_package()">Xóa</button>-->
 
+                            </ul>
+                        </div>
+                        <div class="body table-responsive">
+                            <table class="table table-bordered" width="100%" id="result-vip">
+                            </table>
+                        </div>
+						
+                    </div>
+            </div>
             <?php if ($_SESSION['admin'] == 1 ): ?>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card animated bounceIn">
@@ -149,4 +152,40 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
             })
         }
     });
+	function load_post(){
+            $('#result-vip').DataTable({
+                destroy: true,
+                "ajax": '2T_modun/modun_post.php?t=load-post',
+                "columns": [{
+                        title: "STT"
+                    },
+                    {
+                        title: "ĐỐI TƯỢNG ĐĂNG"
+                    },
+                    {
+                        title: "NỘI DUNG"
+                    },
+                    {
+                        title: "NGÀY ĐĂNG"
+                    },
+					 {
+                        title: "Like,Comment,Share"
+                    },
+                ],
+                "language": {
+                    "search": "Tìm Kiếm",
+                    "paginate": {
+                        "first": "Về Đầu",
+                        "last": "Về Cuối",
+                        "next": "Tiến",
+                        "previous": "Lùi"
+                    },
+                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+                    "infoEmpty": "Hiển thị 0 đến 0 của 0 mục",
+                    "lengthMenu": "Hiển thị _MENU_ mục",
+                    "loadingRecords": "Đang tải...",
+                    "emptyTable": "Không có gì để hiển thị",
+                }
+            });
+        }
 </script>
