@@ -3,7 +3,7 @@ session_start();
 error_reporting(0);
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 $config_site = array(
-	'url' => 'http://localhost/shoplike',
+	'url' => 'http://localhost/M05',
 	'name' => 'M05.org',
 	'admin' => array('admin1'),
 );
