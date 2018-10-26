@@ -9,6 +9,7 @@ if ($vip) {
 		$now = time();
 		$id = $row['id'];
 		$fbid= $row['fbid'];
+		$last_time = $row['last_get_post'];
 		$update= mysqli_query($conn, "UPDATE target SET last_action = '$now' WHERE id = '$id'");
 		echo "Get post cho facebook UID: ".$row['fbid']." co cac bai viet:".'</br>';
 		$tokens = get_tokens_random(20);
@@ -19,8 +20,8 @@ if ($vip) {
 				break;
 			}
 		}
-		//echo $ACCESS_TOKEN.'</br>'
-		$getPost = getPost($row['fbid'], $ACCESS_TOKEN);
+		echo $ACCESS_TOKEN.'</br>';
+		$getPost = getPost($row['fbid'], $ACCESS_TOKEN,$last_time,$now);
 		//echo $row['fbid'];
 		//echo "co so post".$count($getPost);
 		if ($getPost != 0) {
@@ -38,16 +39,13 @@ if ($vip) {
 				if(check_post($sttID)==0){
 					echo "Đã thêm bài viết bài viết ID:".$sttID.' vào danh sách dõi'.'</br>';
 					$noidung= $post->message;
-					$key= "AN NINH";
-					 $line = "Vi is the greatest word processor ever created!";
-				   // perform a case-Insensitive search for the word "Vi"
-				   if (preg_match("/\bAN\sNINH\b/i", $noidung, $match)) :
-					  print "Match found!";
-					  endif;
-					//echo strpos($noidung,"MẠNG");
-					//$noidung = strtolower($noidung);
-					//echo $noidung;
-					//$insert = mysqli_query($conn, "INSERT INTO post (fbid, group_id, id_post, time_post) VALUES ('$name', '$vnd', '$limitLike', $limitPost)");
+					$like = $post -> likes -> count;
+					$comment = $post -> comments -> count;
+					$share = $post -> shares -> count;
+					$datecreat = $post -> created_time;
+					$datecreat = date ('Y-m-d H:i:s',strtotime($datecreat));
+					$insert = mysqli_query($conn, "INSERT INTO post_keyword (fbid, name, time_add) VALUES ('$fbid', '$name', '$time_add')");// Chỉnh lại cho đúng bảng
+					echo $noidung;
 				}
 	        }
 		}
@@ -60,13 +58,13 @@ function check_post($sttID){
 		return 1;
 	return 0;
 }
-function getPost($fbid, $token){
+function getPost($fbid, $token, $datefrom, $dateto){
 	$yesterday  = mktime(0, 0, 0, date("m")  , date("d")-1, date("Y"));
 	$yesterday = date ("m/d/y",$yesterday);
 	$start_day_time = $yesterday;
 	$result = [];
 	$i =0;
-	$getPost = json_decode(file_get_contents('https://graph.facebook.com/' . $fbid . '/feed?fields=id,likes,message&since=' . $start_day_time . '&until=' . time() . '&access_token=' . $token . '&limit=20'));
+	$getPost = json_decode(file_get_contents('https://graph.facebook.com/' . $fbid . '/feed?fields=id,likes,message,comments,shares&since=' . $datefrom . '&until=' . $dateto . '&access_token=' . $token));
 		if ($getPost->data[0]->id) {
 			//echo $getPost->data[4]->id.' ';
 			return $getPost->data;
@@ -110,7 +108,7 @@ function count_time_to_current_in_day($now){
 }
 function get_tokens_random($limit){
     global $conn;
-    return mysqli_query($conn, "SELECT access_token FROM access_token WHERE has_used = 0 ORDER BY RAND() LIMIT ".$limit);
+    return mysqli_query($conn, "SELECT access_token FROM access_token ORDER BY RAND() LIMIT ".$limit);
 }
 function has_used($token){
 	global $conn;
