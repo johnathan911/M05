@@ -10,7 +10,7 @@ if ($vip) {
 		$id = $row['id'];
 		$fbid= $row['fbid'];
 		$last_time = $row['last_get_post'];
-		$update= mysqli_query($conn, "UPDATE target SET last_action = '$now' WHERE id = '$id'");
+		$update= mysqli_query($conn, "UPDATE target SET last_get_post = '$now' WHERE id = '$id'");
 		echo "Get post cho facebook UID: ".$row['fbid']." co cac bai viet:".'</br>';
 		$tokens = get_tokens_random(20);
 		while ($token = mysqli_fetch_assoc($tokens)) {
@@ -42,9 +42,9 @@ if ($vip) {
 					$like = $post -> likes -> count;
 					$comment = $post -> comments -> count;
 					$share = $post -> shares -> count;
-					$datecreat = $post -> created_time;
-					$datecreat = date ('Y-m-d H:i:s',strtotime($datecreat));
-					$insert = mysqli_query($conn, "INSERT INTO post_keyword (fbid, name, time_add) VALUES ('$fbid', '$name', '$time_add')");// Chỉnh lại cho đúng bảng
+					$datecreate = $post -> created_time;
+					$datecreate = date ('Y-m-d H:i:s',strtotime($datecreat));
+					$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post, time_post, luot_thich, luot_comment, luot_share, target_id) VALUES ('$name', '$sttID', '$datecreate', '$like', '$comment', '$share', '$id')");// Chỉnh lại cho đúng bảng
 					echo $noidung;
 				}
 	        }
@@ -53,7 +53,7 @@ if ($vip) {
 }
 function check_post($sttID){
 	global $conn;
-	$result = mysqli_query($conn, "SELECT id FROM post WHERE id_post = '$sttID'");
+	$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE id_post = '$sttID'");
 	if (mysqli_num_rows($result) > 0)
 		return 1;
 	return 0;
