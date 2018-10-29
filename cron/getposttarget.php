@@ -10,45 +10,50 @@ if ($vip) {
 		$id = $row['id'];
 		$fbid= $row['fbid'];
 		$last_time = $row['last_get_post'];
-		$update= mysqli_query($conn, "UPDATE target SET last_get_post = '$now' WHERE id = '$id'");
 		echo "Get post cho facebook UID: ".$row['fbid']." co cac bai viet:".'</br>';
 		$tokens = get_tokens_random(20);
+		$kt = 0;
 		while ($token = mysqli_fetch_assoc($tokens)) {
 			$checkToken = checkToken($token['access_token']);
 			if ($checkToken == 1) {
 				$ACCESS_TOKEN = $token['access_token'];
+				$kt= 1;
 				break;
 			}
 		}
-		echo $ACCESS_TOKEN.'</br>';
-		$getPost = getPost($row['fbid'], $ACCESS_TOKEN,$last_time,$now);
-		//echo $row['fbid'];
-		//echo "co so post".$count($getPost);
-		if ($getPost != 0) {
-			//echo "11111111111111";
-			$posts = array();
-	        $count_posts = count($getPost);
-				for($i = 0 ; $i < $count_posts; $i++){
-					 array_push($posts, $getPost[$i]);
+		if($kt !=0){
+			echo $ACCESS_TOKEN.'</br>';
+			$getPost = getPost($row['fbid'], $ACCESS_TOKEN,$last_time,$now);
+			//echo $row['fbid'];
+			//echo "co so post".$count($getPost);
+			if ($getPost != 0) {
+				//echo "11111111111111";
+				$posts = array();
+				$count_posts = count($getPost);
+					for($i = 0 ; $i < $count_posts; $i++){
+						 array_push($posts, $getPost[$i]);
+					}
+				foreach ($posts as $key => $post) {
+					$TOKEN = array();
+					$post_data = array();
+					$sttID = $post->id;
+					echo $sttID.' ';
+					if(check_post($sttID)==0){
+						echo "Đã thêm bài viết bài viết ID:".$sttID.' vào danh sách dõi'.'</br>';
+						$noidung= $post->message;
+						$like = $post -> likes -> count;
+						$comment = $post -> comments -> count;
+						$share = $post -> shares -> count;
+						$datecreate = $post -> created_time;
+						$datecreate = date ('Y-m-d H:i:s',strtotime($datecreate));
+						$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post, time_post, luot_thich, luot_comment, luot_share, target_id) VALUES ('$noidung', '$sttID', '$datecreate', '$like', '$comment', '$share', '$id')");// Chỉnh lại cho đúng bảng
+						echo $noidung;
+					}
 				}
-            foreach ($posts as $key => $post) {
-            	$TOKEN = array();
-	           	$post_data = array();
-	           	$sttID = $post->id;
-				echo $sttID.' ';
-				if(check_post($sttID)==0){
-					echo "Đã thêm bài viết bài viết ID:".$sttID.' vào danh sách dõi'.'</br>';
-					$noidung= $post->message;
-					$like = $post -> likes -> count;
-					$comment = $post -> comments -> count;
-					$share = $post -> shares -> count;
-					$datecreate = $post -> created_time;
-					$datecreate = date ('Y-m-d H:i:s',strtotime($datecreate));
-					$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post, time_post, luot_thich, luot_comment, luot_share, target_id) VALUES ('$noidung', '$sttID', '$datecreate', '$like', '$comment', '$share', '$id')");// Chỉnh lại cho đúng bảng
-					echo $noidung;
-				}
-	        }
+				$update= mysqli_query($conn, "UPDATE target SET last_get_post = '$now' WHERE id = '$id'");
+			}
 		}
+		else echo "Kiem tra token live";
 	}
 }
 function check_post($sttID){

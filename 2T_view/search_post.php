@@ -188,12 +188,9 @@
                 },
                 success : (data) => {
                     _PACKAGE = data;
+					option += '<option value="all">Tất cả</option>';
                     $.each(data, (i, item) => {
                         option += '<option value="'+item.name+'">'+item.name+'</option>';
-                        table  += '<tr>\
-                                        <td>'+item.name+'</td>\
-                                        <td>'+number_format(item.price)+'</td>\
-                                    </tr>';
                     })
 
                     setTimeout(function(){

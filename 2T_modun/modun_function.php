@@ -132,7 +132,17 @@ function xoa_post_by_user($user){
 }
 function getTarget($idnhom){
 	global $conn;
-	$result = mysqli_query($conn, "SELECT * FROM target WHERE id_group = '$idnhom'");
+	$result = mysqli_query($conn, "SELECT * FROM target WHERE id in (SELECT target_id FROM tbl_group_target WHERE group_id = '$idnhom')");
+	return $result;
+}
+function getPostByGroup($tennhom,$userid){
+	global $conn;
+	if($tennhom == "all"){
+		$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id in (SELECT id FROM package_nhom WHERE user_id = '$userid'))");
+	}
+	else{
+		$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target, package_nhom WHERE user_id = '$userid' AND name = '$tennhom')");
+	}
 	return $result;
 }
 function getTokenLive($sl){

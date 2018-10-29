@@ -147,65 +147,68 @@ if($_REQUEST){
 // Search by Keyword
 	if ($t === 'search_keyword') {
         //echo "<script type='text/javascript'>alert('abc');</script>";
-		xoa_post_by_user($_SESSION['username']);
 		$tennhom = _p($_POST['nhom']);
 		$keyword_goc = _p($_POST['keyword']);
 		$keyword = _p($_POST['keyword']);
 		$today= date("y-m-d");
 		$today = "20".$today;
-		if($keyword[0] !=" ") $keyword = "/\b".$keyword;
-		if($keyword[strlen($keyword)-1] !=" ") $keyword=$keyword."\b/i";
 		$keyword= str_replace(" ","\s",$keyword);
-		$datefrom = "2018-10-17";
-		$dateto = "2018-10-18";
-		$nhom = getNhom($tennhom);
-		$idnhom = $nhom['id'];
-		//echo "Id nhóm ".$tennhom." là ".$idnhom.'</br>';
-		$targets = getTarget($idnhom);
-		//$fbid_arr = array();
-		while($target = mysqli_fetch_assoc($targets)){
-			$tendoituong = $target['name'];
+		$keyword = "*".$keyword."*";
+		$datefrom = (string)_p($_POST['datefrom']);
+		$dateto = (string)_p($_POST['dateto']);
+		$user_id = ($_SESSION['id']);
+		$posts = getPostByGroup($tennhom,$user_id);
+		while($row = mysqli_fetch_assoc($targets)){
+			$id_target = $target['name'];
 			$quanly = $target['manager'];
 			$ACCESS_TOKEN = getTokenLive(20);
-			$fbid = $target['fbid'];
-			//echo $tendoituong." ".$quanly." ".$ACCESS_TOKEN." ".$fbid." ".$keyword."</br>";
-			if($dateto ==$today)
-			{
-				$t = time();
-				//echo $t;
-				$getPost= getPost($fbid, $ACCESS_TOKEN,strtotime($datefrom),$t);
+			if($ACCESS_TOKEN !="0"){
+				$fbid = $target['fbid'];
+				//echo $tendoituong." ".$quanly." ".$ACCESS_TOKEN." ".$fbid." ".$keyword."</br>";
+				if($dateto ==$today)
+				{
+					$t = time();
+					//echo $t;
+					$getPost= getPost($fbid, $ACCESS_TOKEN,strtotime($datefrom),$t);
+				}
+				else{
+					$getPost = getPost($fbid, $ACCESS_TOKEN,strtotime($datefrom), strtotime($dateto));
+				}
+				if ($getPost != 0) {
+				$posts = array();
+				$count_posts = count($getPost);
+					for($i = 0 ; $i < $count_posts; $i++){
+						 array_push($posts, $getPost[$i]);
+					}
+				foreach ($posts as $key => $post) {
+					$like = $post -> likes -> count;
+					$comment = $post -> comments -> count;
+					$share = $post -> shares -> count;
+					$noidung = $post -> message;
+					$sttID = $post -> id;
+					$datecreat = $post -> created_time;
+					$datecreat = date ('Y-m-d H:i:s',strtotime($datecreat));
+					//echo $sttID." ".$noidung." ".$datecreat." ".$like." ".$comment." ".$share."</br>";
+						if (preg_match(strtolower($keyword), strtolower($noidung), $match)) :
+						  add_to_post_keyword($tendoituong,$quanly,$id_nhom,$sttID,$datecreat, $like,$comment,$share);
+						  endif;
+					}
+				}
 			}
 			else{
-				$getPost = getPost($fbid, $ACCESS_TOKEN,strtotime($datefrom), strtotime($dateto));
+				$return['msg'] = 'Vui lòng thêm Token Live vào hệ thống';
+				die(json_encode($return));
+				break;
 			}
-			if ($getPost != 0) {
-			$posts = array();
-	        $count_posts = count($getPost);
-				for($i = 0 ; $i < $count_posts; $i++){
-					 array_push($posts, $getPost[$i]);
-				}
-            foreach ($posts as $key => $post) {
-				$like = $post -> likes -> count;
-				$comment = $post -> comments -> count;
-				$share = $post -> shares -> count;
-				$noidung = $post -> message;
-				$sttID = $post -> id;
-				$datecreat = $post -> created_time;
-				$datecreat = date ('Y-m-d H:i:s',strtotime($datecreat));
-				//echo $sttID." ".$noidung." ".$datecreat." ".$like." ".$comment." ".$share."</br>";
-					if (preg_match($keyword, $noidung, $match)) :
-					  add_to_post_keyword($tendoituong,$quanly,$sttID,$datecreat, $like,$comment,$share);
-					  endif;
-				}
-	        }
 		}
 		$sopost = dem_post_theo_tu_khoa($_SESSION['username']);
 		if ($sopost > 0) {
-				$return['msg'] = 'Nhóm '.$tennhom.' có '.$sopost.' liên quan đến từ khóa'.$keyword_goc;
+				$return['msg'] = 'Nhóm '.$tennhom.' có '.$sopost.' liên quan đến từ khóa: '.$keyword_goc;
 				die(json_encode($return));
 			} else {
 				$return['error'] = 1;
 				$return['msg']   = 'Không có bài viết nào liên quan';
+				//$return['msg']   = strtotime($datefrom);
 				die(json_encode($return));
 			}
 	}
