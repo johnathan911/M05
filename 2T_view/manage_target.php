@@ -59,9 +59,21 @@
                         <div class="modal-dialog" role="document">\
                             <div class="modal-content">\
                                 <div class="modal-header">\
-                                    <h4 class="modal-title">Chỉnh Sửa VIPLike cho ID '+data[0][1]+'</h4>\
+                                    <h4 class="modal-title">Chỉnh Sửa Thông tin đối tượng '+data[0][2]+'</h4>\
                                 </div>\
                                 <div class="modal-body">\
+									<div class="row clearfix">\
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
+                                            <label for="id-up">ID</label>\
+                                        </div>\
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
+                                            <div class="form-group">\
+                                                <div class="form-line">\
+                                                    <input type="text" disabled id="id-up" class="form-control" value="'+data[0][0]+'">\
+                                                </div>\
+                                            </div>\
+                                        </div>\
+                                    </div>\
                                     <div class="row clearfix">\
                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
                                             <label for="name-up">TÊN</label>\
@@ -75,56 +87,30 @@
                                         </div>\
                                     </div>\
                                     <div class="row clearfix">\
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
-                                            <label for="name-up">TỐC ĐỘ (/phút)</label>\
+                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
+                                            <label for="id-up">FB ID</label>\
                                         </div>\
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
                                             <div class="form-group">\
                                                 <div class="form-line">\
-                                                    <input type="text" id="speed-up" class="form-control" value="'+data[0][6]+'">\
+                                                    <input type="text" id="fbid-up" class="form-control" value="'+data[0][1]+'">\
                                                 </div>\
                                             </div>\
                                         </div>\
                                     </div>\
-									<div class="row clearfix">\
-										<div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
-										<label for="sex-up">GIỚi TÍNH</label>\
-										</div>\
-										<div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
-											<div class="form-group">\
-												<div class="form-line">\
-													<select id="sex-up" class="form-control" required="required">\
-														<option value="male">Nam</option>\
-														<option value="female">Nữ</option>\
-														<option value="all">Cả Hai</option>\
-													</select>\
-												</div>\
-											</div>\
-										</div>\
-									</div>\
-                                    <div class="row clearfix">\
+									 <div class="row clearfix">\
                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
-                                            <label for="name-up">Tùy Chỉnh Cảm Xúc</label>\
+                                            <label for="package-nhom">CHỌN NHÓM</label>\
                                         </div>\
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
                                             <div class="form-group">\
-                                                <input name="camxuc[]" checked type="checkbox" class="filled-in" id="like" value="LIKE" />\
-                                                <label for="like" style="margin-right: 20px;"><img src="images/png/like.png" style="width:24px" data-toggle="tooltip" title="" data-original-title="Thích"></label>\
-                                                <input name="camxuc[]" type="checkbox" class="filled-in" id="love" value="LOVE" />\
-                                                <label for="love" style="margin-right: 20px;"><img src="images/png/love.png" style="width:24px" data-toggle="tooltip" title="" data-original-title="Yêu Thích"></label>\
-                                                <input name="camxuc[]" type="checkbox" class="filled-in" id="haha" value="HAHA" />\
-                                                <label for="haha" style="margin-right: 20px;"><img src="images/png/haha.png" style="width:24px" data-toggle="tooltip" title="" data-original-title="Cười Lớn"></label>\
-                                                <input name="camxuc[]" type="checkbox" class="filled-in" id="wow" value="WOW" />\
-                                                <label for="wow" style="margin-right: 20px;"><img src="images/png/wow.png" style="width:24px" data-toggle="tooltip" title="" data-original-title="Ngạc Nhiên"></label>\
-                                                <input name="camxuc[]" type="checkbox" class="filled-in" id="sad" value="SAD" />\
-                                                <label for="sad" style="margin-right: 20px;"><img src="images/png/sad.png" style="width:24px" data-toggle="tooltip" title="" data-original-title="Buồn"></label>\
-                                                <input name="camxuc[]" type="checkbox" class="filled-in" id="angry" value="ANGRY" />\
-                                                <label for="angry" style="margin-right: 20px;"><img src="images/png/angry.png" style="width:24px" data-toggle="tooltip" title="" data-original-title="Phẫn Nộ"></label>\
+                                                <select name="" id="package-nhom" class="form-control" required="required">\
+                                            </select>\
                                             </div>\
                                         </div>\
                                     </div>\
 									<div class="modal-footer">\
-										<button type="button" class="btn btn-link waves-effect" id="btn2" onclick="update_vip()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</button>\
+										<button type="button" class="btn btn-link waves-effect" id="btn2" onclick="update_target()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</button>\
 										<button type="button" class="btn btn-link waves-effect" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Đóng</button>\
 									</div>\
 								</div>\
@@ -178,10 +164,6 @@
                     _PACKAGE = data;
                     $.each(data, (i, item) => {
                         option += '<option value="'+item.name+'">'+item.name+'</option>';
-                        table  += '<tr>\
-                                        <td>'+item.name+'</td>\
-                                        <td>'+number_format(item.price)+'</td>\
-                                    </tr>';
                     })
 
                     setTimeout(function(){
@@ -200,19 +182,12 @@
             }
             return s;
         }
-        function update_vip(){
-			var data = $("#result-vip").DataTable().rows('.active').data();
-			var id = data[0][0];
-            var fbid = data[0][1];
+        function update_target(){
+            var fbid = $("#fbid-up").val();
             var name = $("#name-up").val();
-            var speed = $("#speed-up").val();
-			var sex = $("#sex-up").val();
-            var cx = '';
-            $('.filled-in:checked').each(function(){
-                var values = $(this).val();
-                cx += values+'|';
-            })
-            if (!name) {
+            var nhom = $("#package-nhom").val();
+			var id = $('#id-up').val();
+            if (!name||!fbid||!nhom) {
                 showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
                 return;
             }
@@ -222,13 +197,11 @@
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    t           : 'update-vip-like',
-                    id          : id,
+                    t           : 'update-target',
+					id          : $('#id-up').val(),
+                    fbid          : fbid,
                     name        : name,
-                    fbid         : fbid,
-                    speed       : speed,
-                    camxuc  : trim(cx),
-					sex  : sex
+                    nhom         : nhom
                 },
                 success : (data) => {
                     $("#btn2").html('<i class="fa fa-check-square-o" aria-hidden="true"></i> Hoàn Thành');

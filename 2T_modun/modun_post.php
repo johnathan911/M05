@@ -110,6 +110,21 @@ if($_REQUEST){
 	}
 	
 // Manager Target
+	if ($t === 'update-target') {
+		$id  = _p($_POST['id']);
+		$fbid = _p($_POST['fbid']);
+		$name = _p($_POST['name']);
+		$nhom = _p($_POST['nhom']);
+		$update = updateTarget($id, $fbid, $name, $nhom);
+		if ($update) {
+			$return['msg'] = "Chỉnh Sửa Thành Công";
+			die(json_encode($return));
+		} else {
+			$return['error'] = 1;
+			$return['msg'] = "Không Thể Chỉnh Sửa";
+			die(json_encode($return));
+		}
+	}
 	if ($t === 'load-target') {
 		$vip = get_target($_SESSION['id']);
 		$data = array();
