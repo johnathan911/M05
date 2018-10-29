@@ -135,16 +135,26 @@ function getTarget($idnhom){
 	$result = mysqli_query($conn, "SELECT * FROM target WHERE id in (SELECT target_id FROM tbl_group_target WHERE group_id = '$idnhom')");
 	return $result;
 }
-function getPostByGroup($tennhom,$userid){
+function getPostByGroup($tennhom,$userid,$datefrom,$dateto){
 	global $conn;
 	if($tennhom == "all"){
-		$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id in (SELECT id FROM package_nhom WHERE user_id = '$userid'))");
+		$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id in (SELECT id FROM package_nhom WHERE user_id = '$userid')) AND time_post > '$datefrom' AND time_post <'$dateto'");
 	}
 	else{
-		$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target, package_nhom WHERE user_id = '$userid' AND name = '$tennhom')");
+		$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target, package_nhom WHERE user_id = '$userid' AND name = '$tennhom') AND time_post > '$datefrom' AND time_post <'$dateto'");
 	}
 	return $result;
 }
+/*function insert_post_to_search_post_keyword($noidung,$post_id,$time_post,$like,$comment, $share, $target_id, $user_id){
+	global $conn; 
+	$result = mysqli_query($conn, "INSERT INTO search_keyword_result (name,id_post,time_post, luot_thich,luot_comment,luot_share, target_id, $user_id) VALUES ('$noidung', '$post_id', '$time_post', '$like', '$comment', '$share', '$target_id', '$user_id')");
+	return $result;
+}
+function detele_search_keyword_result($user_id){
+	global $conn;
+	$result = "DELETE FROM search_keyword_result WHERE user_id = '$user_id'");
+	return $result;
+}*/
 function getTokenLive($sl){
 	$tokens = getTokenBySL($sl);
 	$kt=0;
@@ -209,10 +219,10 @@ function dem_post_theo_tu_khoa($user){
 	}
 	return 0;
 }
-function load_post($name_manager) {
+function load_post($user_id) {
 	global $conn;
 	$return = array();
-	$result = mysqli_query($conn, "SELECT * FROM post_keyword ORDER BY time_post");
+	$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target,package_nhom WHERE user_id ='$user_id')ORDER BY time_post");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;

@@ -190,52 +190,27 @@ if($_REQUEST){
 		$datefrom = (string)_p($_POST['datefrom']);
 		$dateto = (string)_p($_POST['dateto']);
 		$user_id = ($_SESSION['id']);
-		$posts = getPostByGroup($tennhom,$user_id);
-		while($row = mysqli_fetch_assoc($targets)){
-			$id_target = $target['name'];
-			$quanly = $target['manager'];
-			$ACCESS_TOKEN = getTokenLive(20);
-			if($ACCESS_TOKEN !="0"){
-				$fbid = $target['fbid'];
-				//echo $tendoituong." ".$quanly." ".$ACCESS_TOKEN." ".$fbid." ".$keyword."</br>";
-				if($dateto ==$today)
-				{
-					$t = time();
-					//echo $t;
-					$getPost= getPost($fbid, $ACCESS_TOKEN,strtotime($datefrom),$t);
-				}
-				else{
-					$getPost = getPost($fbid, $ACCESS_TOKEN,strtotime($datefrom), strtotime($dateto));
-				}
-				if ($getPost != 0) {
-				$posts = array();
-				$count_posts = count($getPost);
-					for($i = 0 ; $i < $count_posts; $i++){
-						 array_push($posts, $getPost[$i]);
-					}
-				foreach ($posts as $key => $post) {
-					$like = $post -> likes -> count;
-					$comment = $post -> comments -> count;
-					$share = $post -> shares -> count;
-					$noidung = $post -> message;
-					$sttID = $post -> id;
-					$datecreat = $post -> created_time;
-					$datecreat = date ('Y-m-d H:i:s',strtotime($datecreat));
-					//echo $sttID." ".$noidung." ".$datecreat." ".$like." ".$comment." ".$share."</br>";
-						if (preg_match(strtolower($keyword), strtolower($noidung), $match)) :
-						  add_to_post_keyword($tendoituong,$quanly,$id_nhom,$sttID,$datecreat, $like,$comment,$share);
-						  endif;
-					}
-				}
-			}
-			else{
-				$return['msg'] = 'Vui lòng thêm Token Live vào hệ thống';
-				die(json_encode($return));
-				break;
-			}
+		$posts = getPostByGroup($tennhom,$user_id,$datefrom,$dateto);
+		$sopost = 0;
+		$data = array();
+		//detele_search_keyword_result($user_id);
+		while($row = mysqli_fetch_assoc($posts)){
+			$noidung = $row['name'];
+			if (preg_match(strtolower($keyword), strtolower($noidung), $match)) :
+				$data[] = array(
+					$sopost+1,
+					$row['id_post'],
+					$row['name'],
+					$row['time_post'],
+					$row['luot_thich'].','.$row['luot_comment'].','.$row['luot_share'],
+				);
+				//insert_post_to_search_post_keyword($noidung,$post_id,$time_post,$like,$comment, $share, $target_id, $user_id);
+				$sopost++;
+				endif;
 		}
-		$sopost = dem_post_theo_tu_khoa($_SESSION['username']);
-		if ($sopost > 0) {
+		$return = array('data' => $data);
+		die(json_encode($return));
+		/*if ($sopost > 0) {
 				$return['msg'] = 'Nhóm '.$tennhom.' có '.$sopost.' liên quan đến từ khóa: '.$keyword_goc;
 				die(json_encode($return));
 			} else {
@@ -243,10 +218,28 @@ if($_REQUEST){
 				$return['msg']   = 'Không có bài viết nào liên quan';
 				//$return['msg']   = strtotime($datefrom);
 				die(json_encode($return));
+			}*/
+	}
+	if ($t === 'load-post-keyword') {
+		$vip = load_post($_SESSION['username']);
+		$data = array();
+		$long = count($vip);
+		if ($vip !== 0) {
+			for ($i=0; $i < $long; $i++) {
+				$data[] = array(
+					$i+1,
+					$vip[$i]['target_id'],
+					$vip[$i]['name'],
+					$vip[$i]['time_post'],
+					$vip[$i]['luot_thich'].','.$vip[$i]['luot_comment'].','.$vip[$i]['luot_share'],
+				);
 			}
+			$return = array('data' => $data);
+			die(json_encode($return));
+		}
 	}
 	if ($t === 'load-post') {
-		$vip = load_post($_SESSION['username']);
+		$vip = load_post($_SESSION['id']);
 		$data = array();
 		$long = count($vip);
 		if ($vip !== 0) {

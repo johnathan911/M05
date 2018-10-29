@@ -225,9 +225,9 @@
                 success : (data) => {
                     $("#btn1").html('<i class="fa fa-check-square-o" aria-hidden="true"></i> Hoàn Thành');
                     if (data.error) {
-                        showNotification('bg-red', data.msg);
+                        //showNotification('bg-red', data.msg);
                     } else {
-                        showNotification('bg-green', data.msg);
+                        //showNotification('bg-green', data.msg);
                         load_vip();
                     }
                     setTimeout(function(){
@@ -273,7 +273,7 @@
         function load_vip(){
             $('#result-vip').DataTable({
                 destroy: true,
-                "ajax": '2T_modun/modun_post.php?t=load-post',
+                //"ajax": '2T_modun/modun_post.php?t=load-post',
                 "columns": [{
                         title: "STT"
                     },
