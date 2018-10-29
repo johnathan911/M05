@@ -172,6 +172,27 @@ function getPost($fbid, $token, $datefrom, $dateto){
 		}
 		return 0;
 }
+
+function getName($fbid, $token){
+    $getName = json_decode(file_get_contents('https://graph.facebook.com/'. $fbid . '?access_token=' . $token));
+    if($getName->id){
+        return $getName->name;
+    }
+    return 0;
+}
+
+function checkToken($token){
+    $get = json_decode(file_get_contents('https://graph.facebook.com/me/?access_token='.$token.'&field=id'), true);
+    if ($get['id']) {
+        return 1;
+    }
+    return 0;
+}
+
+function get_tokens_random($limit){
+    global $conn;
+    return mysqli_query($conn, "SELECT access_token FROM access_token ORDER BY RAND() LIMIT ".$limit);
+}
 function add_to_post_keyword($tendoituong,$quanly, $sttID, $datecreat,$like,$comment,$share){
 	global $conn;
 	$tmp = $like.",".$comment.",".$share;

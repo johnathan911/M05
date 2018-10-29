@@ -14,7 +14,7 @@
                                     <label for="email_address">FB ID (*)</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" onchange="update()" id="id" class="form-control" placeholder="Vui Lòng Nhập Chính Xác FB ID đối tượng">
+                                            <input type="text" onchange="update1()" id="id" class="form-control" placeholder="Vui Lòng Nhập Chính Xác FB ID đối tượng">
                                         </div>
                                     </div>
                                 </div>
@@ -152,5 +152,34 @@
             $("#name-group").text(nhom);
             $("#name-target").text(user);
             $("#id-target").text(id);
+        }
+
+        function update1(){
+            var fbid = $("#id").val();
+            var user = $("#user").val();
+            var nhom = $("#package-nhom").val();
+            $.ajax({
+                url     : prefix+modun+ '/modun_post.php',
+                type    : 'POST',
+                dataType: 'JSON',
+                data    : {
+                    t           : 'get-name',
+                    fbid          : fbid
+                },
+                success : (data) => {
+                    console.log(data);
+                    if (data.error) {
+                        showNotification('bg-red', data.msg);
+                        $("#name-group").text(nhom);
+                        $("#name-target").text(user);
+                        $("#id-target").text(fbid);
+                    } else {
+                        $("#name-group").text(nhom);
+                        $("#name-target").text(data.msg);
+                        $("#user").text(data.msg);
+                        $("#id-target").text(fbid);
+                    }
+                }
+            })
         }
     </script>

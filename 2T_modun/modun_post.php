@@ -144,6 +144,39 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
+
+    if ($t === 'get-name'){
+        $fbid = _p($_POST['fbid']);
+        $tokens = get_tokens_random(20);
+        $alive_token = 0;
+        while ($token = mysqli_fetch_assoc($tokens)) {
+            $checkToken = checkToken($token['access_token']);
+            if ($checkToken == 1) {
+                $ACCESS_TOKEN = $token['access_token'];
+                $alive_token = 1;
+                break;
+            }
+        }
+        if ($alive_token){
+            $name = getName($fbid, $ACCESS_TOKEN);
+
+            if ($name){
+            	$return['error'] = 0;
+                $return['msg'] = $name;
+                die(json_encode($return));
+            }else{
+                $return['error'] = 1;
+                $return['msg'] = 'Không tìm thấy Facebook có id: ' . $fbid;
+                die(json_encode($return));
+            }
+        }
+        else {
+            $return['error'] = 1;
+            $return['msg'] = 'Token died';
+            die(json_encode($return));
+        }
+
+    }
 // Search by Keyword
 	if ($t === 'search_keyword') {
         //echo "<script type='text/javascript'>alert('abc');</script>";
