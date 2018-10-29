@@ -9,7 +9,7 @@
                             </h2>
                             <ul class="header-dropdown m-r--5" style="display: none;" id="btn-action">
                                 <button type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target="#edit-vip"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</button>
-                                <!--<button type="button" class="btn btn-danger waves-effect" onclick="del_package()">Xóa</button>-->
+                                <button type="button" class="btn btn-danger waves-effect" onclick="del_target()">Xóa</button>
 
                             </ul>
                         </div>
@@ -217,7 +217,7 @@
                 }
             })
         }
-        function del_package(){
+        function del_target(){
             var data = $("#result-vip").DataTable().rows('.active').data();
             if (data.length == 0) {
                 showNotification('bg-red', 'Vui lòng chọn 1 gói VIP để xóa!');
@@ -233,18 +233,18 @@
               confirmButtonText: 'Vâng, Tôi muốn xóa!',
               cancelButtonText: 'Trở về'
             }).then(function () {
-              submit_del(data[0][0]);
+              submit_del(data[0][0], data[0][3]);
             })
         }
-        function submit_del(id){
+        function submit_del(id_target, name_group){
             $.ajax({
                 url     : prefix+modun+ '/modun_post.php',
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    t           : 'delete-vip',
-                    id          : id,
-                    type        : 'vip_like'
+                    t           : 'delete-target',
+                    id_target          : id_target,
+                    name_group        : name_group
                 },
                 success : (data) => {
                     if (data.error) {
