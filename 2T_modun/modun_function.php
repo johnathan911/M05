@@ -165,7 +165,7 @@ function dem_post_theo_tu_khoa($user){
 function load_post($name_manager) {
 	global $conn;
 	$return = array();
-	$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE manager = '$name_manager'");
+	$result = mysqli_query($conn, "SELECT * FROM post_keyword ORDER BY time_post");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;

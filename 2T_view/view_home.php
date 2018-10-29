@@ -137,6 +137,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 <script type="text/javascript">
     $(document).ready(function() {
         setTimeout(i, 2e3);
+		load_post();
         function i() {
             $(".notify-box .listbox-content-item:first").each(function() {
                 $(this).animate({

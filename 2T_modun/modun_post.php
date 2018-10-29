@@ -202,9 +202,10 @@ if($_REQUEST){
 			for ($i=0; $i < $long; $i++) {
 				$data[] = array(
 					$i+1,
+					$vip[$i]['target_id'],
 					$vip[$i]['name'],
-					$vip[$i]['id_post'],
-					$vip[$i]['luot_thich'].','[$i]['luot_comment'].','.[$i]['luot_share'],
+					$vip[$i]['time_post'],
+					$vip[$i]['luot_thich'].','.$vip[$i]['luot_comment'].','.$vip[$i]['luot_share'],
 				);
 			}
 			$return = array('data' => $data);
