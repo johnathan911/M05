@@ -43,8 +43,8 @@ if ($vip) {
 					$comment = $post -> comments -> count;
 					$share = $post -> shares -> count;
 					$datecreate = $post -> created_time;
-					$datecreate = date ('Y-m-d H:i:s',strtotime($datecreat));
-					$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post, time_post, luot_thich, luot_comment, luot_share, target_id) VALUES ('$name', '$sttID', '$datecreate', '$like', '$comment', '$share', '$id')");// Chỉnh lại cho đúng bảng
+					$datecreate = date ('Y-m-d H:i:s',strtotime($datecreate));
+					$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post, time_post, luot_thich, luot_comment, luot_share, target_id) VALUES ('$noidung', '$sttID', '$datecreate', '$like', '$comment', '$share', '$id')");// Chỉnh lại cho đúng bảng
 					echo $noidung;
 				}
 	        }
