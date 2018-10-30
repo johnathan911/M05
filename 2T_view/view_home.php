@@ -1,3 +1,4 @@
+
 <?php
 $src = file_get_contents('2T_modun/notify.txt');
 $arr_src = explode("\n", $src);
@@ -134,6 +135,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
         </div>
     </div>
 </section>
+<script type="text/javascript" src="js/moreless.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         setTimeout(i, 2e3);
@@ -156,6 +158,34 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 	function load_post(){
             $('#result-vip').DataTable({
                 destroy: true,
+                'fnDrawCallback': function AddReadMore() {
+                    //This limit you can set after how much characters you want to show Read More.
+                    var carLmt = 280;
+                    // Text to show when text is collapsed
+                    var readMoreTxt = " ... more";
+                    // Text to show when text is expanded
+                    var readLessTxt = " less";
+
+
+                    //Traverse all selectors with this class and manupulate HTML part to show Read More
+                    $(".addReadMore").each(function() {
+                        if ($(this).find(".firstSec").length)
+                            return;
+
+                        var allstr = $(this).text();
+                        if (allstr.length > carLmt) {
+                            var firstSet = allstr.substring(0, carLmt);
+                            var secdHalf = allstr.substring(carLmt, allstr.length);
+                            var strtoadd = firstSet + "<span class='SecSec'>" + secdHalf + "</span><span class='readMore'  title='Click to Show More'>" + readMoreTxt + "</span><span class='readLess' title='Click to Show Less'>" + readLessTxt + "</span>";
+                            $(this).html(strtoadd);
+                        }
+
+                    });
+                    //Read More and Read Less Click Event binding
+                    $(document).on("click", ".readMore,.readLess", function() {
+                        $(this).closest(".addReadMore").toggleClass("showlesscontent showmorecontent");
+                    });
+                },
                 'ajax'       : {
                     "type"   : "POST",
                     "url"    : '2T_modun/modun_post.php?t=load-post',
@@ -172,7 +202,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 
                                     'stt': count,
                                     'name': json['data'][i][0],
-                                    'content': '<div class="m-more-less-content">' + content.slice(0, 50) + '<!--more-->' + content.slice(50 + Math.abs(content)) + '</div>',
+                                    'content': '<p class="addReadMore showlesscontent">' + content + '</p>',
                                     'time': json['data'][i][2],
                                     'like': json['data'][i][3]
                                 });
@@ -239,27 +269,4 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                 }
             });
     }
-
-    $(".m-more-less-content .m-show-more").click(function(){
-        $(this).parent().addClass("m-display-more");
-    });
-    $(".m-more-less-content .m-show-less").click(function(){
-        $(this).parent().removeClass("m-display-more");
-    });
-
-    $(".m-more-less-content").each(function (i, e){
-        var html = $(e).html();
-        var contentArray = html.split("<!--more-->");
-        console.log(contentArray);
-        if (contentArray.length == 2) {
-            html = contentArray[0] + '<span class="m-show-more"></span><span class="m-more-text">' + contentArray[1] + '</span><span class="m-show-less"></span>';
-            $(e).html(html);
-            $(e).find(".m-show-more").click(function(){
-                $(this).parent().addClass("m-display-more");
-            });
-            $(e).find(".m-show-less").click(function(){
-                $(this).parent().removeClass("m-display-more");
-            });
-        }
-    });
 </script>
