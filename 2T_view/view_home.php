@@ -159,31 +159,28 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
             $('#result-vip').DataTable({
                 destroy: true,
                 'fnDrawCallback': function AddReadMore() {
-                    //This limit you can set after how much characters you want to show Read More.
-                    var carLmt = 280;
-                    // Text to show when text is collapsed
-                    var readMoreTxt = " ... more";
-                    // Text to show when text is expanded
-                    var readLessTxt = " less";
 
-
-                    //Traverse all selectors with this class and manupulate HTML part to show Read More
-                    $(".addReadMore").each(function() {
-                        if ($(this).find(".firstSec").length)
-                            return;
-
-                        var allstr = $(this).text();
-                        if (allstr.length > carLmt) {
-                            var firstSet = allstr.substring(0, carLmt);
-                            var secdHalf = allstr.substring(carLmt, allstr.length);
-                            var strtoadd = firstSet + "<span class='SecSec'>" + secdHalf + "</span><span class='readMore'  title='Click to Show More'>" + readMoreTxt + "</span><span class='readLess' title='Click to Show Less'>" + readLessTxt + "</span>";
-                            $(this).html(strtoadd);
-                        }
-
+                    $(".m-more-less-content .m-show-more").click(function(){
+                        $(this).parent().addClass("m-display-more");
                     });
-                    //Read More and Read Less Click Event binding
-                    $(document).on("click", ".readMore,.readLess", function() {
-                        $(this).closest(".addReadMore").toggleClass("showlesscontent showmorecontent");
+                    $(".m-more-less-content .m-show-less").click(function(){
+                        $(this).parent().removeClass("m-display-more");
+                    });
+
+                    $(".m-more-less-content").each(function (i, e){
+                        var html = $(e).html();
+                        var contentArray = html.split("<!--more-->");
+                        console.log(contentArray);
+                        if (contentArray.length == 2) {
+                            html = contentArray[0] + '<span class="m-show-more"></span><span class="m-more-text">' + contentArray[1] + '</span><span class="m-show-less"></span>';
+                            $(e).html(html);
+                            $(e).find(".m-show-more").click(function(){
+                                $(this).parent().addClass("m-display-more");
+                            });
+                            $(e).find(".m-show-less").click(function(){
+                                $(this).parent().removeClass("m-display-more");
+                            });
+                        }
                     });
                 },
                 'ajax'       : {
@@ -198,11 +195,14 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                         var content;
                         for(var i=0;i< json['data'].length; i++){
                                 content = json['data'][i][1];
+                                if (content.length > 250){
+                                    content = '<div class="m-more-less-content">' + content.slice(0, 250) + '<!--more-->' + content.slice(250 + Math.abs(0)); + '</div>'
+                                }
                                 return_data.push({
 
                                     'stt': count,
                                     'name': json['data'][i][0],
-                                    'content': '<p class="addReadMore showlesscontent">' + content + '</p>',
+                                    'content': content,
                                     'time': json['data'][i][2],
                                     'like': json['data'][i][3]
                                 });

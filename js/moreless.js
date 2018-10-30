@@ -1,32 +1,22 @@
-function AddReadMore() {
-    //This limit you can set after how much characters you want to show Read More.
-    var carLmt = 280;
-    // Text to show when text is collapsed
-    var readMoreTxt = " ... Read More";
-    // Text to show when text is expanded
-    var readLessTxt = " Read Less";
+$(".m-more-less-content .m-show-more").click(function(){
+    $(this).parent().addClass("m-display-more");
+});
+$(".m-more-less-content .m-show-less").click(function(){
+    $(this).parent().removeClass("m-display-more");
+});
 
-
-    //Traverse all selectors with this class and manupulate HTML part to show Read More
-    $(".addReadMore").each(function() {
-        if ($(this).find(".firstSec").length)
-            return;
-
-        var allstr = $(this).text();
-        if (allstr.length > carLmt) {
-            var firstSet = allstr.substring(0, carLmt);
-            var secdHalf = allstr.substring(carLmt, allstr.length);
-            var strtoadd = firstSet + "<span class='SecSec'>" + secdHalf + "</span><span class='readMore'  title='Click to Show More'>" + readMoreTxt + "</span><span class='readLess' title='Click to Show Less'>" + readLessTxt + "</span>";
-            $(this).html(strtoadd);
-        }
-
-    });
-    //Read More and Read Less Click Event binding
-    $(document).on("click", ".readMore,.readLess", function() {
-        $(this).closest(".addReadMore").toggleClass("showlesscontent showmorecontent");
-    });
-}
-$(function() {
-    //Calling function after Page Load
-    AddReadMore();
+$(".m-more-less-content").each(function (i, e){
+    var html = $(e).html();
+    var contentArray = html.split("<!--more-->");
+    console.log(contentArray);
+    if (contentArray.length == 2) {
+        html = contentArray[0] + '<span class="m-show-more"></span><span class="m-more-text">' + contentArray[1] + '</span><span class="m-show-less"></span>';
+        $(e).html(html);
+        $(e).find(".m-show-more").click(function(){
+            $(this).parent().addClass("m-display-more");
+        });
+        $(e).find(".m-show-less").click(function(){
+            $(this).parent().removeClass("m-display-more");
+        });
+    }
 });

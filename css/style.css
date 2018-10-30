@@ -1,27 +1,35 @@
 ﻿/* Navbar ====================================== */
 @import url(materialize.css);
 
-.addReadMore.showlesscontent .SecSec,
-.addReadMore.showlesscontent .readLess {
-  display: none;
+.m-more-less-content span {
+    display: inline;
 }
-
-.addReadMore.showmorecontent .readMore {
-  display: none;
+.m-more-less-content .m-show-more, .m-more-less-content .m-show-less {
+    color: blue;
+    cursor: pointer;
+    font-style: italic;
 }
-
-.addReadMore .readMore,
-.addReadMore .readLess {
-  font-weight: normal;
-  margin-left: 2px;
-  font-style: italic;
-  color: blue;
-  cursor: pointer;
+.m-more-less-content .m-show-more:before {
+    content: " ... more";
 }
-
-.addReadMoreWrapTxt.showmorecontent .SecSec,
-.addReadMoreWrapTxt.showmorecontent .readLess {
-  display: block;
+.m-more-less-content .m-more-text {
+    overflow: hidden;
+    display: none;
+}
+.m-more-less-content .m-show-less {
+    display: none;
+}
+.m-more-less-content .m-show-less:before {
+    content: " less";
+}
+.m-more-less-content.m-display-more .m-show-more {
+    display: none;
+}
+.m-more-less-content.m-display-more .m-more-text {
+    display: inline;
+}
+.m-more-less-content.m-display-more .m-show-less {
+    display: inline;
 }
 
 .navbar {
