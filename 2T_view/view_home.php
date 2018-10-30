@@ -202,7 +202,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 
                                     'stt': count,
                                     'name': json['data'][i][0],
-                                    'content': content,
+                                    'content': '<div style="text-align:justify">' + content + '</div>',
                                     'time': json['data'][i][2],
                                     'like': json['data'][i][3]
                                 });
