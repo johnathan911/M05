@@ -156,8 +156,58 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 	function load_post(){
             $('#result-vip').DataTable({
                 destroy: true,
-                "ajax": '2T_modun/modun_post.php?t=load-post',
-                "columns": [{
+                'ajax'       : {
+                    "type"   : "POST",
+                    "url"    : '2T_modun/modun_post.php?t=load-post',
+                    "dataSrc": function (json) {
+                        console.log(json);
+                        console.log(json['data'][0][3]);
+                        var return_data = new Array();
+                        console.log(json['data'].length);
+                        var count = 1;
+                        var content;
+                        for(var i=0;i< json['data'].length; i++){
+                                content = json['data'][i][1];
+                                return_data.push({
+
+                                    'stt': count,
+                                    'name': json['data'][i][0],
+                                    'content': '<div class="m-more-less-content">' + content.slice(0, 50) + '<!--more-->' + content.slice(50 + Math.abs(content)) + '</div>',
+                                    'time': json['data'][i][2],
+                                    'like': json['data'][i][3]
+                                });
+                                count++;
+
+                        }
+                        console.log(return_data);
+                        return return_data;
+                    }
+                },
+                "columns"    : [
+                    {
+                        title : "STT",
+                        'data': 'stt'
+                    },
+                    {
+                        title : "Tên Facebook",
+                        'data': 'name'
+                    },
+                    {
+                        title : "Nội dung",
+                        'data': 'content'
+                    },
+                    {
+                        title : "Time",
+                        'data': 'time'
+                    },
+                    {
+                        title : "Lượt like",
+                        'data': 'like'
+                    }
+
+                ],
+                //"ajax": '2T_modun/modun_post.php?t=load-post',
+                /*"columns": [{
                         title: "STT"
                     },
                     {
@@ -172,7 +222,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 					 {
                         title: "Like,Comment,Share"
                     },
-                ],
+                ],*/
                 "language": {
                     "search": "Tìm Kiếm",
                     "paginate": {
@@ -188,5 +238,28 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "emptyTable": "Không có gì để hiển thị",
                 }
             });
+    }
+
+    $(".m-more-less-content .m-show-more").click(function(){
+        $(this).parent().addClass("m-display-more");
+    });
+    $(".m-more-less-content .m-show-less").click(function(){
+        $(this).parent().removeClass("m-display-more");
+    });
+
+    $(".m-more-less-content").each(function (i, e){
+        var html = $(e).html();
+        var contentArray = html.split("<!--more-->");
+        console.log(contentArray);
+        if (contentArray.length == 2) {
+            html = contentArray[0] + '<span class="m-show-more"></span><span class="m-more-text">' + contentArray[1] + '</span><span class="m-show-less"></span>';
+            $(e).html(html);
+            $(e).find(".m-show-more").click(function(){
+                $(this).parent().addClass("m-display-more");
+            });
+            $(e).find(".m-show-less").click(function(){
+                $(this).parent().removeClass("m-display-more");
+            });
         }
+    });
 </script>
