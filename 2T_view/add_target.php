@@ -22,7 +22,7 @@
                                     <label for="email_address">Tên đối tượng</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" id="user" onchange="update()" class="form-control" placeholder="Nhập Tên đối tượng">
+                                            <input type="text" id="user" onchange="update()" class="form-control" placeholder="Tên đối tượng" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -176,7 +176,7 @@
                     } else {
                         $("#name-group").text(nhom);
                         $("#name-target").text(data.msg);
-                        $("#user").text(data.msg);
+                        $("#user").val(data.msg);
                         $("#id-target").text(fbid);
                     }
                 }

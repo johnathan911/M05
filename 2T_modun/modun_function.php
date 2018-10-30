@@ -102,7 +102,7 @@ function get_target($user_id) {
 	} else {
 		$result = mysqli_query($conn, "SELECT * FROM target WHERE manager = '$name_manager'");
 	}*/
-	$result = mysqli_query ($conn, "SELECT * FROM target WHERE id in (SELECT target_id FROM tbl_group_target As a, package_nhom As b WHERE b.user_id = '$user_id' )");
+	$result = mysqli_query ($conn, "SELECT * FROM target WHERE id in (SELECT target_id FROM tbl_group_target As a, package_nhom As b WHERE a.group_id = b.id AND b.user_id = '$user_id' )");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;
@@ -121,15 +121,20 @@ function updateTarget($id, $fbid, $name, $nhom){
 }
 function get_name_group_by_target_id($id_target, $user_id){
 	global $conn;
-	$result = mysqli_query($conn, "SELECT * FROM package_nhom WHERE user_id = '$user_id' AND id IN (SELECT group_id FROM tbl_group_target As a, target As b WHERE b.id = '$id_target')");
+	$result = mysqli_query($conn, "SELECT * FROM package_nhom WHERE user_id = '$user_id' AND id IN (SELECT group_id FROM tbl_group_target As a, target As b WHERE a.target_id = b.id AND b.id = '$id_target')");
 	$row = mysqli_fetch_assoc($result);
 	return $row['name'];
 }
-function getNameTarget($target_id){
-	global $conn;
-	$result = mysqli_query($conn, "SELECT * FROM target WHERE id = '$target_id'");
-	$row = mysqli_fetch_assoc($result);
-	return $row['name'];
+
+
+function get_id_group_by_name($name_group, $user_id){
+    global $conn;
+    $result = mysqli_query($conn, "SELECT * FROM package_nhom WHERE name = '$name_group' AND user_id = '$user_id'");
+    if (mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_assoc($result);
+        return $row['id'];
+    }
+    return 0;
 }
 // Search Keyword
 function xoa_post_by_user($user){
@@ -228,7 +233,7 @@ function dem_post_theo_tu_khoa($user){
 function load_post($user_id) {
 	global $conn;
 	$return = array();
-	$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target,package_nhom WHERE user_id ='$user_id')ORDER BY time_post");
+	$result = mysqli_query($conn, "SELECT * FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target As a,package_nhom As b WHERE a.group_id = b.id AND user_id ='$user_id')ORDER BY time_post");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;
@@ -619,9 +624,9 @@ function updateVipCmtByAdmin($id, $fbid, $name, $package, $cmt, $speed) {
 	}
 	return 0;
 }
-function delete_vip($id, $type) {
+function delete_target($id_target, $id_group) {
 	global $conn;
-	$result = mysqli_query($conn, "DELETE FROM $type WHERE id = '$id'");
+	$result = mysqli_query($conn, "DELETE FROM tbl_group_target WHERE target_id = '$id_target' AND group_id = '$id_group'");
 	if ($result)
 		return 1;
 	return 0;

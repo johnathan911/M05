@@ -1314,15 +1314,16 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
-	if ($t === 'delete-vip') {
-		if (isAdmin() == 0) {
+	if ($t === 'delete-target') {
+		/*if (isAdmin() == 0) {
 			$return['error'] = 1;
 			$return['msg']   = 'Không Được Đâu Sói Ạ.';
 			die(json_encode($return));
-		}
-		$id = _p($_POST['id']);
-		$type= _p($_POST['type']);
-		if (delete_vip($id,$type)) {
+		}*/
+		$id_target = _p($_POST['id_target']);
+		$name_group= _p($_POST['name_group']);
+		$id_group = get_id_group_by_name($name_group, $_SESSION['id']);
+		if (delete_target($id_target, $id_group)) {
 			$return['msg'] = 'Xóa Thành Công!';
 			die(json_encode($return));
 		}
