@@ -242,16 +242,37 @@ if($_REQUEST){
 		$vip = load_post($_SESSION['id']);
 		$data = array();
 		$long = count($vip);
+		$dong =0;
 		if ($vip !== 0) {
-			for ($i=0; $i < $long; $i++) {
-				$data[] = array(
-					$i+1,
-					$vip[$i]['target_id'],
-					$vip[$i]['name'],
-					$vip[$i]['time_post'],
-					$vip[$i]['luot_thich'].','.$vip[$i]['luot_comment'].','.$vip[$i]['luot_share'],
-				);
+			if($long >100)
+			{
+				for($i=$long-1; $i>$long -100; $i--){
+					$name_target= getNameTarget($vip[$i]['target_id']);
+					$data[] = array(
+						$dong+1,
+						$name_target,
+						str_replace("\n","<br>",$vip[$i]['name']),
+						$vip[$i]['time_post'],
+						$vip[$i]['luot_thich'].','.$vip[$i]['luot_comment'].','.$vip[$i]['luot_share'],
+					);
+					$dong++;
+				}
 			}
+			else{
+				for($i=$long-1; $i>0; $i--){
+					$name_target= getNameTarget($vip[$i]['target_id']);
+					$link = "https://www.facebook.com/".$vip[$i]['id_post'];
+					$data[] = array(
+						$dong+1,
+						'<a href="'.$link.'" target="_blank" title="Click để vào bài viết">'.$name_target.'</a>',
+						str_replace("\n","<br>",$vip[$i]['name']),
+						$vip[$i]['time_post'],
+						$vip[$i]['luot_thich'].','.$vip[$i]['luot_comment'].','.$vip[$i]['luot_share'],
+					);
+					$dong++;
+				}
+			}
+			
 			$return = array('data' => $data);
 			die(json_encode($return));
 		}

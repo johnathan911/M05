@@ -125,6 +125,12 @@ function get_name_group_by_target_id($id_target, $user_id){
 	$row = mysqli_fetch_assoc($result);
 	return $row['name'];
 }
+function getNameTarget($target_id){
+	global $conn;
+	$result = mysqli_query($conn, "SELECT * FROM target WHERE id = '$target_id'");
+	$row = mysqli_fetch_assoc($result);
+	return $row['name'];
+}
 // Search Keyword
 function xoa_post_by_user($user){
 	global $conn;
