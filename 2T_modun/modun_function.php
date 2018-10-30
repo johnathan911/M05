@@ -121,9 +121,12 @@ function updateTarget($id, $fbid, $name, $nhom){
 }
 function get_name_group_by_target_id($id_target, $user_id){
 	global $conn;
+    $return = array();
 	$result = mysqli_query($conn, "SELECT * FROM package_nhom WHERE user_id = '$user_id' AND id IN (SELECT group_id FROM tbl_group_target As a, target As b WHERE a.target_id = b.id AND b.id = '$id_target')");
-	$row = mysqli_fetch_assoc($result);
-	return $row['name'];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $return[] = $row;
+    }
+    return $return;
 }
 function getNameTarget($target_id){
 	global $conn;
