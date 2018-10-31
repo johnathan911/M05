@@ -81,7 +81,7 @@
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
                                             <div class="form-group">\
                                                 <div class="form-line">\
-                                                    <input type="text" id="name-up" class="form-control" value="'+data[0][2]+'">\
+                                                    <input type="text" disabled id="name-up" class="form-control" value="'+data[0][2]+'">\
                                                 </div>\
                                             </div>\
                                         </div>\
@@ -93,7 +93,7 @@
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
                                             <div class="form-group">\
                                                 <div class="form-line">\
-                                                    <input type="text" id="fbid-up" class="form-control" value="'+data[0][1]+'">\
+                                                    <input type="text" disabled id="fbid-up" class="form-control" value="'+data[0][1]+'">\
                                                 </div>\
                                             </div>\
                                         </div>\
