@@ -1,6 +1,11 @@
 ﻿/* Navbar ====================================== */
 @import url(materialize.css);
 
+select#select {
+  width: 100px;
+  display: inline-block;
+}
+
 .m-more-less-content span {
     display: inline;
 }
