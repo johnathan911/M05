@@ -5,16 +5,16 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                THÊM NHÓM THEO DÕI<small>Tạo mới Nhóm theo dõi</small>
+                                THÊM TRANG LẤY TỪ KHÓA<small>Từ khóa được sử dụng cho cảnh báo chủ đề nóng</small>
                             </h2>
                         </div>
                         <div class="body">
                             <div class="row clearfix add-package">
                                 <div class="col-md-6">
-                                    <label for="email_address">Tên</label>
+                                    <label for="email_address">Link Feed</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" id="name" class="form-control" placeholder="Nhập Tên Nhóm">
+                                            <input type="text" id="link" class="form-control" placeholder="Nhập Link Feed">
                                         </div>
                                     </div>
                                 </div>
@@ -22,12 +22,23 @@
                                     <label for="input" class="control-label">Mô tả</label>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" id="mota" class="form-control" placeholder="Nhập mô tả nhóm">
+                                            <input type="text" id="mota" class="form-control" placeholder="Nhập mô tả trang">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12 text-center">
                                     <button type="button" class="btn btn-success waves-effect" id="btn1" onclick="add_package();"><i class="fa fa-plus-square" aria-hidden="true"></i> Tiến Hành</button>
+                                </div>
+								 <div class="col-md-12">
+                                    <ul>
+                                        <li>
+                                            <p class="font-bold font-underline col-pink">Lưu ý:</p>
+                                            <ul>
+                                                <li><p class="font-bold">Hiện tại chỉ hỗ trợ Feed đối với Wordpress, chưa hỗ trợ Blogger</p></li>
+                                                <li><p class="font-bold">Trang web được xây dựng bằng WordPress, chỉ cần thêm /feed vào cuối URL, ví dụ https://example.wordpress.com/feed..</p></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +50,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                CHỈNH SỬA CÁC NHÓM ĐANG THEO DÕI <small>Chỉnh sửa các nhóm trên hệ thống</small>
+                                CHỈNH SỬA CÁC TRANG ĐANG THEO DÕI <small>Chỉnh sửa các trang trên hệ thống</small>
                             </h2>
                             <ul class="header-dropdown m-r--5" id="btn-action" style="display: none;">
                                 <button type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target="#edit-package">Chỉnh Sửa</button>
@@ -54,7 +65,6 @@
                                         <th>FB NAME</th>
                                         <th>FB ID</th>
                                         <th>TYPE ACCESS</th>
-                                        <th>ACTION</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -98,17 +108,17 @@
                         <div class="modal-dialog" role="document">\
                             <div class="modal-content">\
                                 <div class="modal-header">\
-                                    <h4 class="modal-title">Chỉnh Sửa Chi Tiết nhóm ' + data[0][1] + '</h4>\
+                                    <h4 class="modal-title">Chỉnh Sửa link ' + data[0][2] + '</h4>\
                                 </div>\
                                 <div class="modal-body">\
                                     <div class="row clearfix">\
                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
-                                            <label for="name-up">Tên Nhóm</label>\
+                                            <label for="link-up">Link</label>\
                                         </div>\
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
                                             <div class="form-group">\
                                                 <div class="form-line">\
-                                                    <input type="text" id="name-up" class="form-control" value="'+data[0][1]+'">\
+                                                    <input type="text" id="link-up" class="form-control" value="'+data[0][1]+'">\
                                                 </div>\
                                             </div>\
                                         </div>\
@@ -145,7 +155,7 @@
                 return;
             }
             swal({
-              title: 'Bạn muốn xóa gói nhóm ' + data[0][1],
+              title: 'Bạn muốn xóa trang ' + data[0][2],
               text: "Không thể phục hồi sau khi xóa",
               type: 'warning',
               showCancelButton: true,
@@ -154,7 +164,7 @@
               confirmButtonText: 'Vâng, Tôi muốn xóa!',
               cancelButtonText: 'Trở về'
             }).then(function () {
-              submit_del(data[0][5]);
+              submit_del(data[0][4]);
             })
         }
         function submit_del(id){
@@ -163,7 +173,7 @@
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    t           : 'delete_package_nhom',
+                    t           : 'delete_link_feed',
                     id          : id
                 },
                 success : (data) => {
@@ -179,18 +189,15 @@
         function load_package(){
             $('#result-package').DataTable({
                 destroy: true,
-                "ajax": '2T_modun/modun_post.php?t=get_package_nhom',
+                "ajax": '2T_modun/modun_post.php?t=get_link_feed',
                 "columns": [{
                         title: "STT"
                     },
                     {
-                        title: "TÊN NHÓM"
+                        title: "Link"
                     },
                     {
                         title: "MÔ TẢ"
-                    },
-					{
-                        title: "SỐ LƯỢNG THÀNH VIÊN"
                     },
 					{
                         title: "Ngày thêm"
@@ -214,10 +221,10 @@
         }
         function update_package(){
 			var data = $("#result-package").DataTable().rows('.active').data();
-            var name = $("#name-up").val();
+            var link = $("#link-up").val();
             var mota  = $("#mota-up").val();
-			var id  = data[0][5];
-            if (!name || !mota) {
+			var id = data[0][4];
+            if (!link || !mota) {
                 showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
                 return;
             }
@@ -227,9 +234,9 @@
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    t           : 'update_package_nhom',
-                    id          : id,
-                    name        : name,
+                    t           : 'update_link_feed',
+					id			: id,
+                    link        : link,
                     mota         : mota
                 },
                 success : (data) => {
@@ -247,9 +254,9 @@
             })
         }
         function add_package(){
-            var name = $("#name").val();
+            var link = $("#link").val();
             var mota  = $("#mota").val();
-            if (!name || !mota) {
+            if (!link || !mota) {
                 showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
                 return;
             }
@@ -259,8 +266,8 @@
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    t           : 'new_package_group',
-                    name        : name,
+                    t           : 'add_link_feed',
+                    link        : link,
                     mota         : mota
                 },
                 success : (data) => {

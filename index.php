@@ -38,8 +38,8 @@ if ($_GET['act']) {
 	if ($_GET['act'] == 'manage-target') {
 		require_once '2T_view/manage_target.php';
 	}
-	if ($_GET['act'] == 'search-keyword') {
-		require_once '2T_view/search_post.php';
+	if ($_GET['act'] == 'add-feed-site') {
+		require_once '2T_view/add_feed_site.php';
 	}
 	// Modun cu
 	if ($_GET['act'] == 'change-pass') {

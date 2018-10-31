@@ -81,7 +81,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             <table class="table table-bordered" width="100%" id="result-vip">
                             </table>
                         </div>
-						
                     </div>
             </div>
             <?php if ($_SESSION['admin'] == 1 ): ?>

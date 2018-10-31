@@ -11,7 +11,8 @@ function check_package($name, $user_id) {
 }
 function add_package($name, $desc, $user_id) {
 	global $conn;
-	$t= date("d/m/y");
+	$t = time();
+	$t = date ('Y-m-d H:i:s',$t);
 	$result = mysqli_query($conn, "INSERT INTO package_nhom (name, description, user_id, create_time) VALUES ('$name', '$desc', '$user_id', '$t')");
 	if ($result)
 		return 1;
@@ -92,6 +93,49 @@ function insert_target($fbid, $name, $id_nhom, $time_add) {
     if($result)
         return 1;
     return 0;
+}
+// Link Feed
+function Check_Link_Feed($link,$user_id){
+	global $conn; 
+	$result = mysqli_query ($conn, "SELECT * FROM link_feed WHERE link = '$link' AND user_id = '$user_id'");
+	if (mysqli_num_rows($result) > 0)
+		return 1;
+	return 0;
+}
+function Insert_Link_Feed($link,$description,$user_id){
+	global $conn; 
+	$t = time();
+	$t = date ('Y-m-d H:i:s',$t);
+	$result = mysqli_query ($conn, "INSERT INTO link_feed (link, description,user_id,create_time) VALUES ('$link', '$description', '$user_id', '$t')");
+	if($result)
+		return 1;
+	return 0;
+}
+function Get_Link_Feed($user_id) {
+	global $conn;
+	$return = array();
+	$result = mysqli_query($conn, "SELECT * FROM link_feed WHERE user_id = '$user_id' ");
+	if (mysqli_num_rows($result) > 0) {
+		while ($row = mysqli_fetch_assoc($result)) {
+			$return[] = $row;
+		}
+		return $return;
+	}
+	return 0;
+}
+function Update_Link_Feed($link, $description, $id){
+	global $conn;
+	$result = mysqli_query($conn, "UPDATE link_feed SET link = '$link', description = '$description' WHERE id = '$id'");
+	if ($result)
+		return 1;
+	return 0;
+}
+function Delete_Link_Feed($id) {
+	global $conn;
+	$result1 = mysqli_query($conn, "DELETE FROM link_feed WHERE id = '$id'");
+	if ($result1)
+		return 1;
+	return 0;
 }
 //Manage target
 function get_target($user_id) {

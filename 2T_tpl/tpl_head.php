@@ -124,7 +124,7 @@
                                 <a href="?act=manage-target">Target Manager</a>
                             </li>
 							<li>
-                                <a href="?act=search-keyword">Seach Post by Keyword</a>
+                                <a href="?act=add-feed-site">Add Feed Site</a>
                             </li>
                         </ul>
                     </li>

@@ -27,23 +27,21 @@ if($_REQUEST){
 		}
 	}
 	if ($t === 'get_package_nhom') {
-		/*if (isAdmin() == 0) {
-			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
-			die(json_encode($return));
-		}*/
 		$data = array();
 		$gP = get_package_nhom($_SESSION['id']);
 		$long = count($gP);
+		$count = 0;
 		if ($gP != 0) {
 			for ($i=0; $i < $long; $i++) {
 				$data[] = array(
-					$gP[$i]['id'],
+					$count +1,
 					$gP[$i]['name'],
 					$gP[$i]['description'],
 					count_target_group($gP[$i]['id']),
-					$gP[$i]['create_time']
+					$gP[$i]['create_time'],
+					$gP[$i]['id']
 				);
+				$count ++;
 			}
 		}
 		$return = array('data' => $data);
@@ -79,7 +77,9 @@ if($_REQUEST){
             $return['msg']   = 'Nhóm đã tồn tại';
             die(json_encode($return));
 		}
-
+	}
+	if ($t === 'get_name_package_nhom') {
+		die(json_encode(get_package_nhom($_SESSION['id'])));
 	}
 // Add target
 	if($t === 'add_target'){
@@ -105,10 +105,66 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
-	if ($t === 'get_name_package_nhom') {
-		die(json_encode(get_package_nhom($_SESSION['id'])));
+// LINK FEED
+	if ($t === 'add_link_feed') {
+		$link = _p($_POST['link']);
+		$description = _p($_POST['mota']);
+		if (Check_Link_Feed($link, $_SESSION['id']) === 0) {
+			if (Insert_Link_Feed($link, $description, $_SESSION['id'])) {
+				$return['msg'] = 'Thêm trang '.$link.' vào danh sách theo dõi thành công';
+				die(json_encode($return));
+			} else {
+				$return['error'] = 1;
+				$return['msg']   = 'Không Thể Thêm trang này. Vui Lòng Kiểm Tra Lại';
+				die(json_encode($return));
+			}
+		} else {
+			$return['error'] = 1;
+			$return['msg']   = 'Trang này đã có trong hệ thống';
+			die(json_encode($return));
+		}
 	}
-	
+	if($t === 'get_link_feed') {
+		$data = array();
+		$gP = Get_Link_Feed($_SESSION['id']);
+		$long = count($gP);
+		$count =0;
+		if ($gP != 0) {
+			for ($i=0; $i < $long; $i++) {
+				$data[] = array(
+					$count+1,
+					$gP[$i]['link'],
+					$gP[$i]['description'],
+					$gP[$i]['create_time'],
+					$gP[$i]['id']
+				);
+				$count++;
+			}
+		}
+		$return = array('data' => $data);
+		die(json_encode($return));
+	}
+	if ($t === 'update_link_feed') {
+		$id = _p($_POST['id']);
+		$link = _p($_POST['link']);
+		$description = _p($_POST['mota']);
+		$update = Update_Link_Feed($link, $description,$id);
+		if ($update) {
+			$return['msg'] = "Chỉnh Sửa Thành Công";
+			die(json_encode($return));
+		} else {
+			$return['error'] = 1;
+			$return['msg'] = "Không Thể Chỉnh Sửa";
+			die(json_encode($return));
+		}
+	}
+	if ($t === 'delete_link_feed') {
+		$id = _p($_POST['id']);
+		if (Delete_Link_Feed($id)) {
+			$return['msg'] = 'Xóa Thành Công!';
+			die(json_encode($return));
+		}
+	}
 // Manager Target
 	if ($t === 'update-target') {
 		$id  = _p($_POST['id']);
@@ -147,7 +203,6 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
-
     if ($t === 'get-name'){
         $fbid = _p($_POST['fbid']);
         $tokens = get_tokens_random(20);
