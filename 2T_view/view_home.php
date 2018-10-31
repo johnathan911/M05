@@ -78,6 +78,9 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             </ul>
                         </div>
                         <div class="body table-responsive">
+                            <select id="select" class="form-control input-sm">
+                                <option value=*> Tất cả </option>
+                            </select>
                             <table class="table table-bordered" width="100%" id="result-vip">
                             </table>
                         </div>
@@ -139,6 +142,20 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 <script type="text/javascript">
     $(document).ready(function() {
         setTimeout(i, 2e3);
+        $.ajax({
+            url : '2T_modun/modun_post.php?t=get_package_nhom',
+            type:'POST',
+            dataType: 'json',
+            success: function(data) {
+                $("#select").attr('disabled', false);
+                console.log(data);
+                if (data['data'].length > 0){
+                    for(var i = 0; i< data['data'].length; i++){
+                        $("#select").append('<option value=' + data['data'][i][0] + '>' + data['data'][i][1] + '</option>');
+                    }
+                }
+            }
+        });
 		load_post();
         function i() {
             $(".notify-box .listbox-content-item:first").each(function() {
@@ -156,8 +173,11 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
         }
     });
 	function load_post(){
-            $('#result-vip').DataTable({
+            var table = $('#result-vip').DataTable({
                 destroy: true,
+                dom: "<'row'<'col-sm-5'l><'col-sm-7'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 'fnDrawCallback': function AddReadMore() {
 
                     $(".m-more-less-content .m-show-more").click(function(){
@@ -170,7 +190,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     $(".m-more-less-content").each(function (i, e){
                         var html = $(e).html();
                         var contentArray = html.split("<!--more-->");
-                        console.log(contentArray);
+                        //console.log(contentArray);
                         if (contentArray.length == 2) {
                             html = contentArray[0] + '<span class="m-show-more"></span><span class="m-more-text">' + contentArray[1] + '</span><span class="m-show-less"></span>';
                             $(e).html(html);
@@ -187,10 +207,10 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "type"   : "POST",
                     "url"    : '2T_modun/modun_post.php?t=load-post',
                     "dataSrc": function (json) {
-                        console.log(json);
-                        console.log(json['data'][0][3]);
+                        //console.log(json);
+                        //console.log(json['data'][0][3]);
                         var return_data = new Array();
-                        console.log(json['data'].length);
+                        //console.log(json['data'].length);
                         var count = 1;
                         var content;
                         for(var i=0;i< json['data'].length; i++){
@@ -209,7 +229,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 count++;
 
                         }
-                        console.log(return_data);
+                        //console.log(return_data);
                         return return_data;
                     }
                 },
@@ -268,5 +288,19 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "emptyTable": "Không có gì để hiển thị",
                 }
             });
+        $(".dataTables_filter").append(select);
+
+        /*$('.dataTables_filter input').unbind().bind('keyup', function() {
+            var colIndex = document.querySelector('#select').selectedIndex;
+            table.column( colIndex).search( this.value ).draw();
+        });*/
+
+        $('#select').change(function() {
+            if($('#select').val() == '*')
+                table.search('').draw();
+            else{
+                table.search($("#select option:selected").text()).draw();
+            }
+        });
     }
 </script>
