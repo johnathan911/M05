@@ -168,10 +168,10 @@ if($_REQUEST){
 // Manager Target
 	if ($t === 'update-target') {
 		$id  = _p($_POST['id']);
-		$fbid = _p($_POST['fbid']);
-		$name = _p($_POST['name']);
 		$nhom = _p($_POST['nhom']);
-		$update = updateTarget($id, $fbid, $name, $nhom);
+		$old_name = _p($_POST['old_name']);
+		$group_id_old = get_id_nhom($old_name, $_SESSION['id']);
+		$update = updateTarget($id, $nhom, $group_id_old, $_SESSION['id']);
 		if ($update) {
 			$return['msg'] = "Chỉnh Sửa Thành Công";
 			die(json_encode($return));

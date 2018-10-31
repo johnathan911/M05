@@ -183,6 +183,8 @@
             return s;
         }
         function update_target(){
+            var data = $("#result-vip").DataTable().rows('.active').data();
+            var old_name = data[0][3];
             var fbid = $("#fbid-up").val();
             var name = $("#name-up").val();
             var nhom = $("#package-nhom").val();
@@ -199,9 +201,8 @@
                 data    : {
                     t           : 'update-target',
 					id          : $('#id-up').val(),
-                    fbid          : fbid,
-                    name        : name,
-                    nhom         : nhom
+                    nhom         : nhom,
+                    old_name       : old_name
                 },
                 success : (data) => {
                     $("#btn2").html('<i class="fa fa-check-square-o" aria-hidden="true"></i> Hoàn Thành');

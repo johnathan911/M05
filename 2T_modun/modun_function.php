@@ -58,10 +58,10 @@ function getNhom($name_nhom, $user_id) {
 	$row    = mysqli_fetch_assoc($result);
 	return $row;
 }
-function get_id_nhom($name_nhom) {
+function get_id_nhom($name_nhom, $user_id) {
 	global $conn;
 	$return = array();
-	$result = mysqli_query($conn, "SELECT * FROM package_nhom WHERE name = '$name_nhom' LIMIT 1");
+	$result = mysqli_query($conn, "SELECT * FROM package_nhom WHERE name = '$name_nhom' AND user_id = '$user_id' LIMIT 1");
 	$row = mysqli_fetch_assoc($result);
 	return $row['id'];
 }
@@ -154,12 +154,11 @@ function get_target($user_id) {
 		return $return;
 	}
 }
-function updateTarget($id, $fbid, $name, $nhom){
+function updateTarget($id, $nhom, $group_id_old, $user_id){
 	global $conn;
-	$result = mysqli_query($conn, "UPDATE target SET name = '$name', fbid = '$fbid' WHERE id = '$id'");
-	$idnhom = get_id_nhom($nhom);
-	$result2 = mysqli_query($conn, "UPDATE tbl_group_target SET group_id = '$idnhom' WHERE target_id = '$id'");
-	if ($result)
+	$idnhom = get_id_nhom($nhom, $user_id);
+	$result2 = mysqli_query($conn, "UPDATE tbl_group_target SET group_id = '$idnhom' WHERE target_id = '$id' AND group_id = '$group_id_old'");
+	if ($result2)
 		return 1;
 	return 0;
 }
