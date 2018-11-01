@@ -78,20 +78,13 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             </ul>
                         </div>
                         <div class="body table-responsive">
-<<<<<<< HEAD
-                            <select id="select" onchange="update()" class="form-control">
-                                <option value='all'> Tất cả </option>
-                            </select>
-=======
                             <!--<select id="select" class="form-control input-sm">
                                 <option value=*> Tất cả </option>
                             </select>-->
->>>>>>> b61c70cb693be273097b31a3d9b85910d58f8d5f
                             <table class="table table-bordered" width="100%" id="result-vip">
                                 <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Nhóm</th>
                                     <th>Tên Facebook</th>
                                     <th>Nội dung</th>
                                     <th>Time</th>
@@ -102,7 +95,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 <tfoot>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Nhóm</th>
                                     <th>Tên Facebook</th>
                                     <th>Nội dung</th>
                                     <th>Time</th>
@@ -247,7 +239,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 return_data.push({
 
                                     'stt': count,
-                                    'group': json['data'][i][4],
                                     'name': json['data'][i][0],
                                     'content': '<div style="text-align:justify">' + content + '</div>',
                                     'time': json['data'][i][2],
@@ -343,10 +334,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
             else{
                 table.search($("#select option:selected").text()).draw();
             }
-<<<<<<< HEAD
-        })
-=======
         });*/
->>>>>>> b61c70cb693be273097b31a3d9b85910d58f8d5f
     }
 </script>
