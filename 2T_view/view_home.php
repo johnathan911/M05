@@ -78,8 +78,8 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             </ul>
                         </div>
                         <div class="body table-responsive">
-                            <select id="select" class="form-control input-sm">
-                                <option value=*> Tất cả </option>
+                            <select id="select" onchange="update()" class="form-control">
+                                <option value='all'> Tất cả </option>
                             </select>
                             <table class="table table-bordered" width="100%" id="result-vip">
                             </table>
@@ -300,6 +300,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
             else{
                 table.search($("#select option:selected").text()).draw();
             }
-        });
+        })
     }
 </script>

@@ -302,7 +302,7 @@ if($_REQUEST){
 		$long = count($vip);
 		$dong =0;
 		if ($vip !== 0) {
-			if($long >100)
+			/*if($long >500)
 			{
 				for($i=$long-1; $i>$long -100; $i--){
 					$name_target= getNameTarget($vip[$i]['target_id']);
@@ -316,7 +316,7 @@ if($_REQUEST){
 					$dong++;
 				}
 			}
-			else{
+			else{*/
 				for($i=$long-1; $i>0; $i--){
 					$name_target= getNameTarget($vip[$i]['target_id']);
 					$link = "https://www.facebook.com/".$vip[$i]['id_post'];
@@ -330,7 +330,7 @@ if($_REQUEST){
 					);
 					$dong++;
 				}
-			}
+			//}
 			
 			$return = array('data' => $data);
 			die(json_encode($return));
