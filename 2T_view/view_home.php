@@ -85,6 +85,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 <thead>
                                 <tr>
                                     <th>STT</th>
+                                    <th>Nhóm</th>
                                     <th>Tên Facebook</th>
                                     <th>Nội dung</th>
                                     <th>Time</th>
@@ -95,6 +96,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 <tfoot>
                                 <tr>
                                     <th>STT</th>
+                                    <th>Nhóm</th>
                                     <th>Tên Facebook</th>
                                     <th>Nội dung</th>
                                     <th>Time</th>
@@ -239,6 +241,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 return_data.push({
 
                                     'stt': count,
+                                    'group': json['data'][i][4],
                                     'name': json['data'][i][0],
                                     'content': '<div style="text-align:justify">' + content + '</div>',
                                     'time': json['data'][i][2],
