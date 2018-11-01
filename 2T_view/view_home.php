@@ -89,6 +89,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     <th>Nội dung</th>
                                     <th>Time</th>
                                     <th>Lượt like</th>
+                                    <th>Nhóm</th>
                                 </tr>
                                 </thead>
 
@@ -99,6 +100,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     <th>Nội dung</th>
                                     <th>Time</th>
                                     <th>Lượt like</th>
+                                    <th>Nhóm</th>
                                 </tr>
                                 </tfoot>
                             </table>
@@ -225,7 +227,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "type"   : "POST",
                     "url"    : '2T_modun/modun_post.php?t=load-post',
                     "dataSrc": function (json) {
-                        //console.log(json);
+                        console.log(json);
                         //console.log(json['data'][0][3]);
                         var return_data = new Array();
                         //console.log(json['data'].length);
@@ -242,12 +244,13 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     'name': json['data'][i][0],
                                     'content': '<div style="text-align:justify">' + content + '</div>',
                                     'time': json['data'][i][2],
-                                    'like': json['data'][i][3]
+                                    'like': json['data'][i][3],
+                                    'group': json['data'][i][4]
                                 });
                                 count++;
 
                         }
-                        //console.log(return_data);
+                        console.log(return_data);
                         return return_data;
                     }
                 },
@@ -266,11 +269,14 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     },
                     {
                         'data': 'like'
+                    },
+                    {
+                        'data': 'group'
                     }
 
                 ],
                 initComplete: function () {
-                    this.api().columns(1).every( function () {
+                    this.api().columns(5).every( function () {
                         var column = this;
                         var select = $('<select><option value=""></option></select>')
                             .appendTo( $(column.footer()).empty() )

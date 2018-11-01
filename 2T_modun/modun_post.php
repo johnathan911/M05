@@ -318,17 +318,22 @@ if($_REQUEST){
 			}
 			else{*/
 				for($i=$long-1; $i>0; $i--){
-					$name_target= getNameTarget($vip[$i]['target_id']);
-					$link = "https://www.facebook.com/".$vip[$i]['id_post'];
-					$content = str_replace("\n","<br>",$vip[$i]['name']);
-					$data[] = array(
-						/*$dong+1,*/
-						'<a href="'.$link.'" target="_blank" title="Click để vào bài viết">'.$name_target.'</a>',
-						$content,
-						$vip[$i]['time_post'],
-						$vip[$i]['luot_thich'].','.$vip[$i]['luot_comment'].','.$vip[$i]['luot_share'],
-					);
-					$dong++;
+                    $group = get_name_group_by_target_id($vip[$i]['target_id'], $_SESSION['id']);
+                    for($j = 0; $j < count($group); $j++) {
+                        $name_target = getNameTarget($vip[$i]['target_id']);
+
+                        $link = "https://www.facebook.com/" . $vip[$i]['id_post'];
+                        $content = str_replace("\n", "<br>", $vip[$i]['name']);
+                        $data[] = array(
+                            /*$dong+1,*/
+                            '<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $name_target . '</a>',
+                            $content,
+                            $vip[$i]['time_post'],
+                            $vip[$i]['luot_thich'] . ',' . $vip[$i]['luot_comment'] . ',' . $vip[$i]['luot_share'],
+                            $group[$j]['name']
+                        );
+                        $dong++;
+                    }
 				}
 			//}
 			
