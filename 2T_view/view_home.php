@@ -78,10 +78,29 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             </ul>
                         </div>
                         <div class="body table-responsive">
-                            <select id="select" class="form-control input-sm">
+                            <!--<select id="select" class="form-control input-sm">
                                 <option value=*> Tất cả </option>
-                            </select>
+                            </select>-->
                             <table class="table table-bordered" width="100%" id="result-vip">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên Facebook</th>
+                                    <th>Nội dung</th>
+                                    <th>Time</th>
+                                    <th>Lượt like</th>
+                                </tr>
+                                </thead>
+
+                                <tfoot>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên Facebook</th>
+                                    <th>Nội dung</th>
+                                    <th>Time</th>
+                                    <th>Lượt like</th>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -141,7 +160,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 <script type="text/javascript">
     $(document).ready(function() {
         setTimeout(i, 2e3);
-        $.ajax({
+        /*$.ajax({
             url : '2T_modun/modun_post.php?t=get_package_nhom',
             type:'POST',
             dataType: 'json',
@@ -154,7 +173,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     }
                 }
             }
-        });
+        });*/
 		load_post();
         function i() {
             $(".notify-box .listbox-content-item:first").each(function() {
@@ -234,27 +253,42 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                 },
                 "columns"    : [
                     {
-                        title : "STT",
                         'data': 'stt'
                     },
                     {
-                        title : "Tên Facebook",
                         'data': 'name'
                     },
                     {
-                        title : "Nội dung",
                         'data': 'content'
                     },
                     {
-                        title : "Time",
                         'data': 'time'
                     },
                     {
-                        title : "Lượt like",
                         'data': 'like'
                     }
 
                 ],
+                initComplete: function () {
+                    this.api().columns(1).every( function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' );
+                        } );
+                    } );
+                },
                 //"ajax": '2T_modun/modun_post.php?t=load-post',
                 /*"columns": [{
                         title: "STT"
@@ -287,12 +321,12 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "emptyTable": "Không có gì để hiển thị",
                 }
             });
-        $(".dataTables_filter").append(select);
+        /*$(".dataTables_filter").append(select);
 
-        /*$('.dataTables_filter input').unbind().bind('keyup', function() {
+        /!*$('.dataTables_filter input').unbind().bind('keyup', function() {
             var colIndex = document.querySelector('#select').selectedIndex;
             table.column( colIndex).search( this.value ).draw();
-        });*/
+        });*!/
 
         $('#select').change(function() {
             if($('#select').val() == '*')
@@ -300,6 +334,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
             else{
                 table.search($("#select option:selected").text()).draw();
             }
-        });
+        });*/
     }
 </script>
