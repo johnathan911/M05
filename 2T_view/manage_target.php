@@ -62,18 +62,6 @@
                                     <h4 class="modal-title">Chỉnh Sửa Thông tin đối tượng '+data[0][2]+'</h4>\
                                 </div>\
                                 <div class="modal-body">\
-									<div class="row clearfix">\
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
-                                            <label for="id-up">ID</label>\
-                                        </div>\
-                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
-                                            <div class="form-group">\
-                                                <div class="form-line">\
-                                                    <input type="text" disabled id="id-up" class="form-control" value="'+data[0][0]+'">\
-                                                </div>\
-                                            </div>\
-                                        </div>\
-                                    </div>\
                                     <div class="row clearfix">\
                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
                                             <label for="name-up">TÊN</label>\
@@ -188,7 +176,7 @@
             var fbid = $("#fbid-up").val();
             var name = $("#name-up").val();
             var nhom = $("#package-nhom").val();
-			var id = $('#id-up').val();
+			var id = data[0][4];
             if (!name||!fbid||!nhom) {
                 showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
                 return;
@@ -200,7 +188,7 @@
                 dataType: 'JSON',
                 data    : {
                     t           : 'update-target',
-					id          : $('#id-up').val(),
+					id          :  id ,
                     nhom         : nhom,
                     old_name       : old_name
                 },
@@ -225,7 +213,7 @@
                 return;
             }
             swal({
-              title: 'Bạn muốn xóa gói VIP ' + data[0][1],
+              title: 'Bạn muốn xóa đối tượng ' + data[0][2] + ' thuộc nhóm ' + data[0][3],
               text: "Không thể phục hồi sau khi xóa",
               type: 'warning',
               showCancelButton: true,
@@ -234,7 +222,7 @@
               confirmButtonText: 'Vâng, Tôi muốn xóa!',
               cancelButtonText: 'Trở về'
             }).then(function () {
-              submit_del(data[0][0], data[0][3]);
+              submit_del(data[0][4], data[0][3]);
             })
         }
         function submit_del(id_target, name_group){
@@ -263,7 +251,7 @@
                 destroy: true,
                 "ajax": '2T_modun/modun_post.php?t=load-target',
                 "columns": [{
-                        title: "ID"
+                        title: "STT"
                     },
                     {
                         title: "FB ID"
