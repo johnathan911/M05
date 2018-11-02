@@ -4,5 +4,5 @@
 		$title = $itm->title;
 		echo $title.'<br>';
 	}*/
-	echo strtotime("2018/10/01");
+	echo time();
 ?>

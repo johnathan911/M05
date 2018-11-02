@@ -43,15 +43,17 @@ function get_new_post(){
 						$post_data = array();
 						$sttID = $post->id;
 						if(check_post($sttID)==0){
-							echo "Đã thêm bài viết bài viết ID:".$sttID.' vào danh sách dõi'.'</br>';
 							$noidung= $post->message;
-							$like = $post -> likes -> count;
-							$comment = $post -> comments -> count;
-							$share = $post -> shares -> count;
-							$datecreate = $post -> created_time;
-							$datecreate = date ('Y-m-d H:i:s',strtotime($datecreate));
-							$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post, time_post, luot_thich, luot_comment, luot_share, target_id) VALUES ('$noidung', '$sttID', '$datecreate', '$like', '$comment', '$share', '$id')");// Chỉnh lại cho đúng bảng
-							//echo $noidung.'<br>';
+							if($noidung != ""){
+								echo "Đã thêm bài viết bài viết ID:".$sttID.' vào danh sách dõi'.'</br>';
+								$like = $post -> likes -> count;
+								$comment = $post -> comments -> count;
+								$share = $post -> shares -> count;
+								$datecreate = $post -> created_time;
+								$datecreate = date ('Y-m-d H:i:s',strtotime($datecreate));
+								$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post, time_post, luot_thich, luot_comment, luot_share, target_id) VALUES ('$noidung', '$sttID', '$datecreate', '$like', '$comment', '$share', '$id')");// Chỉnh lại cho đúng bảng
+								//echo $noidung.'<br>';
+							}
 						}
 					}
 					$update= mysqli_query($conn, "UPDATE target SET last_get_post = '$now' WHERE id = '$id'");
