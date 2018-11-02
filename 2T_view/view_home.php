@@ -145,7 +145,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                         <tr>
                                             <td>4</td>
                                             <td>Tổng đối tượng</td>
-                                            <td><span class="label bg-green"><?php echo count_target('target');?></span></td>
+                                            <td><span class="label bg-green"><?php echo count_sys('target');?></span></td>
                                         </tr>                 
                                     </tbody>
                                 </table>

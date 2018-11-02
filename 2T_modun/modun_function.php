@@ -37,9 +37,11 @@ function count_target_group($group_id){
 }
 function delete_package_nhom($id) {
 	global $conn;
-	$result1 = mysqli_query($conn, "DELETE FROM tbl_group_target WHERE group_id = '$id'");
-    $result2 = mysqli_query($conn, "DELETE FROM package_nhom WHERE id = '$id'");
-	if ($result1 && $result2)
+	$result0 = mysqli_query($conn, "DELETE FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id = '$id')");
+	$result1 = mysqli_query($conn, "DELETE FROM target WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id = '$id')");
+	$result2 = mysqli_query($conn, "DELETE FROM tbl_group_target WHERE group_id = '$id'");
+	$result3 = mysqli_query($conn, "DELETE FROM package_nhom WHERE id = '$id'");
+	if ($result0 && $result1 && $result2 && $result3)
 		return 1;
 	return 0;
 }
@@ -677,8 +679,10 @@ function updateVipCmtByAdmin($id, $fbid, $name, $package, $cmt, $speed) {
 }
 function delete_target($id_target, $id_group) {
 	global $conn;
-	$result = mysqli_query($conn, "DELETE FROM tbl_group_target WHERE target_id = '$id_target' AND group_id = '$id_group'");
-	if ($result)
+	$result1 = mysqli_query($conn, "DELETE FROM tbl_group_target WHERE target_id = '$id_target' AND group_id = '$id_group'");
+	$result2 = mysqli_query($conn, "DELETE FROM post_keyword WHERE target_id = '$id_target' ");
+	$result3 = mysqli_query($conn, "DELETE FROM target WHERE id = '$id_target'");
+	if ($result1 || $result2 || $result3)
 		return 1;
 	return 0;
 }
