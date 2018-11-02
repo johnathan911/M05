@@ -41,6 +41,9 @@ if ($_GET['act']) {
 	if ($_GET['act'] == 'add-feed-site') {
 		require_once '2T_view/add_feed_site.php';
 	}
+	if ($_GET['act'] == 'get-new-post') {
+		require_once '2T_view/getposttarget.php';
+	}
 	// Modun cu
 	if ($_GET['act'] == 'change-pass') {
 		require_once '2T_view/view_change_pass.php';

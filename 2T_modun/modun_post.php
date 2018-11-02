@@ -1,5 +1,6 @@
 <?php
 require_once 'modun_function.php';
+require_once '../cron/getposttarget.php';
 if($_REQUEST){
 	$return = array('error' => 0);
 	$t = $_REQUEST['t'];
@@ -341,6 +342,16 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
+	if ($t === 'get-new-post') {
+		if (get_new_post()) {
+				$return['msg'] = 'Get new post Thành Công!';
+				die(json_encode($return));
+			} else {
+				$return['error'] = 1;
+				$return['msg']   = 'Không Thể get post mới. Vui Lòng Kiểm Tra Lại';
+				die(json_encode($return));
+			}
+	}
 //VipLike
 	if ($t === 'new_package_vip_like') {
 		if (isAdmin() == 0) {
@@ -513,11 +524,11 @@ if($_REQUEST){
 		$api_url = $api_url . '?secret=' . $secret_key . '&response=' . $greCaptcha . '&remoteip=' . $_SERVER['REMOTE_ADDR'];;
 		$response = json_decode(file_get_contents($api_url));*/
 		//if (!isset($response->success)) {
-		if (false){
+		/*if (false){
 			$return['error'] = 1;
 			$return['msg']   = 'Đã Xãy Ra Lỗi Xác Nhận reCaptcha';
 			die(json_encode($return));
-		} else {
+		} else {*/
 			if (!checkUser($username)) {
 				$creat = creatUser($fullname, $username, $password, $email);
 				if ($creat) {
@@ -529,7 +540,7 @@ if($_REQUEST){
 				$return['msg']   = 'Tên Tài Khoản Đã Tồn Tại';
 				die(json_encode($return));
 			}
-		}
+		/*}*/
 	}
 	if($t === 'sign-in') {
 		$username = _p($_POST['username']);
