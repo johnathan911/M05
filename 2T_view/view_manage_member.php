@@ -56,21 +56,9 @@
                         <div class="modal-dialog" role="document">\
                             <div class="modal-content">\
                                 <div class="modal-header">\
-                                    <h4 class="modal-title">Chỉnh Sửa Nội Dung Comment Cho ID '+data[0][1]+'</h4>\
+                                    <h4 class="modal-title">Chỉnh Sửa Thành viên '+data[0][2]+'</h4>\
                                 </div>\
                                 <div class="modal-body">\
-                                    <div class="row clearfix">\
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
-                                            <label for="id-up">ID</label>\
-                                        </div>\
-                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
-                                            <div class="form-group">\
-                                                <div class="form-line">\
-                                                    <input type="text" disabled id="id-up" class="form-control" value="'+data[0][0]+'">\
-                                                </div>\
-                                            </div>\
-                                        </div>\
-                                    </div>\
                                     <div class="row clearfix">\
                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
                                             <label for="fbid-up">FULL NAME</label>\
@@ -103,18 +91,6 @@
                                             <div class="form-group">\
                                                 <div class="form-line">\
                                                     <input type="text" id="email-up" class="form-control" value="'+data[0][3]+'">\
-                                                </div>\
-                                            </div>\
-                                        </div>\
-                                    </div>\
-                                    <div class="row clearfix">\
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
-                                            <label for="name-up">VNĐ</label>\
-                                        </div>\
-                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
-                                            <div class="form-group">\
-                                                <div class="form-line">\
-                                                    <input type="text" id="vnd-up" class="form-control" value="'+vnd+'">\
                                                 </div>\
                                             </div>\
                                         </div>\
@@ -158,11 +134,13 @@
             })
         })
         function update_vip(){
+			var data = $("#result-vip").DataTable().rows('.active').data();
+			var id = data[0][5];
             var fullname = $("#fullname-up").val();
             var user = $("#user-up").val();
             var email = $("#email-up").val();
             var vnd = $("#vnd-up").val();
-            if (!fullname || !user || !email || !vnd) {
+            if (!fullname || !user || !email ) {
                 showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
                 return;
             }
@@ -173,11 +151,10 @@
                 dataType: 'JSON',
                 data    : {
                     t           : 'update-member',
-                    id          : $('#id-up').val(),
+                    id          : id,
                     fullname         : fullname,
                     user        : user,
-                    email        : email,
-                    vnd         : vnd
+                    email        : email
                 },
                 success : (data) => {
                     $("#btn2").html('<i class="fa fa-check-square-o" aria-hidden="true"></i> Hoàn Thành');
@@ -198,7 +175,7 @@
                 destroy: true,
                 "ajax": '2T_modun/modun_post.php?t=load-member',
                 "columns": [{
-                        title: "ID"
+                        title: "STT"
                     },
                     {
                         title: "FULL NAME"
@@ -208,9 +185,6 @@
                     },
                     {
                         title: "EMAIL"
-                    },
-                    {
-                        title: "VNĐ"
                     },
                     {
                         title: "BLOCK"

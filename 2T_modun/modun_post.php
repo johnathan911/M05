@@ -6,7 +6,7 @@ if($_REQUEST){
 	if ($t === 'new_package_group') {
 		/*if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}*/
 		$name = _p($_POST['name']);
@@ -50,7 +50,7 @@ if($_REQUEST){
 	if ($t === 'delete_package_nhom') {
 		/*if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}*/
 		$id = _p($_POST['id']);
@@ -62,7 +62,7 @@ if($_REQUEST){
 	if ($t === 'update_package_nhom') {
 		/*if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}*/
 		$id = _p($_POST['id']);
@@ -388,7 +388,7 @@ if($_REQUEST){
 			if (!checkUser($username)) {
 				$creat = creatUser($fullname, $username, $password, $email);
 				if ($creat) {
-					$return['msg'] = 'Chúc Mừng Bạn Đã Đăng Ký Thành Công, Bây Giờ Vui Lòng Quay Lại Để Đăng Nhập.';
+					$return['msg'] = 'Chúc Mừng Bạn Đã Đăng Ký Thành Công, Liên hệ với admin để được kích hoạt tài khoản.';
 					die(json_encode($return));
 				}
 			} else {
@@ -449,7 +449,7 @@ if($_REQUEST){
 	if ($t === 'add-token') {
 		if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}
 		$arrToken = $_POST['arr_access'];
@@ -487,7 +487,7 @@ if($_REQUEST){
 			//$getToken = getTokenToServer('fbid');
 		if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}
 		die(json_encode($getToken));
@@ -495,7 +495,7 @@ if($_REQUEST){
 	if ($t === 'del-token') {
 		if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}
 		$tokenDIE = $_POST['token_die'];
@@ -515,7 +515,7 @@ if($_REQUEST){
 	if ($t === 'delete-target') {
 		/*if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}*/
 		$id_target = _p($_POST['id_target']);
@@ -529,27 +529,29 @@ if($_REQUEST){
 	if ($t === 'load-member') {
 		if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}
 		$mem = get_member();
 		$data = array();
 		$long = count($mem);
+		$count =0;
 		if ($vip !== 0) {
 			for ($i=0; $i < $long; $i++) {
 				$data[] = array(
-					$mem[$i]['id'],
+					$count +1,
 					$mem[$i]['fullname'],
 					$mem[$i]['user'],
 					$mem[$i]['email'],
-					$mem[$i]['vnd'],
 					'<div class="switch">
                         <label>
 	                        <input type="checkbox" class="btnActionModuleItem" '.$mem[$i]['block'].' value="'.$mem[$i]['id'].'">
 	                        <span class="lever switch-col-light-blue"></span>
                         </label>
-                    </div>'
+                    </div>',
+					$mem[$i]['id'],
 				);
+				$count ++;
 			}
 			$return = array('data' => $data);
 			die(json_encode($return));
@@ -558,7 +560,7 @@ if($_REQUEST){
 	if ($t === 'action-member') {
 		if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải Admin.';
 			die(json_encode($return));
 		}
 		$checked = _p($_POST['checked']);
@@ -580,7 +582,7 @@ if($_REQUEST){
 	if ($t === 'update-member') {
 		if (isAdmin() == 0) {
 			$return['error'] = 1;
-			$return['msg']   = 'Không Được Đâu Sói Ạ.';
+			$return['msg']   = 'Bạn không phải admin.';
 			die(json_encode($return));
 		}
 		$id  = _p($_POST['id']);

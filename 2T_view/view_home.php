@@ -57,7 +57,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 <div class="info-box-3 bg-blue-grey hover-zoom-effect">
                                     <div class="content">
                                         <div class="number">Manage Target</div>
-                                        <a href="?act=manage_target" class="btn bg-light-green btn-circle waves-effect waves-circle waves-float">
+                                        <a href="?act=manage-target" class="btn bg-light-green btn-circle waves-effect waves-circle waves-float">
 											<i class="material-icons">add</i>
                                         </a>
                                     </div>

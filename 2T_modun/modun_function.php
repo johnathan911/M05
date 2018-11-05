@@ -415,7 +415,7 @@ function checkUser($username) {
 }
 function creatUser($fullname, $user, $pass, $email) {
 	global $conn;
-	$result = mysqli_query($conn, "INSERT INTO member (fullname, user, pass, email) VALUES ('$fullname', '$user', '$pass', '$email')");
+	$result = mysqli_query($conn, "INSERT INTO member (fullname, user, pass, email, block) VALUES ('$fullname', '$user', '$pass', '$email', 'checked')");
 	if ($result)
 		return 1;
 	return 0;
