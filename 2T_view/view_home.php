@@ -28,7 +28,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                 <div class="card animated bounceIn">
                     <div class="header">
                         <h2>
-                           <i class="fa fa-bars" aria-hidden="true"></i> Menu Chức Năng<small>Chức năng của hệ thống</small>
+                           <i class="fa fa-bars" aria-hidden="true"></i> DANH MỤC CHỨC NĂNG<small>Chức năng của hệ thống</small>
                         </h2>
                     </div>
                     <div class="body">
@@ -36,7 +36,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                 <div class="info-box-3 bg-blue-grey hover-zoom-effect">
                                     <div class="content">
-                                        <div class="number">ADD GROUP</div>
+                                        <div class="number">TẠO NHÓM</div>
                                         <a href="?act=add-group" class="btn bg-light-green btn-circle waves-effect waves-circle waves-float">
                                             <i class="material-icons">add</i>
                                         </a>
@@ -46,7 +46,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                 <div class="info-box-3 bg-blue-grey hover-zoom-effect">
                                     <div class="content">
-                                        <div class="number">ADD TARGET</div>
+                                        <div class="number">THÊM ĐỐI TƯỢNG</div>
                                         <a href="?act=add-target" class="btn bg-light-green btn-circle waves-effect waves-circle waves-float">
                                             <i class="material-icons">add</i>
                                         </a>
@@ -56,7 +56,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                 <div class="info-box-3 bg-blue-grey hover-zoom-effect">
                                     <div class="content">
-                                        <div class="number">Manage Target</div>
+                                        <div class="number">QUẢN LÝ ĐỐI TƯỢNG</div>
                                         <a href="?act=manage-target" class="btn bg-light-green btn-circle waves-effect waves-circle waves-float">
 											<i class="material-icons">add</i>
                                         </a>
@@ -87,8 +87,8 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     <th>STT</th>
                                     <th>Tên Facebook</th>
                                     <th>Nội dung</th>
-                                    <th>Time</th>
-                                    <th>Lượt like</th>
+                                    <th>Ngày đăng</th>
+                                    <th>L.C.S</th>
                                     <th>Nhóm</th>
                                 </tr>
                                 </thead>
@@ -98,8 +98,8 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     <th>STT</th>
                                     <th>Tên Facebook</th>
                                     <th>Nội dung</th>
-                                    <th>Time</th>
-                                    <th>Lượt like</th>
+                                    <th>Ngày đăng</th>
+                                    <th>L.C.S</th>
                                     <th>Nhóm</th>
                                 </tr>
                                 </tfoot>

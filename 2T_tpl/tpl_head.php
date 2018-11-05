@@ -111,20 +111,20 @@
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">thumb_up</i>
-                            <span>TARGET</span>
+                            <span>CHỨC NĂNG</span>
                         </a>
                         <ul class="ml-menu">
 							<li>
-                                <a href="?act=add-group">Add Group</a>
+                                <a href="?act=add-group">TẠO NHÓM</a>
                             </li>
                             <li>
-                                <a href="?act=add-target">Add Target</a>
+                                <a href="?act=add-target">THÊM ĐỐI TƯỢNG</a>
                             </li>
                             <li>
-                                <a href="?act=manage-target">Target Manager</a>
+                                <a href="?act=manage-target">QUẢN LÝ ĐỐI TƯỢNG</a>
                             </li>
 							<li>
-                                <a href="?act=add-feed-site">Add Feed Site</a>
+                                <a href="?act=add-feed-site">THÊM TRANG LẤY TỪ KHÓA</a>
                             </li>
                         </ul>
                     </li>
@@ -132,39 +132,18 @@
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">person_pin</i>
-                            <span>ADMIN PANEL</span>
+                            <span>QUẢN TRỊ VIÊN</span>
                         </a>
                         <ul class="ml-menu">
-							 <li>
-                                <a href="javascript:void(0);" class="menu-toggle"><span>PANEL MEMBER</span></a>
-                                <ul class="ml-menu">
 									<li>
-										<a href="?act=manage-member"><span>QUẢN LÝ MEMBER</span></a>
+										<a href="?act=manage-member"><span>QUẢN LÝ THÀNH VIÊN</span></a>
 									</li>  
-                                </ul>
-                            </li>
-							<li>
-                                <a href="javascript:void(0);" class="menu-toggle"><span>PANEL TOKEN</span></a>
-                                <ul class="ml-menu">
                                     <li>
-										<a href="?act=access-token"><span>CHECK & ADD TOKEN</span></a>
+										<a href="?act=access-token"><span>KT & THÊM TOKEN</span></a>
 									</li>
 									 <li>
 										<a href="?act=del-access-token"><span>XÓA TOKEN DIE</span></a>
 									</li>
-                                </ul>
-                            </li>
-							<li>
-                                <a href="javascript:void(0);" class="menu-toggle"><span>PANEL THÔNG BÁO & HỆ THỐNG</span></a>
-                                <ul class="ml-menu">
-									 <li>
-										<a href="?act=create-notify"><span>TẠO THÔNG BÁO</span></a>
-									</li>
-									<li>
-										<a href="?act=history"><span>LỊCH SỬ HỆ THỐNG</span></a>
-									</li>
-                                </ul>
-                            </li>
                         </ul>
                     </li>
                     <?php } ?>

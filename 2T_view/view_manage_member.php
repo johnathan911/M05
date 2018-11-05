@@ -5,7 +5,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                MANAGE MEMBER <small>Quản lý Member</small>
+                                QUẢN LÝ THÀNH VIÊN <small></small>
                             </h2>
                             <ul class="header-dropdown m-r--5">
                                 <button type="button" class="btn btn-primary waves-effect" style="display: none;" data-toggle="modal" data-target="#edit-vip" id="btn-edit">Chỉnh Sửa</button>
