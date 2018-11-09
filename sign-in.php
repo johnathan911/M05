@@ -80,6 +80,9 @@ if($_SESSION['login']){
                         </div>
                     </div>
                     <div class="row">
+						<div class="input-group">
+							<center><div class="g-recaptcha" data-sitekey="<?php echo $config_gC['site_key'];?>"></div></center>
+						</div>
                         <div class="col-xs-7 p-t-5">
                             <input type="checkbox" name="rememberme" id="rememberme" class="filled-in chk-col-green">
                             <label for="rememberme">Remember Me</label>
@@ -88,11 +91,7 @@ if($_SESSION['login']){
                             <button class="btn btn-block bg-green waves-effect" type="button" id="btn" onclick="signin()"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng Nhập</button>
                         </div>
                     </div>
-                    <div class="row m-t-15 m-b--20">
-                        <div class="col-xs-12">
-                            <a href="sign-up.php">Đăng Ký Tài Khoản</a>
-                        </div>
-                    </div>
+                    
                 </form>
             </div>
         </div>
@@ -100,7 +99,7 @@ if($_SESSION['login']){
 
     <!-- Jquery Core Js -->
     <script src="plugins/jquery/jquery.min.js"></script>
-
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <!-- Bootstrap Core Js -->
     <script src="plugins/bootstrap/js/bootstrap.js"></script>
     <!-- Bootstrap Notify Plugin Js -->
@@ -126,13 +125,42 @@ if($_SESSION['login']){
                 showNotification('bg-red', 'Vui Lòng Điền Đầy Đủ Thông Tin');
                 return;
             }
+			//login co captcha
+			/*if (grecaptcha.getResponse()) {
+                    $("#btn").html('<i class="fa fa-refresh fa-spin"></i> Vui Lòng Đợi');
+                    $.ajax({
+                        url     : prefix+modun+ '/modun_post.php',
+                        type    : 'POST',
+                        dataType: 'JSON',
+                        data    : {
+                            t        : 'sign-in',
+                            username      : username,
+							password : password,
+                            greCaptcha   : grecaptcha.getResponse()
+                        },
+                        success: (data) => {
+                            $("#btn").html('<i class="fa fa-user-circle" aria-hidden="true"></i> ĐĂNG Nhập');
+                            if (data.error) {
+                                showNotification('bg-red', data.msg);
+                            } else {
+                                showNotification('bg-green', data.msg);
+                                setTimeout(function(){
+									 window.location = CURRENT_URL;
+								},1000);
+                            }
+                        }
+                    })
+                } else {
+                    showNotification('bg-red', 'Vui Lòng Xác Nhận reCaptcha!');
+				}*/
+			//login khong co captcha
             $("#btn").html('<i class="fa fa-refresh fa-spin"></i> Vui Lòng Đợi');
             $.ajax({
                 url     : prefix+modun+ '/modun_post.php',
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    t       : 'sign-in',
+                    t       : 'sign-in-noncaptcha',
                     username      : username,
                     password : password,
                 },

@@ -406,6 +406,55 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 		$password = _p($_POST['password']);
+		$greCaptcha = _p($_POST['greCaptcha']);
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        	$remoteip = $_SERVER['HTTP_CLIENT_IP'];
+	    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	        $remoteip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	    } else {
+	        $remoteip = $_SERVER['REMOTE_ADDR'];
+	    }
+        $api_url = $config_gC['api_url'];
+		$site_key = $config_gC['site_key'];
+		$secret_key = $config_gC['secret_key'];
+		$api_url = $api_url . '?secret=' . $secret_key . '&response=' . $greCaptcha . '&remoteip=' . $_SERVER['REMOTE_ADDR'];;
+		$response = json_decode(file_get_contents($api_url));
+		if (!isset($response->success)) {
+			$return['error'] = 1;
+			$return['msg']   = 'Đã Xãy Ra Lỗi Xác Nhận reCaptcha';
+			die(json_encode($return));
+		} else {
+			if (!checkUser($username)) {
+			$return['error'] = 1;
+			$return['msg']   = 'Người Dùng Không Tồn Tại';
+			die(json_encode($return));
+			} else {
+				$user = getUserbyName($username);
+				if ($user['block'] == 'checked') {
+					$return['error'] = 1;
+					$return['msg']   = 'Tài Khoản Của Bạn Đang Tạm Khóa';
+					die(json_encode($return));
+				}
+				if ($user['pass'] === $password) {
+					setSession($user, $config_site['admin']);
+					$return['msg'] = 'Đăng Nhập Thành Công. Vui Lòng Chờ Chuyển Hướng';
+					die(json_encode($return));
+				} else {
+					$return['error'] = 1;
+					$return['msg']   = 'Mật Khẩu Bạn Nhập Không Đúng Cho Người Dùng Này';
+					die(json_encode($return));
+				}
+			}
+		}
+	}
+	if($t === 'sign-in-noncaptcha') {
+		$username = _p($_POST['username']);
+		if(!preg_match('/^[A-Za-z0-9_\.]{6,32}$/' ,$username, $matchs)){
+			$return['error'] = 1;
+			$return['msg']   = 'Tài Khoản Bạn Nhập Không Đúng Định Dạng';
+			die(json_encode($return));
+		}
+		$password = _p($_POST['password']);
 		if (!checkUser($username)) {
 			$return['error'] = 1;
 			$return['msg']   = 'Người Dùng Không Tồn Tại';
