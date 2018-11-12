@@ -332,7 +332,7 @@ if($_REQUEST){
                             $name_target,
                             $content,
                             $vip[$i]['time_post'],
-                            '<font color="blue">'. $vip[$i]['luot_thich'] .'</font>' . ', ' . '<font color="green">'. $vip[$i]['luot_comment'] .'</font>' . ', ' . '<font color="red">'. $vip[$i]['luot_share'] .'</font>',
+                            '<font color="blue">'. $vip[$i]['luot_thich'] .'</font>' . ':' . '<font color="green">'. $vip[$i]['luot_comment'] .'</font>' . ':' . '<font color="red">'. $vip[$i]['luot_share'] .'</font>',
                             $group[$j]['name'],
                             '<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $link . '</a></br>'
                         );
