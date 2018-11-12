@@ -77,11 +77,11 @@
             $('#result-vip').on( 'click', 'tr', function () {
                 if ( $(this).hasClass('active') ) {
                     $(this).removeClass('active');
-                    $("#btn-edit").fadeOut('slow');
+                   // $("#btn-edit").fadeOut('slow');
                 }else {
                     $('#result-vip').DataTable().$('tr.active').removeClass('active');
                     $(this).addClass('active');
-                    $("#btn-edit").fadeOut('slow', function(){
+                    /*$("#btn-edit").fadeOut('slow', function(){
                         $("#btn-edit").fadeIn('slow');
                     });
                     var data = $("#result-vip").DataTable().rows('.active').data();
@@ -135,7 +135,7 @@
                                 </div>\
                             </div>\
                         </div>\
-                    </div>';
+                    </div>';*/
                     $("#show-modal").html(tpl);
                 }
             })
