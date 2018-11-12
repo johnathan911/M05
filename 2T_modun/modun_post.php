@@ -329,11 +329,12 @@ if($_REQUEST){
                         $content = str_replace("\n", "<br>", $vip[$i]['name']);
                         $data[] = array(
                             /*$dong+1,*/
-                            '<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $name_target . '</a>',
+                            $name_target,
                             $content,
                             $vip[$i]['time_post'],
-                            $vip[$i]['luot_thich'] . ',' . $vip[$i]['luot_comment'] . ',' . $vip[$i]['luot_share'],
-                            $group[$j]['name']
+                            '<font color="blue">'. $vip[$i]['luot_thich'] .'</font>' . ', ' . '<font color="green">'. $vip[$i]['luot_comment'] .'</font>' . ', ' . '<font color="red">'. $vip[$i]['luot_share'] .'</font>',
+                            $group[$j]['name'],
+                            '<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $link . '</a></br>'
                         );
                         $dong++;
                     }
@@ -400,7 +401,19 @@ if($_REQUEST){
 	}
 	if ($t === 'add-member'){
 		$username = _p($_POST['username']);
-		$password = _p($_POST['pass']);
+		$password = base64_encode(_p($_POST['pass']));
+
+        if (!checkUser($username)) {
+            $creat = creatUser($fullname, $username, $password, $email);
+            if ($creat) {
+                $return['msg'] = 'Thêm tài khoản thành công';
+                die(json_encode($return));
+            }
+        } else {
+            $return['error'] = 1;
+            $return['msg']   = 'Tên Tài Khoản Đã Tồn Tại';
+            die(json_encode($return));
+        }
 	}
 	if($t === 'sign-in') {
 		$username = _p($_POST['username']);
@@ -458,7 +471,7 @@ if($_REQUEST){
 			$return['msg']   = 'Tài Khoản Bạn Nhập Không Đúng Định Dạng';
 			die(json_encode($return));
 		}
-		$password = _p($_POST['password']);
+		$password = base64_encode(_p($_POST['password']));
 		if (!checkUser($username)) {
 			$return['error'] = 1;
 			$return['msg']   = 'Người Dùng Không Tồn Tại';
@@ -482,8 +495,8 @@ if($_REQUEST){
 		}
 	}
 	if($t === 'change-pass'){
-		$old = _p($_POST['old_pass']);
-		$new = _p($_POST['new_pass']);
+		$old = base64_encode(_p($_POST['old_pass']));
+		$new = base64_encode(_p($_POST['new_pass']));
 		$user = getUser($_SESSION['id']);
 		if ($user['pass'] !== $old) {
 			$return['error'] = 1;
