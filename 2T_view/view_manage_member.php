@@ -5,6 +5,40 @@
                     <div class="card">
                         <div class="header">
                             <h2>
+                                THÊM THÀNH VIÊN<small>Thêm mới thành viên</small>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix add-package">
+								 <div class="col-md-6">
+                                    <label for="email_address">Tên đầy đủ</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="user-name" class="form-control" placeholder="Nhập Tên người dùng">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="input" class="control-label">Mật khẩu</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="password" class="form-control" placeholder="Nhập mật khẩu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    <button type="button" class="btn btn-success waves-effect" id="btn1" onclick="add_member();"><i class="fa fa-plus-square" aria-hidden="true"></i> Thêm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
                                 QUẢN LÝ THÀNH VIÊN <small></small>
                             </h2>
                             <ul class="header-dropdown m-r--5">
@@ -170,6 +204,35 @@
                 }
             })
         }
+		function add_member(){
+            var username = $("#user-name").val();
+            var pass  = $("#password").val();
+            if (!username || !pass) {
+                showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
+                return;
+            }
+            $("#btn1").html('<i class="fa fa-refresh fa-spin"></i> Vui Lòng Đợi');
+            $.ajax({
+                url     : prefix + modun + '/modun_post.php',
+                type    : 'POST',
+                dataType: 'JSON',
+                data    : {
+                    t           : 'add-member',
+                    username        : username,
+                    pass         : pass
+                },
+                success : (data) => {
+                    $("#btn1").html('<i class="fa fa-plus-square" aria-hidden="true"></i> Tiến Hành');
+                    $('.add-package :input').val('');
+                    if (data.error) {
+                        showNotification('bg-red', data.msg);
+                    } else {
+                        showNotification('bg-green', data.msg);
+                        load_mem();
+                    }
+                }
+            })
+        }
         function load_mem(){
             $('#result-vip').DataTable({
                 destroy: true,
@@ -178,13 +241,13 @@
                         title: "STT"
                     },
                     {
-                        title: "FULL NAME"
+                        title: "TÊN NGƯỜI DÙNG"
                     },
                     {
-                        title: "USER NAME"
+                        title: "SỐ ĐỐI TƯỢNG"
                     },
                     {
-                        title: "EMAIL"
+                        title: "SỐ NHÓM"
                     },
                     {
                         title: "BLOCK"

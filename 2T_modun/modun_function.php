@@ -35,6 +35,20 @@ function count_target_group($group_id){
     $result = mysqli_query($conn, "SELECT * FROM tbl_group_target WHERE group_id = '$group_id'");
     return $result->num_rows;
 }
+function count_target_member($member_id){
+    global $conn;
+    $result = mysqli_query($conn, "SELECT * FROM tbl_group_target WHERE group_id IN (SELECT id FROM package_nhom WHERE user_id = '$member_id')");
+	if($result)
+		return $result->num_rows;
+	else return 0;
+}
+function count_group_member($member_id){
+    global $conn;
+    $result = mysqli_query($conn, "SELECT * FROM package_nhom WHERE user_id = '$member_id'");
+	if($result)
+		return $result->num_rows;
+	else return 0;
+}
 function delete_package_nhom($id) {
 	global $conn;
 	$result0 = mysqli_query($conn, "DELETE FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id = '$id')");

@@ -398,6 +398,10 @@ if($_REQUEST){
 			}
 		}
 	}
+	if ($t === 'add-member'){
+		$username = _p($_POST['username']);
+		$password = _p($_POST['pass']);
+	}
 	if($t === 'sign-in') {
 		$username = _p($_POST['username']);
 		if(!preg_match('/^[A-Za-z0-9_\.]{6,32}$/' ,$username, $matchs)){
@@ -587,11 +591,13 @@ if($_REQUEST){
 		$count =0;
 		if ($vip !== 0) {
 			for ($i=0; $i < $long; $i++) {
+				$target_member = count_target_member($mem[$i]['id']);
+				$group_member = count_group_member($mem[$i]['id']);
 				$data[] = array(
 					$count +1,
-					$mem[$i]['fullname'],
 					$mem[$i]['user'],
-					$mem[$i]['email'],
+					$target_member,
+					$group_member,
 					'<div class="switch">
                         <label>
 	                        <input type="checkbox" class="btnActionModuleItem" '.$mem[$i]['block'].' value="'.$mem[$i]['id'].'">
