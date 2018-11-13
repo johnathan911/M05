@@ -225,9 +225,9 @@
                 success : (data) => {
                     $("#btn1").html('<i class="fa fa-check-square-o" aria-hidden="true"></i> Hoàn Thành');
                     if (data.error) {
-                        //showNotification('bg-red', data.msg);
+                        showNotification('bg-red', data.msg);
                     } else {
-                        //showNotification('bg-green', data.msg);
+                        showNotification('bg-green', data.msg);
                         load_vip();
                     }
                     setTimeout(function(){

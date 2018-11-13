@@ -44,6 +44,9 @@ if ($_GET['act']) {
 	if ($_GET['act'] == 'get-new-post') {
 		require_once '2T_view/getposttarget.php';
 	}
+	if ($_GET['act'] == 'search-post') {
+		require_once '2T_view/search_post.php';
+	}
 	// Modun cu
 	if ($_GET['act'] == 'change-pass') {
 		require_once '2T_view/view_change_pass.php';

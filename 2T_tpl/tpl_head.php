@@ -111,7 +111,7 @@
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">thumb_up</i>
-                            <span>CHỨC NĂNG</span>
+                            <span>CHỨC NĂNG CHÍNH</span>
                         </a>
                         <ul class="ml-menu">
 							<li>
@@ -119,6 +119,9 @@
                             </li>
                             <li>
                                 <a href="?act=add-target">THÊM ĐỐI TƯỢNG</a>
+                            </li>
+							<li>
+                                <a href="?act=search-post">TÌM BÀI VIẾT THEO TỪ KHÓA</a>
                             </li>
                             <li>
                                 <a href="?act=manage-target">QUẢN LÝ ĐỐI TƯỢNG</a>
