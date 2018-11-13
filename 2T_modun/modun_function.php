@@ -162,7 +162,7 @@ function get_target($user_id) {
 	} else {
 		$result = mysqli_query($conn, "SELECT * FROM target WHERE manager = '$name_manager'");
 	}*/
-	$result = mysqli_query ($conn, "SELECT * FROM target WHERE id in (SELECT target_id FROM tbl_group_target As a, package_nhom As b WHERE a.group_id = b.id AND b.user_id = '$user_id' )");
+	$result = mysqli_query ($conn, "SELECT target.fbid, target.name as targetname, target.acc_is_friend_member, package_nhom.name as groupname  FROM target, package_nhom, tbl_group_target WHERE target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND user_id = '$user_id'");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;
@@ -300,7 +300,7 @@ function dem_post_theo_tu_khoa($user){
 function load_post($user_id) {
 	global $conn;
 	$return = array();
-	$result = mysqli_query($conn, "SELECT target.name as targetname, post_keyword.name as content, post_keyword.luot_thich, post_keyword.luot_comment, post_keyword.luot_share, post_keyword.time_post, package_nhom.name as groupname FROM post_keyword, target, package_nhom, tbl_group_target  WHERE post_keyword.target_id = target.id AND target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND package_nhom.user_id = '$user_id' ORDER BY time_post");
+	$result = mysqli_query($conn, "SELECT target.name as targetname, post_keyword.name as content, post_keyword.luot_thich, post_keyword.luot_comment, post_keyword.luot_share, post_keyword.time_post, package_nhom.name as groupname, post_keyword.id_post FROM post_keyword, target, package_nhom, tbl_group_target  WHERE post_keyword.target_id = target.id AND target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND package_nhom.user_id = '$user_id' ORDER BY time_post");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;

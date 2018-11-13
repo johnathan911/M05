@@ -189,18 +189,16 @@ if($_REQUEST){
 		if ($vip !== 0) {
 			for ($i=0; $i < $long; $i++) {
 				$id_target= $vip[$i]['id'];
-				$name_group =  get_name_group_by_target_id($id_target, $_SESSION['id']);
-				for($j = 0; $j < count($name_group); $j++){
+
                     $data[] = array(
 						$stt +1,
                         $vip[$i]['fbid'],
-                        $vip[$i]['name'],
-                        $name_group[$j]['name'],
+                        $vip[$i]['targetname'],
+                        $vip[$i]['groupname'],
+						$vip[$i]['acc_is_friend_member'],
 						$vip[$i]['id'],
                     );
 					$stt ++;
-				}
-
 			}
 			$return = array('data' => $data);
 			die(json_encode($return));

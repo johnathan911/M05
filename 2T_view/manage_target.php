@@ -21,6 +21,7 @@
                                     <th>Facebook ID</th>
                                     <th>Tên</th>
                                     <th>Nhóm</th>
+                                    <th>abc</th>
                                 </tr>
                                 </thead>
 
@@ -30,6 +31,7 @@
                                     <th>Facebook ID</th>
                                     <th>Tên</th>
                                     <th>Nhóm</th>
+                                    <th>abc</th>
                                 </tr>
                                 </tfoot>
                             </table>
