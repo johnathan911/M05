@@ -234,9 +234,10 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                         var count = 1;
                         var content;
                         for(var i=0;i< json['data'].length; i++){
-                                content = json['data'][i][5] + json['data'][i][1];
+                                link = '<a href="https://www.facebook.com/' + json['data'][i][5] + '" target="_blank" title="Click để vào bài viết">https://www.facebook.com/' + json['data'][i][5] + '</a></br>';
+                                content = link + json['data'][i][1];
                                 if (content.length > 350){
-                                    content = '<div class="m-more-less-content">' + content.slice(0, 350) + '<!--more-->' + content.slice(350 + Math.abs(0)); + '</div>'
+                                    content = '<div class="m-more-less-content">' + content.slice(0, 350) + '<!--more-->' + content.slice(350 + Math.abs(0)); + '</div>';
                                 }
                                 return_data.push({
 

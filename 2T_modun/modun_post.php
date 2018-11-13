@@ -325,7 +325,7 @@ if($_REQUEST){
                     for($j = 0; $j < count($group); $j++) {
                         $name_target = getNameTarget($vip[$i]['target_id']);
 
-                        $link = "https://www.facebook.com/" . $vip[$i]['id_post'];
+                        //$link = "https://www.facebook.com/" . $vip[$i]['id_post'];
                         $content = str_replace("\n", "<br>", $vip[$i]['name']);
                         $data[] = array(
                             /*$dong+1,*/
@@ -334,7 +334,7 @@ if($_REQUEST){
                             $vip[$i]['time_post'],
                             '<font color="blue">'. $vip[$i]['luot_thich'] .'</font>' . ':' . '<font color="green">'. $vip[$i]['luot_comment'] .'</font>' . ':' . '<font color="red">'. $vip[$i]['luot_share'] .'</font>',
                             $group[$j]['name'],
-                            '<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $link . '</a></br>'
+                            $vip[$i]['id_post']//'<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $link . '</a></br>'
                         );
                         $dong++;
                     }
