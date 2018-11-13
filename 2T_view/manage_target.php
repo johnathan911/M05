@@ -195,7 +195,7 @@
             var fbid = $("#fbid-up").val();
             var name = $("#name-up").val();
             var nhom = $("#package-nhom").val();
-			var id = data[0][4];
+			var id = data[0][5];
             if (!name||!fbid||!nhom) {
                 showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
                 return;
@@ -241,7 +241,7 @@
               confirmButtonText: 'Vâng, Tôi muốn xóa!',
               cancelButtonText: 'Trở về'
             }).then(function () {
-              submit_del(data[0][4], data[0][3]);
+              submit_del(data[0][5], data[0][3]);
             })
         }
         function submit_del(id_target, name_group){
