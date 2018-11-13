@@ -278,7 +278,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                 initComplete: function () {
                     this.api().columns(5).every( function () {
                         var column = this;
-                        var select = $('<select><option value=""></option></select>')
+                        var select = $('<select><option value="">Tất cả</option></select>')
                             .appendTo( $(column.footer()).empty() )
                             .on( 'change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
