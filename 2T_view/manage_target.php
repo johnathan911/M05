@@ -15,6 +15,23 @@
                         </div>
                         <div class="body table-responsive">
                             <table class="table table-bordered" width="100%" id="result-vip">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Facebook ID</th>
+                                    <th>Tên</th>
+                                    <th>Nhóm</th>
+                                </tr>
+                                </thead>
+
+                                <tfoot>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Facebook ID</th>
+                                    <th>Tên</th>
+                                    <th>Nhóm</th>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
 						
@@ -250,7 +267,7 @@
             $('#result-vip').DataTable({
                 destroy: true,
                 "ajax": '2T_modun/modun_post.php?t=load-target',
-                "columns": [{
+                /*"columns": [{
                         title: "STT"
                     },
                     {
@@ -262,7 +279,27 @@
                     {
                         title: "NHÓM"
                     },
-                ],
+                ],*/
+                initComplete: function () {
+                    this.api().columns(3).every( function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' );
+                        } );
+                    } );
+                },
                 "language": {
                     "search": "Tìm Kiếm",
                     "paginate": {
