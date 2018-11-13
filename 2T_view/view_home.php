@@ -227,7 +227,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "type"   : "POST",
                     "url"    : '2T_modun/modun_post.php?t=load-post',
                     "dataSrc": function (json) {
-                        console.log(json);
+                        console.log("done");
                         //console.log(json['data'][0][3]);
                         var return_data = new Array();
                         //console.log(json['data'].length);

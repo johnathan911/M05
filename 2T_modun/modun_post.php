@@ -303,7 +303,6 @@ if($_REQUEST){
 		$vip = load_post($_SESSION['id']);
 		$data = array();
 		$long = count($vip);
-		$dong =0;
 		if ($vip !== 0) {
 			/*if($long >500)
 			{
@@ -321,23 +320,23 @@ if($_REQUEST){
 			}
 			else{*/
 				for($i=$long-1; $i>0; $i--){
-                    $group = get_name_group_by_target_id($vip[$i]['target_id'], $_SESSION['id']);
-                    for($j = 0; $j < count($group); $j++) {
-                        $name_target = getNameTarget($vip[$i]['target_id']);
+                    //$group = get_name_group_by_target_id($vip[$i]['target_id'], $_SESSION['id']);
+                    //for($j = 0; $j < count($group); $j++) {
+                        //$name_target = getNameTarget($vip[$i]['target_id']);
 
                         //$link = "https://www.facebook.com/" . $vip[$i]['id_post'];
-                        $content = str_replace("\n", "<br>", $vip[$i]['name']);
+                        $content = str_replace("\n", "<br>", $vip[$i]['content']);
                         $data[] = array(
-                            /*$dong+1,*/
-                            $name_target,
+
+                            $vip[$i]['targetname'],//$name_target,
                             $content,
                             $vip[$i]['time_post'],
                             '<font color="blue">'. $vip[$i]['luot_thich'] .'</font>' . ':' . '<font color="green">'. $vip[$i]['luot_comment'] .'</font>' . ':' . '<font color="red">'. $vip[$i]['luot_share'] .'</font>',
-                            $group[$j]['name'],
+                            $vip[$i]['groupname'],//$group[$j]['name'],
                             $vip[$i]['id_post']//'<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $link . '</a></br>'
                         );
-                        $dong++;
-                    }
+
+                    //}
 				}
 			//}
 			
