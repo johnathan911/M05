@@ -14,7 +14,7 @@ function get_new_post(){
 			$id = $row['id'];
 			$fbid= $row['fbid'];
 			$last_time = $row['last_get_post'];
-			//echo "Get post cho facebook UID: ".$row['fbid'].'</br>';
+			echo "Get post cho facebook UID: ".$row['fbid'].'</br>';
 			$tokens = get_tokens_random(20);
 			$kt = 0;
 			while ($token = mysqli_fetch_assoc($tokens)) {
@@ -32,7 +32,7 @@ function get_new_post(){
 				//echo "co so post".$count($getPost);
 				if ($getPost != 0) {
 					//echo "11111111111111";
-					//echo "Các bài viết mới: ".'<br>';
+					echo "Các bài viết mới: ".'<br>';
 					$posts = array();
 					$count_posts = count($getPost);
 						for($i = 0 ; $i < $count_posts; $i++){
@@ -45,7 +45,7 @@ function get_new_post(){
 						if(check_post($sttID)==0){
 							$noidung= $post->message;
 							if($noidung != ""){
-								//echo "Đã thêm bài viết bài viết ID:".$sttID.' vào danh sách dõi'.'</br>';
+								echo "Đã thêm bài viết bài viết ID:".$sttID.' vào danh sách dõi'.'</br>';
 								$like = $post -> likes -> count;
 								$comment = $post -> comments -> count;
 								$share = $post -> shares -> count;
@@ -59,7 +59,7 @@ function get_new_post(){
 					$update= mysqli_query($conn, "UPDATE target SET last_get_post = '$now' WHERE id = '$id'");
 				}
 			}
-			//else echo "Kiểm tra lại Token";
+			else echo "Kiểm tra lại Token";
 		}
 	}
 	if ($post) {
@@ -87,9 +87,9 @@ function get_new_post(){
 				if($getcontentpost!=0){
 					$result = mysqli_query($conn, "UPDATE post_keyword SET luot_thich = '$like', luot_comment = '$comment', luot_share = '$share', last_update_like ='$t' WHERE id_post = '$idpost'");
 				}
-				//echo "Da Update Like,Comment, Share cho bai viet :".$idpost.'<br>';
+				echo "Da Update Like,Comment, Share cho bai viet :".$idpost.'<br>';
 			}
-			//else echo "Kiem tra token live";
+			else echo "Kiem tra token live";
 		}
 	}
 	return 1;
