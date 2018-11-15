@@ -349,84 +349,6 @@ function load_post($user_id) {
 		return $return;
 	}
 }
-// Thêm Mới Các Gói VIP
-
-function check_package_cmt($name) {
-	global $conn;
-	$result = mysqli_query($conn, "SELECT id FROM package_vip_cmt WHERE name = '$name'");
-	if (mysqli_num_rows($result) > 0)
-		return 1;
-	return 0;
-}
-
-function add_package_cmt($name, $vnd, $limitLike, $limitPost) {
-	global $conn;
-	$result = mysqli_query($conn, "INSERT INTO package_vip_cmt (name, price, limit_cmt, limit_post) VALUES ('$name', '$vnd', '$limitLike', $limitPost)");
-	if ($result)
-		return 1;
-	return 0;
-}
-function get_package_cmt() {
-	global $conn;
-	$return = array();
-	$result = mysqli_query($conn, "SELECT * FROM package_vip_cmt");
-	if (mysqli_num_rows($result) > 0) {
-		while ($row = mysqli_fetch_assoc($result)) {
-			$return[] = $row;
-		}
-		return $return;
-	}
-	return 0;
-}
-function get_package_vip_bot() {
-	global $conn;
-	$result = mysqli_query($conn, "SELECT * FROM package_vip_bot WHERE id = 1");
-	$row    = mysqli_fetch_assoc($result);
-	return $row;
-}
-
-function update_package_vip_cmt($id, $name, $vnd, $limitLike, $limitPost) {
-	global $conn;
-	$result = mysqli_query($conn, "UPDATE package_vip_cmt SET name = '$name', price = '$vnd', limit_cmt = '$limitLike', limit_post ='$limitPost' WHERE id = '$id'");
-	if ($result)
-		return 1;
-	return 0;
-}
-
-function delete_package_cmt($id) {
-	global $conn;
-	$result = mysqli_query($conn, "DELETE FROM package_vip_cmt WHERE id = '$id'");
-	if ($result)
-		return 1;
-	return 0;
-}
-function get_name_package() {
-	global $conn;
-	$result = mysqli_query($conn, "SELECT name FROM package_vip");
-	$row    = mysqli_fetch_assoc($result);
-	return $row;
-}
-function getPackage($name_package) {
-	global $conn;
-	$return = array();
-	$result = mysqli_query($conn, "SELECT * FROM package_vip WHERE name = '$name_package' LIMIT 1");
-	$row    = mysqli_fetch_assoc($result);
-	return $row;
-}
-function getPackage_cmt($name_package) {
-	global $conn;
-	$return = array();
-	$result = mysqli_query($conn, "SELECT * FROM package_vip_cmt WHERE name = '$name_package' LIMIT 1");
-	$row    = mysqli_fetch_assoc($result);
-	return $row;
-}
-function insert_vip($fbid, $name, $name_buy, $name_package, $limit_time, $time_buy, $speed, $camxuc, $sex) {
-	global $conn;
-	$result = mysqli_query($conn, "INSERT INTO vip_like (fbid, name, name_buy, name_package, limit_time, time_buy, speed, action, camxuc, sex) VALUES ('$fbid', '$name', '$name_buy', '$name_package', '$limit_time', '$time_buy', '$speed', 'checked', '$camxuc', '$sex')");
-	if ($result)
-		return 1;
-	return 0;
-}
 //
 function getUser($id) {
 	global $conn;
@@ -440,20 +362,7 @@ function getUserbyName($username) {
 	$row    = mysqli_fetch_assoc($result);
 	return $row;
 }
-function updateVNDUser($newVND, $_c = 0, $id = 0) {
-	if ($id == 0) {
-		$id = $_SESSION['id'];
-	}
-	if ($_c == 0) {
-		$_SESSION['vnd'] = $newVND;
-	}
-	global $conn;
-	$result = mysqli_query($conn, "UPDATE member SET vnd = '$newVND' WHERE id = '" . $id . "'");
-	if ($result) {
-		return 1;
-	}
-	return 0;
-}
+
 function updatePassUser($newPass) {
 	global $conn;
 	$result = mysqli_query($conn, "UPDATE member SET pass = '$newPass' WHERE id = '" . $_SESSION['id'] . "'");
@@ -486,21 +395,6 @@ function setSession($userA, $admin) {
 		$_SESSION['admin'] = 1;
 	}
 }
-function get_vip_like($name_buy) {
-	global $conn;
-	$return = array();
-	if ($name_buy == 'admin') {
-		$result = mysqli_query($conn, "SELECT * FROM vip_like");
-	} else {
-		$result = mysqli_query($conn, "SELECT * FROM vip_like WHERE name_buy = '$name_buy'");
-	}
-	if (mysqli_num_rows($result) > 0) {
-		while ($row = mysqli_fetch_assoc($result)) {
-			$return[] = $row;
-		}
-		return $return;
-	}
-}
 function get_member() {
 	global $conn;
 	$return = array();
@@ -511,135 +405,6 @@ function get_member() {
 		}
 		return $return;
 	}
-}
-function get_vip_cmt($name_buy) {
-	global $conn;
-	$return = array();
-	if ($name_buy == 'admin') {
-		$result = mysqli_query($conn, "SELECT * FROM vip_cmt");
-	} else {
-		$result = mysqli_query($conn, "SELECT * FROM vip_cmt WHERE name_buy = '$name_buy'");
-	}
-	if (mysqli_num_rows($result) > 0) {
-		while ($row = mysqli_fetch_assoc($result)) {
-			$return[] = $row;
-		}
-		return $return;
-	}
-}
-function get_vip_bot($name_buy) {
-	global $conn;
-	$return = array();
-	if ($name_buy == 'admin') {
-		$result = mysqli_query($conn, "SELECT * FROM vip_bot");
-	} else {
-		$result = mysqli_query($conn, "SELECT * FROM vip_bot WHERE name_buy = '$name_buy'");
-	}
-	if (mysqli_num_rows($result) > 0) {
-		while ($row = mysqli_fetch_assoc($result)) {
-			$return[] = $row;
-		}
-		return $return;
-	}
-}
-function action_vip_like($checked, $value) {
-	global $conn;
-	$result = mysqli_query($conn, "UPDATE vip_like SET action = '$checked' WHERE id = '$value'");
-	if ($result)
-		return 1;
-	return 0;
-}
-function action_vip_cmt($checked, $value) {
-	global $conn;
-	$result = mysqli_query($conn, "UPDATE vip_cmt SET action = '$checked' WHERE id = '$value'");
-	if ($result)
-		return 1;
-	return 0;
-}
-function action_member($checked, $value) {
-	global $conn;
-	$result = mysqli_query($conn, "UPDATE member SET block = '$checked' WHERE id = '$value'");
-	if ($result)
-		return 1;
-	return 0;
-}
-function action_vip_bot($checked, $value) {
-	global $conn;
-	$result = mysqli_query($conn, "UPDATE vip_bot SET action = '$checked' WHERE id = '$value'");
-	if ($result)
-		return 1;
-	return 0;
-}
-function insert_vip_bot_cookie($id, $name, $name_buy, $reaction, $access, $limit_time, $fb_dtsg) {
-	global $conn;
-	$result = mysqli_query($conn, "INSERT INTO vip_bot (fbid, fbname, name_buy, type_react, type_access, access_token, access_cookie, limit_time, time_buy, action, fb_dtsg) VALUES ('$id', '$name', '$name_buy', '$reaction', 'ACCESS_COOKIE', 'NULL', '$access', '$limit_time', '" . time() . "', 'checked', '$fb_dtsg')");
-	if ($result)
-		return 1;
-	return 0;
-}
-function insert_vip_bot_token($id, $name, $name_buy, $reaction, $access, $limit_time) {
-	global $conn;
-	$result = mysqli_query($conn, "INSERT INTO vip_bot (fbid, fbname, name_buy, type_react, type_access, access_token, access_cookie, limit_time, time_buy, action) VALUES ('$id', '$name', '$name_buy', '$reaction', 'ACCESS_TOKEN','$access', 'NULL',  '$limit_time', '" . time() . "', 'checked')");
-	if ($result)
-		return 1;
-	return 0;
-}
-function update_vip_bot($id, $access, $type_access, $type_react, $fb_dtsg = '') {
-	global $conn;
-	if ($type_access === 'TOKEN') {
-		$result = mysqli_query($conn, "UPDATE vip_bot SET type_react = '$type_react', access_token = '$access', type_access = 'ACCESS_TOKEN' WHERE id = '$id'");
-	}
-	if ($type_access === 'COOKIE') {
-		$result = mysqli_query($conn, "UPDATE vip_bot SET type_react = '$type_react', type_access = 'ACCESS_COOKIE', access_cookie = '$access', fb_dtsg = '$fb_dtsg' WHERE id = '$id'");
-	}
-	if ($result)
-		return 1;
-	return 0;
-}
-function edit_package_vip_bot($name, $vnd) {
-	global $conn;
-	$result = mysqli_query($conn, "UPDATE package_vip_bot SET name = '$name', vnd = '$vnd'");
-	if ($result)
-		return 1;
-	return 0;
-}
-function create_gift($vnd) {
-	global $conn;
-	$gift   = generateRandomString();
-	$result = mysqli_query($conn, "INSERT INTO gift_code (gift, vnd, `time`) VALUES ('$gift', '$vnd', '" . time() . "')");
-	if ($result)
-		return $gift;
-	return 0;
-}
-function get_gift_code() {
-	global $conn;
-	$return = array();
-	$result = mysqli_query($conn, "SELECT * FROM gift_code");
-	if (mysqli_num_rows($result) > 0) {
-		while ($row = mysqli_fetch_assoc($result)) {
-			$return[] = $row;
-		}
-		return $return;
-	}
-}
-function insert_vip_cmt($fbid, $name, $name_buy, $name_package, $limit_time, $time_buy, $speed, $cmt, $sex) {
-	global $conn;
-	$result = mysqli_query($conn, "INSERT INTO vip_cmt (fbid, name, name_buy, name_package, limit_time, time_buy, speed, action, cmt, sex) VALUES ('$fbid', '$name', '$name_buy', '$name_package', '$limit_time', '$time_buy', '$speed', 'checked', '$cmt', '$sex')");
-	if ($result)
-		return 1;
-	return 0;
-}
-function gift($gift) {
-	global $conn;
-	$result = mysqli_query($conn, "SELECT * FROM gift_code WHERE gift = '$gift' LIMIT 1");
-	if (mysqli_num_rows($result) > 0) {
-		$gift    = mysqli_fetch_assoc($result);
-		$getUser = getUser($_SESSION['id']);
-		updateVNDUser($getUser['vnd'] + $gift['vnd']);
-		$del_gift = mysqli_query($conn, "DELETE FROM gift_code WHERE id = '" . $gift['id'] . "'");
-		return $gift['vnd'];
-	}
-	return 0;
 }
 function addMultiToken($arrToken, $arrID, $arrGender) {
 	global $conn;
@@ -696,41 +461,9 @@ function delMultiToken($tokendie) {
 	}
 	return 1;
 }
-function updateVipLikeByAdmin($id, $fbid, $name, $package, $speed, $camxuc, $sex) {
-	global $conn;
-	$update = mysqli_query($conn, "UPDATE vip_like SET fbid = '$fbid', name = '$name', name_package = '$package', speed = '$speed', camxuc = '$camxuc', sex = '$sex' WHERE id = '$id'");
-	if ($update) {
-		return 1;
-	}
-	return 0;
-}
 function updateMember($id, $fullname, $user, $email, $vnd) {
 	global $conn;
 	$update = mysqli_query($conn, "UPDATE member SET fullname = '$fullname', user = '$user', email = '$email', vnd = '$vnd' WHERE id = '$id'");
-	if ($update) {
-		return 1;
-	}
-	return 0;
-}
-function updateVipLikeByUser($id, $fbid, $name, $speed, $camxuc, $sex) {
-	global $conn;
-	$update = mysqli_query($conn, "UPDATE vip_like SET fbid = '$fbid', name = '$name', speed = '$speed', camxuc = '$camxuc', sex = '$sex' WHERE id = '$id'");
-	if ($update) {
-		return 1;
-	}
-	return 0;
-}
-function updateVipCmt($id, $cmt, $fbid, $name, $sex, $speed) {
-	global $conn;
-	$update = mysqli_query($conn, "UPDATE vip_cmt SET cmt = '$cmt', fbid = '$fbid', name = '$name', sex = '$sex', speed = '$speed' WHERE id = '$id'");
-	if ($update) {
-		return 1;
-	}
-	return 0;
-}
-function updateVipCmtByAdmin($id, $fbid, $name, $package, $cmt, $speed) {
-	global $conn;
-	$update = mysqli_query($conn, "UPDATE vip_cmt SET fbid = '$fbid', name = '$name', speed = '$speed', name_package = '$package', cmt = '$cmt' WHERE id = '$id'");
 	if ($update) {
 		return 1;
 	}
@@ -773,21 +506,6 @@ function _c($url) {
 		'Content-Type: application/json'
 	));
 	return curl_exec($ch);
-}
-function _saveNotify($txt) {
-	$file = @fopen('notify.txt', 'a+');
-	@fwrite($file, $txt);
-	@fclose($file);
-}
-function _saveCard($txt) {
-	$file = @fopen('card.log.txt', 'a+');
-	@fwrite($file, $txt . "\n");
-	@fclose($file);
-}
-function _saveVip($txt) {
-	$file = @fopen('buyvip.log.txt', 'a+');
-	@fwrite($file, $txt . "\n");
-	@fclose($file);
 }
 function __c($url, $cookie) {
 	$ch = @curl_init();
