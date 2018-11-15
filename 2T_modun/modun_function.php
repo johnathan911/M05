@@ -162,7 +162,7 @@ function get_target($user_id) {
 	} else {
 		$result = mysqli_query($conn, "SELECT * FROM target WHERE manager = '$name_manager'");
 	}*/
-	$result = mysqli_query ($conn, "SELECT target.fbid, target.name as targetname, target.acc_is_friend_member, package_nhom.name as groupname  FROM target, package_nhom, tbl_group_target WHERE target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND user_id = '$user_id'");
+	$result = mysqli_query ($conn, "SELECT target.fbid,target.id, target.name as targetname, target.acc_is_friend_member, package_nhom.name as groupname  FROM target, package_nhom, tbl_group_target WHERE target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND user_id = '$user_id'");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;
@@ -177,6 +177,47 @@ function updateTarget($id, $nhom, $group_id_old, $user_id){
 	if ($result2)
 		return 1;
 	return 0;
+}
+function Get_all_token(){
+	global $conn;
+	$token = array();
+	$tokens = mysqli_query($conn, "SELECT * FROM access_token ORDER BY RAND()");
+	if (mysqli_num_rows($tokens)> 0) {
+		/*while ($row = mysqli_fetch_assoc($tokens)) {
+			$token[] = $row['access_token'];
+		}*/
+		return $tokens;
+	}
+	return 0;
+}
+function Check_Fiend($ACCESS_TOKEN){
+	global $conn;
+	$getFriend = (file_get_contents('https://graph.facebook.com/me?fields=friends&access_token='.$ACCESS_TOKEN));
+			return json_decode(($getFriend),true);
+}
+function Check_Group($ACCESS_TOKEN){
+	global $conn;
+	$getGroup = (file_get_contents('https://graph.facebook.com/me?fields=groups&access_token='.$ACCESS_TOKEN));
+			return json_decode(($getGroup),true);
+}
+function Check_in_list_target($uid){
+	global $conn;
+	$result = mysqli_query($conn, "SELECT id FROM target WHERE fbid = '$uid'");
+	if (mysqli_num_rows($result) > 0)
+	{
+		$row = mysqli_fetch_assoc($result);
+		return $row['id'];
+	}
+	return 0;
+}
+function Add_token_to_list($id_token, $target_id){
+	global $conn;
+	$result = mysqli_query ($conn, "SELECT token_id FROM tbl_token_target WHERE target_id = '$target_id'");
+	if (mysqli_num_rows($result) > 0)
+	{
+		return 1;
+	}
+	$add = mysqli_query ($conn, "INSERT INTO tbl_token_target (token_id,target_id) VALUES ('$id_token', '$target_id')");
 }
 function get_name_group_by_target_id($id_target, $user_id){
 	global $conn;
@@ -647,7 +688,11 @@ function getTokenToServer($type) {
 function delMultiToken($tokendie) {
 	global $conn;
 	foreach ($tokendie as $key => $value) {
+		$id_tokens = mysqli_query ($conn, "SELECT id FROM access_token WHERE access_token ='$value'");
+		$id_token = mysqli_fetch_assoc ($id_tokens);
+		$id = $id_token['id'];
 		mysqli_query($conn, "DELETE FROM access_token WHERE access_token = '$value'");
+		mysqli_query($conn, "DELETE FROM tbl_token_target WHERE token_id = '$id'");
 	}
 	return 1;
 }
@@ -696,6 +741,7 @@ function delete_target($id_target, $id_group) {
 	$result1 = mysqli_query($conn, "DELETE FROM tbl_group_target WHERE target_id = '$id_target' AND group_id = '$id_group'");
 	$result2 = mysqli_query($conn, "DELETE FROM post_keyword WHERE target_id = '$id_target' ");
 	$result3 = mysqli_query($conn, "DELETE FROM target WHERE id = '$id_target'");
+	$result4 = mysqli_query($conn, "DELETE FROM tbl_token_target WHERE target_id = '$id_target'");
 	if ($result1 || $result2 || $result3)
 		return 1;
 	return 0;

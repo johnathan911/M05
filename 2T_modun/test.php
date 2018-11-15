@@ -5,36 +5,37 @@
 		echo $title.'<br>';
 	}*/
 	require_once 'modun_function.php';
-		$tennhom = _p($_POST['nhom']);
-		$keyword_goc = _p($_POST['keyword']);
-		$keyword = _p($_POST['keyword']);
-		$today= date("y-m-d");
-		$today = "20".$today;
-		$keyword= str_replace(" ","\s",$keyword);
-		$keyword = "*".$keyword."*";
-		$datefrom = (string)_p($_POST['datefrom']);
-		$dateto = (string)_p($_POST['dateto']);
-		$user_id = ($_SESSION['id']);
-		Update_user_show($user_id);
-		$posts = getPostByGroup($tennhom,$user_id,$datefrom,$dateto);
-		$sopost = 0;
-		//detele_search_keyword_result($user_id);
-		while($row = mysqli_fetch_assoc($posts)){
-			$noidung = $row['name'];
-			if (preg_match(strtolower($keyword), strtolower($noidung), $match)) :
-				if(Update_post_to_show($row['id_post'], $user_id)){
-					$sopost++;
+	$tokens = Get_all_token();
+	while ($token = mysqli_fetch_assoc($tokens)){
+			$ACCESS_TOKEN = $token['access_token'];
+			$id_token = $token['id'];
+			if(_checkToken($ACCESS_TOKEN) == 1){
+				$Getfriends = Check_Fiend($ACCESS_TOKEN);
+				if($Getfriends != 0){
+					for ($i = 0 ; $i< count ($Getfriends['friends']['data']) ; $i++){
+						$uid = $Getfriends['friends']['data'][$i]['id'];
+						//echo $uid.' ';
+						$target_id = Check_in_list_target($uid);
+						if($target_id != 0){
+							//echo "đã có target Id ".$target_id.' '.$id_token;
+							Add_token_to_list($id_token, $target_id);
+						}	
+					}
 				}
-				endif;
+				$Getgroups = Check_Group($ACCESS_TOKEN);
+				//echo count($Getgroups['groups']['data']).' ';
+				if($Getgroups != 0){
+					for ($i = 0 ; $i< count ($Getgroups['groups']['data']) ; $i++){
+						$group_id= $Getgroups['groups']['data'][$i]['id'];
+						$target_id = Check_in_list_target($group_id);
+						if($target_id != 0){
+							//echo "đã có target Id ".$target_id.' '.$id_token;
+							Add_token_to_list($id_token, $target_id);
+						}	
+					}
+					//echo </br>;
+				}
+			}
 		}
-		if ($sopost > 0) {
-				$return['msg'] = 'Nhóm '.$tennhom.' có '.$sopost.' liên quan đến từ khóa: '.$keyword_goc;
-				die(json_encode($return));
-			} else {
-				$return['error'] = 1;
-				$return['msg']   = 'Không có bài viết nào liên quan';
-				//$return['msg']   = strtotime($datefrom);
-				die(json_encode($return));
-		}
-	echo time();
+	//echo mysqli_num_rows($token);
 ?>

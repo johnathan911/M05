@@ -1,5 +1,23 @@
     <section class="content">
         <div class="container-fluid">
+			<div class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                CẬP NHẬT SỐ TOKEN LÀ BẠN BÈ VỚI ĐỐI TƯỢNG<small>Cập nhật token là bạn bè</small>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix add-package">
+                                <div class="col-md-12 text-center">
+                                    <button type="button" class="btn btn-success waves-effect" id="btn1" onclick="update_friend();"><i class="fa fa-plus-square" aria-hidden="true"></i> Cập nhật</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row clearfix">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="card animated bounceIn">
@@ -157,6 +175,30 @@
                 }
             })
         })
+		function update_friend(){
+			$("#btn1").html('<i class="fa fa-refresh fa-spin"></i> Vui Lòng Đợi');
+            $.ajax({
+                url     : prefix+modun+ '/modun_post.php',
+                type    : 'POST',
+                dataType: 'JSON',
+                data    : {
+                    t           : 'update-friend',
+	
+                },
+                success : (data) => {
+                    $("#btn1").html('<i class="fa fa-check-square-o" aria-hidden="true"></i> Hoàn Thành');
+                    if (data.error) {
+                        showNotification('bg-red', data.msg);
+                    } else {
+                        showNotification('bg-green', data.msg);
+                        load_vip();
+                    }
+                    setTimeout(function(){
+                        $('#edit-vip').modal('hide');
+                    }, 500);
+                }
+            })
+		}
         function get_package(){
             var option = '';
             var table  = '';

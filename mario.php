@@ -56,8 +56,44 @@ if($_SESSION['login']){
 <body class="login-page">
     <div class="login-box">
         <div class="logo">
-            <a href="javascript:void(0);"><?php echo "HAPPY DAY!!!";?></a>
-            <small>Smile :)</small>
+            <a href="javascript:void(0);"><?php echo $config_site['name'];?></a>
+            <small>Hệ Thống M05</small>
+        </div>
+        <div class="card" style="background: rgba(255, 255, 255, 0.88);">
+            <div class="body">
+                <form id="sign_in" method="POST">
+                    <div class="msg">Đăng Nhập Để Bắt Đầu Phiên Của Bạn</div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Tên Tài Khoản" required autofocus>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="password" id="password" minlength="6" placeholder="Mật Khẩu" required>
+                        </div>
+                    </div>
+                    <div class="row">
+						<div class="input-group">
+							<center><div class="g-recaptcha" data-sitekey="<?php echo $config_gC['site_key'];?>"></div></center>
+						</div>
+                        <div class="col-xs-7 p-t-5">
+                            <input type="checkbox" name="rememberme" id="rememberme" class="filled-in chk-col-green">
+                            <label for="rememberme">Remember Me</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <button class="btn btn-block bg-green waves-effect" type="button" id="btn" onclick="signin()"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng Nhập</button>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
         </div>
     </div>
 
@@ -116,7 +152,7 @@ if($_SESSION['login']){
                     })
                 } else {
                     showNotification('bg-red', 'Vui Lòng Xác Nhận reCaptcha!');
-				}
+				}*/
 			//login khong co captcha
             $("#btn").html('<i class="fa fa-refresh fa-spin"></i> Vui Lòng Đợi');
             $.ajax({
@@ -140,7 +176,7 @@ if($_SESSION['login']){
                     }
                 }
             })
-        }*/
+        }
         function showNotification(colorName, text) {
             if (colorName === null || colorName === '') { colorName = 'bg-black'; }
             if (text === null || text === '') { text = 'Turning standard Bootstrap alerts'; }
