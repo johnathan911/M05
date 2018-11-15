@@ -53,6 +53,7 @@ function delete_package_nhom($id) {
 	global $conn;
 	$result0 = mysqli_query($conn, "DELETE FROM post_keyword WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id = '$id')");
 	$result1 = mysqli_query($conn, "DELETE FROM target WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id = '$id')");
+	$result4 = mysqli_query($conn, "DELETE FROM tbl_token_target WHERE target_id in (SELECT target_id FROM tbl_group_target WHERE group_id = '$id')");
 	$result2 = mysqli_query($conn, "DELETE FROM tbl_group_target WHERE group_id = '$id'");
 	$result3 = mysqli_query($conn, "DELETE FROM package_nhom WHERE id = '$id'");
 	if ($result0 && $result1 && $result2 && $result3)

@@ -5,37 +5,78 @@
 		echo $title.'<br>';
 	}*/
 	require_once 'modun_function.php';
-	$tokens = Get_all_token();
-	while ($token = mysqli_fetch_assoc($tokens)){
-			$ACCESS_TOKEN = $token['access_token'];
-			$id_token = $token['id'];
-			if(_checkToken($ACCESS_TOKEN) == 1){
-				$Getfriends = Check_Fiend($ACCESS_TOKEN);
-				if($Getfriends != 0){
-					for ($i = 0 ; $i< count ($Getfriends['friends']['data']) ; $i++){
-						$uid = $Getfriends['friends']['data'][$i]['id'];
-						//echo $uid.' ';
-						$target_id = Check_in_list_target($uid);
-						if($target_id != 0){
-							//echo "đã có target Id ".$target_id.' '.$id_token;
-							Add_token_to_list($id_token, $target_id);
-						}	
+			$TOKEN = array();
+			$now = time();
+			$id = "64"; // id target
+			$fbid= "551881528606609";
+			$last_time = $row['last_get_post'];
+			// Kiểm tra có token nào có quan hệ với đối tượng không? nếu có dùng token đó lấy bài
+			$tokens = check_token_target($id); 
+			if($tokens != 0){
+				echo "có token có liên quan đến đối tượng id: ";
+				while ($token = mysqli_fetch_assoc($tokens)) {
+					$t = $token['access_token'];
+					$checkToken = checkToken($token['access_token']);
+					if ($checkToken == 1) {
+						$ACCESS_TOKEN = $token['access_token'];
+						$kt= 1;
+						break;
 					}
-				}
-				$Getgroups = Check_Group($ACCESS_TOKEN);
-				//echo count($Getgroups['groups']['data']).' ';
-				if($Getgroups != 0){
-					for ($i = 0 ; $i< count ($Getgroups['groups']['data']) ; $i++){
-						$group_id= $Getgroups['groups']['data'][$i]['id'];
-						$target_id = Check_in_list_target($group_id);
-						if($target_id != 0){
-							//echo "đã có target Id ".$target_id.' '.$id_token;
-							Add_token_to_list($id_token, $target_id);
-						}	
+					else{
+						mysqli_query ($conn, "UPDATE access_token SET live = '0' WHERE access_token = '$t'");
 					}
-					//echo </br>;
 				}
 			}
-		}
-	//echo mysqli_num_rows($token);
+			else{// Không có token nào có quan hệ với đối tượng
+				$tokens = get_tokens_random(20);
+				$kt = 0;
+				while ($token = mysqli_fetch_assoc($tokens)) {
+					$t = $token['access_token'];
+					$checkToken = checkToken($token['access_token']);
+					if ($checkToken == 1) {
+						$ACCESS_TOKEN = $token['access_token'];
+						$kt= 1;
+						break;
+					}
+					else{
+						mysqli_query ($conn, "UPDATE access_token SET live = '0' WHERE access_token = '$t'");
+					}
+				}
+			}
+			//echo "Get post cho facebook UID: ".$row['fbid'].'</br>';
+			
+			if($kt !=0){
+				//echo $ACCESS_TOKEN.'</br>';
+				$getPost = getPost($row['fbid'], $ACCESS_TOKEN,$last_time,$now);
+				//echo $row['fbid'];
+				//echo "co so post".$count($getPost);
+				if ($getPost != 0) {
+					//echo "11111111111111";
+					//echo "Các bài viết mới: ".'<br>';
+					$posts = array();
+					$count_posts = count($getPost);
+						for($i = 0 ; $i < $count_posts; $i++){
+							 array_push($posts, $getPost[$i]);
+						}
+					foreach ($posts as $key => $post) {
+						$TOKEN = array();
+						$post_data = array();
+						$sttID = $post->id;
+						if(check_post($sttID)==0){
+							$noidung= $post->message;
+							if($noidung != ""){
+								//echo "Đã thêm bài viết bài viết ID:".$sttID.' vào danh sách dõi'.'</br>';
+								$like = $post -> likes -> count;
+								$comment = $post -> comments -> count;
+								$share = $post -> shares -> count;
+								$datecreate = $post -> created_time;
+								$datecreate = date ('Y-m-d H:i:s',strtotime($datecreate));
+								$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post, time_post, luot_thich, luot_comment, luot_share, target_id) VALUES ('$noidung', '$sttID', '$datecreate', '$like', '$comment', '$share', '$id')");// Chỉnh lại cho đúng bảng
+								//echo $noidung.'<br>';
+							}
+						}
+					}
+					$update= mysqli_query($conn, "UPDATE target SET last_get_post = '$now' WHERE id = '$id'");
+				}
+			}
 ?>
