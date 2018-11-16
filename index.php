@@ -1,5 +1,6 @@
 <?php
 require_once '2T_config/config_server.php';
+
 if (!$_SESSION['login']) {
 	session_destroy();
 	header("Location: sign-in.php");

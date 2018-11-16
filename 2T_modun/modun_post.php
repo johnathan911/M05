@@ -362,12 +362,16 @@ if($_REQUEST){
                     //$group = get_name_group_by_target_id($vip[$i]['target_id'], $_SESSION['id']);
                     //for($j = 0; $j < count($group); $j++) {
                         //$name_target = getNameTarget($vip[$i]['target_id']);
-
+						if($vip[$i]['id_user_post'] == $vip[$i]['targetid']){
+							$targetname = $vip[$i]['targetname'];
+						}else{
+							$name_user_post = $vip[$i]['name_user_post'] . ' post to ' . $vip[$i]['targetname'];
+						}
                         //$link = "https://www.facebook.com/" . $vip[$i]['id_post'];
                         $content = str_replace("\n", "<br>", $vip[$i]['content']);
                         $data[] = array(
 
-                            $vip[$i]['targetname'],//$name_target,
+                            $name_user_post, //$vip[$i]['targetname'],
                             $content,
                             $vip[$i]['time_post'],
                             '<font color="blue">'. $vip[$i]['luot_thich'] .'</font>' . ':' . '<font color="green">'. $vip[$i]['luot_comment'] .'</font>' . ':' . '<font color="red">'. $vip[$i]['luot_share'] .'</font>',

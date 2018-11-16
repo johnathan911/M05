@@ -82,15 +82,15 @@ if($_SESSION['login']){
                 signin();
             }
         });
-        function signin(){
+        function signin() {
             var username = $("#username").val();
-            var password= $("#password").val();
+            var password = $("#password").val();
             if (!username || !password) {
                 showNotification('bg-red', 'Vui Lòng Điền Đầy Đủ Thông Tin');
                 return;
             }
-			//login co captcha
-			/*if (grecaptcha.getResponse()) {
+            //login co captcha
+            /*if (grecaptcha.getResponse()) {
                     $("#btn").html('<i class="fa fa-refresh fa-spin"></i> Vui Lòng Đợi');
                     $.ajax({
                         url     : prefix+modun+ '/modun_post.php',
@@ -99,7 +99,7 @@ if($_SESSION['login']){
                         data    : {
                             t        : 'sign-in',
                             username      : username,
-							password : password,
+                            password : password,
                             greCaptcha   : grecaptcha.getResponse()
                         },
                         success: (data) => {
@@ -109,15 +109,15 @@ if($_SESSION['login']){
                             } else {
                                 showNotification('bg-green', data.msg);
                                 setTimeout(function(){
-									 window.location = CURRENT_URL;
-								},1000);
+                                     window.location = CURRENT_URL;
+                                },1000);
                             }
                         }
                     })
                 } else {
                     showNotification('bg-red', 'Vui Lòng Xác Nhận reCaptcha!');
-				}
-			//login khong co captcha
+                }
+            //login khong co captcha
             $("#btn").html('<i class="fa fa-refresh fa-spin"></i> Vui Lòng Đợi');
             $.ajax({
                 url     : prefix+modun+ '/modun_post.php',
@@ -141,6 +141,7 @@ if($_SESSION['login']){
                 }
             })
         }*/
+        }
         function showNotification(colorName, text) {
             if (colorName === null || colorName === '') { colorName = 'bg-black'; }
             if (text === null || text === '') { text = 'Turning standard Bootstrap alerts'; }
