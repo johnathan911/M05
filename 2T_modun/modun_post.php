@@ -368,7 +368,12 @@ if($_REQUEST){
 						}else{
 							$link1 = "https://www.facebook.com/". $vip[$i]['id_user_post'];
 							$link2 = "https://www.facebook.com/". $vip[$i]['targetid'];
-							$name_user_post = '<a href="'.$link1.'" target="_blank" title="">'.$vip[$i]['name_user_post'].'</a>'.'->'.'<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
+							if($vip[$i]['id_user_post'] ==""){
+								$name_user_post ='<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
+							}
+							else{
+								$name_user_post = '<a href="'.$link1.'" target="_blank" title="">'.$vip[$i]['name_user_post'].'</a>'.'->'.'<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
+							}
 								//$vip[$i]['name_user_post'] . ' post to ' . $vip[$i]['targetname'];
 						}
                         //$link = "https://www.facebook.com/" . $vip[$i]['id_post'];
