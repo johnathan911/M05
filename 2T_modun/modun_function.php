@@ -342,7 +342,7 @@ function dem_post_theo_tu_khoa($user){
 function load_post($user_id) {
 	global $conn;
 	$return = array();
-	$result = mysqli_query($conn, "SELECT target.name as targetname, target.id as targetid, post_keyword.name as content, post_keyword.luot_thich, post_keyword.luot_comment, post_keyword.luot_share, post_keyword.time_post, package_nhom.name as groupname, post_keyword.id_post, post_keyword.id_user_post, post_keyword.name_user_post FROM post_keyword, target, package_nhom, tbl_group_target  WHERE post_keyword.target_id = target.id AND target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND package_nhom.user_id = '$user_id' ORDER BY time_post");
+	$result = mysqli_query($conn, "SELECT target.name as targetname, target.fbid as targetid, post_keyword.name as content, post_keyword.luot_thich, post_keyword.luot_comment, post_keyword.luot_share, post_keyword.time_post, package_nhom.name as groupname, post_keyword.id_post, post_keyword.id_user_post, post_keyword.name_user_post, privacy FROM post_keyword, target, package_nhom, tbl_group_target  WHERE post_keyword.target_id = target.id AND target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND package_nhom.user_id = '$user_id' ORDER BY time_post");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;

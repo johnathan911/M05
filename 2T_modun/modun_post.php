@@ -363,15 +363,16 @@ if($_REQUEST){
                     //for($j = 0; $j < count($group); $j++) {
                         //$name_target = getNameTarget($vip[$i]['target_id']);
 						if($vip[$i]['id_user_post'] == $vip[$i]['targetid']){
-							$targetname = $vip[$i]['targetname'];
+							$name_user_post = '<a href="https://www.facebook.com/' . $vip[$i]['targetid'] . '" target="_blank" title=""' . $vip[$i]['targetname'] . '</a>';
 						}else{
-							$name_user_post = $vip[$i]['name_user_post'] . ' post to ' . $vip[$i]['targetname'];
+							$name_user_post = '<a href="https://www.facebook.com/' . $vip[$i]['id_user_post'] . '" target="_blank" title=""' . $vip[$i]['name_user_post'] . '</a>' . ' -> ' . '<a href="https://www.facebook.com/' . $vip[$i]['targetid'] . '" target="_blank" title=""' . $vip[$i]['targetname'] . '</a>';
+								//$vip[$i]['name_user_post'] . ' post to ' . $vip[$i]['targetname'];
 						}
                         //$link = "https://www.facebook.com/" . $vip[$i]['id_post'];
                         $content = str_replace("\n", "<br>", $vip[$i]['content']);
                         $data[] = array(
 
-                            $name_user_post, //$vip[$i]['targetname'],
+                            $name_user_post . '</br>' . $vip[$i]['privacy'], //$vip[$i]['targetname'],
                             $content,
                             $vip[$i]['time_post'],
                             '<font color="blue">'. $vip[$i]['luot_thich'] .'</font>' . ':' . '<font color="green">'. $vip[$i]['luot_comment'] .'</font>' . ':' . '<font color="red">'. $vip[$i]['luot_share'] .'</font>',
