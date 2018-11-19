@@ -39,6 +39,9 @@ if ($_GET['act']) {
 	if ($_GET['act'] == 'manage-target') {
 		require_once '2T_view/manage_target.php';
 	}
+	if ($_GET['act'] == 'manage-new-target') {
+		require_once '2T_view/manage_new_target.php';
+	}
 	if ($_GET['act'] == 'add-feed-site') {
 		require_once '2T_view/add_feed_site.php';
 	}

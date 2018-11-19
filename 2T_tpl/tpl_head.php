@@ -115,16 +115,16 @@
                         </a>
                         <ul class="ml-menu">
 							<li>
-                                <a href="?act=add-group">TẠO NHÓM</a>
+                                <a href="?act=add-group">TẠO & QUẢN LÝ NHÓM</a>
                             </li>
                             <li>
                                 <a href="?act=add-target">THÊM ĐỐI TƯỢNG</a>
                             </li>
-							<li>
-                                <a href="?act=search-post">TÌM BÀI VIẾT THEO TỪ KHÓA</a>
-                            </li>
                             <li>
                                 <a href="?act=manage-target">QUẢN LÝ ĐỐI TƯỢNG</a>
+                            </li>
+							<li>
+                                <a href="?act=manage-new-target">XEM DS ĐỐI TƯỢNG MỚI</a>
                             </li>
 							<li>
                                 <a href="?act=add-feed-site">THÊM TRANG LẤY TỪ KHÓA</a>
