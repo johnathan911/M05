@@ -230,13 +230,15 @@ if($_REQUEST){
 		if ($vip !== 0) {
 			for ($i=0; $i < $long; $i++) {
 				$id_target= $vip[$i]['id'];
-
+				if(is_null($vip[$i]['num_of_token'])) {
+                    $vip[$i]['num_of_token'] = 0;
+                }
                     $data[] = array(
 						$stt +1,
                         $vip[$i]['fbid'],
                         $vip[$i]['targetname'],
                         $vip[$i]['groupname'],
-						$vip[$i]['acc_is_friend_member'],
+						$vip[$i]['num_of_token'],
 						$vip[$i]['id'],
                     );
 					$stt ++;

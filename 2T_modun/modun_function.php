@@ -163,7 +163,7 @@ function get_target($user_id) {
 	} else {
 		$result = mysqli_query($conn, "SELECT * FROM target WHERE manager = '$name_manager'");
 	}*/
-	$result = mysqli_query ($conn, "SELECT target.fbid,target.id, target.name as targetname, target.acc_is_friend_member, package_nhom.name as groupname  FROM target, package_nhom, tbl_group_target WHERE target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND user_id = '$user_id'");
+	$result = mysqli_query ($conn, "SELECT * FROM (SELECT target.fbid,target.id, target.name as targetname, target.acc_is_friend_member, package_nhom.name as groupname  FROM target, package_nhom, tbl_group_target WHERE target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND user_id = '". $user_id ."') as a LEFT JOIN (SELECT target_id, COUNT(*) AS num_of_token FROM tbl_token_target GROUP BY target_id ) as b ON a.id = b.target_id");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;
