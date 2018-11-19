@@ -5,7 +5,8 @@ get_new_post();
 function get_new_post(){
 	global $conn;
 	$t = time () -60*10;
-	$post = mysqli_query($conn, "SELECT * FROM post_keyword WHERE last_update_like <'$t' ORDER BY RAND() ");
+	$t2 = time() - 60*60*24*7;
+	$post = mysqli_query($conn, "SELECT * FROM post_keyword WHERE last_update_like <'$t' AND time_post > '$t2' ORDER BY RAND() ");
 	if ($post) {
 		while ($row = mysqli_fetch_assoc($post)) {
 			$TOKEN = array();

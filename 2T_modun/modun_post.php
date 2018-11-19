@@ -58,6 +58,11 @@ if($_REQUEST){
 			$return['msg'] = 'Xóa Thành Công!';
 			die(json_encode($return));
 		}
+		else {
+			$return['error'] = 1;
+			$return['msg'] = 'Chưa được!';
+			die(json_encode($return));
+		}
 	}
 	if ($t === 'update_package_nhom') {
 		/*if (isAdmin() == 0) {
@@ -272,7 +277,7 @@ if($_REQUEST){
         }
         else {
             $return['error'] = 1;
-            $return['msg'] = 'Token died';
+            $return['msg'] = 'Token Hệ thống died';
             die(json_encode($return));
         }
 
@@ -372,7 +377,7 @@ if($_REQUEST){
 								$name_user_post ='<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
 							}
 							else{
-								$name_user_post = '<a href="'.$link1.'" target="_blank" title="">'.$vip[$i]['name_user_post'].'</a>'.'->'.'<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
+								$name_user_post = '<a href="'.$link1.'" target="_blank" title="">'.$vip[$i]['name_user_post'].'</a>'.' -> '.'<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
 							}
 								//$vip[$i]['name_user_post'] . ' post to ' . $vip[$i]['targetname'];
 						}
