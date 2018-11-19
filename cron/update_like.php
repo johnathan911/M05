@@ -5,15 +5,14 @@ get_new_post();
 function get_new_post(){
 	global $conn;
 	$t = time () -60*10;
-	$vip = mysqli_query($conn, "SELECT * FROM target WHERE last_get_post <'$t' ORDER BY RAND() LIMIT 5");
-	$post = mysqli_query($conn, "SELECT * FROM post_keyword WHERE last_update_like <'$t' ORDER BY RAND() ");
-	if ($vip) {
-		while ($row = mysqli_fetch_assoc($vip)) {
+	$t2 = time() - 60*60*24*7;
+	$post = mysqli_query($conn, "SELECT * FROM post_keyword WHERE last_update_like <'$t' AND time_post > '$t2' ORDER BY RAND() ");
+	if ($post) {
+		while ($row = mysqli_fetch_assoc($post)) {
 			$TOKEN = array();
 			$now = time();
-			$id = $row['id']; // id target
-			$fbid= $row['fbid'];
-			$last_time = $row['last_get_post'];
+			$id = $row['target_id'];
+			$idpost = $row['id_post'];
 			// Kiểm tra có token nào có quan hệ với đối tượng không? nếu có dùng token đó lấy bài
 			$tokens = check_token_target($id); 
 			echo mysqli_num_rows($tokens).' ';
@@ -46,60 +45,6 @@ function get_new_post(){
 					else{
 						mysqli_query ($conn, "UPDATE access_token SET live = '0' WHERE access_token = '$t'");
 					}
-				}
-			}
-			//echo "Get post cho facebook UID: ".$fbid.'</br>';
-			
-			if($kt !=0){
-				//echo "111 ";
-				//echo $ACCESS_TOKEN.'</br>';
-				$getPost = get_Post_by_token($fbid, $ACCESS_TOKEN,$last_time,$now);
-				echo $fbid;
-				echo " Có ".count($getPost['data']).' bài viết mới'.'</br>';
-				$count_posts = count($getPost['data']);
-				if ($count_posts > 0){
-					for ($i = 0; $i < $count_posts; $i++){
-						$sttID = $getPost['data'][$i]['id'];
-						$id_user_post = $getPost['data'][$i]['from']['id'];
-						$name_user_post = $getPost['data'][$i]['from']['name'];
-						if(check_post($sttID)==0){
-							$noidung = $getPost['data'][$i]['message'];
-							if($noidung !=""){
-								$privacy = $getPost['data'][$i]['privacy']['value'];
-								$datecreate = $getPost['data'][$i]['created_time'];
-								$datecreate = date ('Y-m-d H:i:s',strtotime($datecreate));
-								$likes = 0; 
-								$comments = 0;
-								$shares = 0;
-								if($getContentPost['likes']['count'] != 0) $likes = $getContentPost['likes']['count'];
-								if($getContentPost['comments']['count'] != 0) $comments = $getContentPost['comments']['count'];
-								if($getContentPost['shares']['count'] != 0) $shares = $getContentPost['shares']['count'];
-								$insert = mysqli_query($conn, "INSERT INTO post_keyword (name, id_post,id_user_post, name_user_post, time_post, luot_thich, luot_comment, luot_share, target_id, privacy) VALUES ('$noidung', '$sttID', '$id_user_post', '$name_user_post', '$datecreate', '$likes', '$comments', '$shares', '$id', '$privacy')");// Chỉnh lại cho đúng bảng
-								echo $sttID.' '.$noidung.' '.$privacy.' '.$datecreate.' '.$likes.' '.$comments.' '.$shares.'</br>';
-								}
-						}
-					}
-				}
-				$update= mysqli_query($conn, "UPDATE target SET last_get_post = '$now' WHERE id = '$id'");
-			}
-			else {
-				echo "Hết Token Live";
-			}
-		}
-	}
-	if ($post) {
-		while ($row = mysqli_fetch_assoc($post)) {
-			$TOKEN = array();
-			$now = time();
-			$idpost = $row['id_post'];
-			$tokens = get_tokens_random(20);
-			$kt = 0;
-			while ($token = mysqli_fetch_assoc($tokens)) {
-				$checkToken = checkToken($token['access_token']);
-				if ($checkToken == 1) {
-					$ACCESS_TOKEN = $token['access_token'];
-					$kt= 1;
-					break;
 				}
 			}
 			if($kt !=0){

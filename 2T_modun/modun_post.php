@@ -58,6 +58,11 @@ if($_REQUEST){
 			$return['msg'] = 'Xóa Thành Công!';
 			die(json_encode($return));
 		}
+		else {
+			$return['error'] = 1;
+			$return['msg'] = 'Chưa được!';
+			die(json_encode($return));
+		}
 	}
 	if ($t === 'update_package_nhom') {
 		/*if (isAdmin() == 0) {
@@ -274,7 +279,7 @@ if($_REQUEST){
         }
         else {
             $return['error'] = 1;
-            $return['msg'] = 'Token died';
+            $return['msg'] = 'Token Hệ thống died';
             die(json_encode($return));
         }
 
@@ -365,9 +370,17 @@ if($_REQUEST){
                     //for($j = 0; $j < count($group); $j++) {
                         //$name_target = getNameTarget($vip[$i]['target_id']);
 						if($vip[$i]['id_user_post'] == $vip[$i]['targetid']){
-							$name_user_post = '<a href="https://www.facebook.com/' . $vip[$i]['targetid'] . '" target="_blank" title=""' . $vip[$i]['targetname'] . '</a>';
+							$link = "https://www.facebook.com/". $vip[$i]['targetid'];
+							$name_user_post = '<a href="'.$link.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
 						}else{
-							$name_user_post = '<a href="https://www.facebook.com/' . $vip[$i]['id_user_post'] . '" target="_blank" title=""' . $vip[$i]['name_user_post'] . '</a>' . ' -> ' . '<a href="https://www.facebook.com/' . $vip[$i]['targetid'] . '" target="_blank" title=""' . $vip[$i]['targetname'] . '</a>';
+							$link1 = "https://www.facebook.com/". $vip[$i]['id_user_post'];
+							$link2 = "https://www.facebook.com/". $vip[$i]['targetid'];
+							if($vip[$i]['id_user_post'] ==""){
+								$name_user_post ='<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
+							}
+							else{
+								$name_user_post = '<a href="'.$link1.'" target="_blank" title="">'.$vip[$i]['name_user_post'].'</a>'.' -> '.'<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['targetname'].'</a>';
+							}
 								//$vip[$i]['name_user_post'] . ' post to ' . $vip[$i]['targetname'];
 						}
                         //$link = "https://www.facebook.com/" . $vip[$i]['id_post'];
