@@ -93,16 +93,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 </tr>
                                 </thead>
 
-                                <tfoot>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên Facebook</th>
-                                    <th>Nội dung</th>
-                                    <th>Ngày đăng</th>
-                                    <th>L.C.S</th>
-                                    <th>Nhóm</th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -280,7 +270,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     this.api().columns(5).every( function () {
                         var column = this;
                         var select = $('<select><option value="">Tất cả</option></select>')
-                            .appendTo( $(column.footer()).empty() )
+                            .appendTo( $(column.header()).empty() )
                             .on( 'change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
