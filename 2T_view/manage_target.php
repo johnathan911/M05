@@ -43,15 +43,6 @@
                                 </tr>
                                 </thead>
 
-                                <tfoot>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Facebook ID</th>
-                                    <th>Tên</th>
-                                    <th>Nhóm</th>
-                                    <th>abc</th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
 						
@@ -328,7 +319,7 @@
                     this.api().columns(3).every( function () {
                         var column = this;
                         var select = $('<select><option value="">Tất cả</option></select>')
-                            .appendTo( $(column.footer()).empty() )
+                            .appendTo( $(column.header()).empty() )
                             .on( 'change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()

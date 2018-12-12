@@ -365,7 +365,7 @@ if($_REQUEST){
 				}
 			}
 			else{*/
-				for($i=$long-1; $i>0; $i--){
+				for($i=$long-1; $i > -1; $i--){
                     //$group = get_name_group_by_target_id($vip[$i]['target_id'], $_SESSION['id']);
                     //for($j = 0; $j < count($group); $j++) {
                         //$name_target = getNameTarget($vip[$i]['target_id']);
