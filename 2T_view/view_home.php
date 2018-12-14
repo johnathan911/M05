@@ -333,12 +333,13 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 
 
             $("#datepicker_from").datepicker({
-                dateFormat: "dd/mm/yy",
+                dateFormat: "yy-mm-dd",
                 //showOn: "button",
                 //buttonImage: "images/calendar.jpg",
                 buttonImageOnly: false,
                 "onSelect": function(date) {
                     minDateFilter = new dateString2Date(date).getTime();
+                    console.log(minDateFilter);
                     table.draw();
                 }
             }).keyup(function() {
@@ -347,7 +348,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
             });
 
             $("#datepicker_to").datepicker({
-                dateFormat: "dd/mm/yy",
+                dateFormat: "yy-mm-dd",
                 //showOn: "button",
                 //buttonImage: "images/calendar.jpg",
                 buttonImageOnly: false,
@@ -410,8 +411,10 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
 
 
     function dateString2Date(dateString) {
-        var dt  = dateString.split(/\/|\s/);
-        return new Date(dt[1] + "/" + dt[0] + "/" + dt[2]);
+	    var tmp = dateString.split(" ");
+	    console.log(tmp[0]);
+        var dt  = tmp[0].split(/\-|\s/);
+        return new Date(dt[0] + "-" + dt[1] + "-" + dt[2]);
     }
 
 </script>
