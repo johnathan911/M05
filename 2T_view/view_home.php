@@ -81,6 +81,10 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                             <!--<select id="select" class="form-control input-sm">
                                 <option value=*> Tất cả </option>
                             </select>-->
+                            <p id="date_filter">
+                                <span id="date-label-from" class="date-label">Từ: </span><input class="date_range_filter date" type="text" id="datepicker_from" />
+                                <span style="margin-left: 1%" id="date-label-to" class="date-label">Đến:<input class="date_range_filter date" type="text" id="datepicker_to" />
+                            </p>
                             <table class="table table-bordered" width="100%" id="result-vip">
                                 <thead>
                                 <tr>
@@ -92,17 +96,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     <th>Nhóm</th>
                                 </tr>
                                 </thead>
-
-                                <tfoot>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên Facebook</th>
-                                    <th>Nội dung</th>
-                                    <th>Ngày đăng</th>
-                                    <th>L.C.S</th>
-                                    <th>Nhóm</th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -158,6 +151,11 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
         </div>
     </div>
 </section>
+
+<script data-require="jqueryui@*" data-semver="1.10.0" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/jquery-ui.js"></script>
+<link data-require="jqueryui@*" data-semver="1.10.0" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/css/smoothness/jquery-ui-1.10.0.custom.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.js" data-semver="1.9.4" data-require="datatables@*"></script>
+
 <script type="text/javascript" src="js/moreless.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -223,11 +221,12 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                         }
                     });
                 },
+
                 'ajax'       : {
                     "type"   : "POST",
                     "url"    : '2T_modun/modun_post.php?t=load-post',
                     "dataSrc": function (json) {
-                        console.log("done");
+                        console.log(json);
                         //console.log(json['data'][0][3]);
                         var return_data = new Array();
                         //console.log(json['data'].length);
@@ -251,10 +250,11 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 count++;
 
                         }
-                        console.log(return_data);
+                        //console.log(return_data);
                         return return_data;
                     }
                 },
+
                 "columns"    : [
                     {
                         'data': 'stt'
@@ -276,11 +276,12 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     }
 
                 ],
+
                 initComplete: function () {
                     this.api().columns(5).every( function () {
                         var column = this;
                         var select = $('<select><option value="">Tất cả</option></select>')
-                            .appendTo( $(column.footer()).empty() )
+                            .appendTo( $(column.header()).empty() )
                             .on( 'change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
@@ -327,7 +328,69 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "loadingRecords": "Đang tải...",
                     "emptyTable": "Không có gì để hiển thị",
                 }
+
             });
+
+
+            $("#datepicker_from").datepicker({
+                dateFormat: "dd/mm/yy",
+                //showOn: "button",
+                //buttonImage: "images/calendar.jpg",
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                    minDateFilter = new dateString2Date(date).getTime();
+                    table.draw();
+                }
+            }).keyup(function() {
+                minDateFilter = new dateString2Date(this.value).getTime();
+                table.draw();
+            });
+
+            $("#datepicker_to").datepicker({
+                dateFormat: "dd/mm/yy",
+                //showOn: "button",
+                //buttonImage: "images/calendar.jpg",
+                buttonImageOnly: false,
+                "onSelect": function(date) {
+                    maxDateFilter = new dateString2Date(date).getTime();
+                    table.draw();
+                }
+            }).keyup(function() {
+                maxDateFilter = new dateString2Date(this.value).getTime();
+                table.draw();
+            });
+
+
+
+        minDateFilter = "";
+        maxDateFilter = "";
+
+        $.fn.dataTableExt.afnFiltering.push(
+            function(oSettings, aData, iDataIndex) {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new dateString2Date(aData[3]).getTime();
+                    console.log(aData._date + "dkslfjakdfkfldkj");
+                }
+
+                if (minDateFilter && !isNaN(minDateFilter)) {
+                    if (aData._date < minDateFilter) {
+                        return false;
+                    }
+                }
+
+                if (maxDateFilter && !isNaN(maxDateFilter)) {
+                    if (aData._date > maxDateFilter) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        );
+
+
+        // Date range filter
+
         /*$(".dataTables_filter").append(select);
 
         /!*$('.dataTables_filter input').unbind().bind('keyup', function() {
@@ -343,4 +406,12 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
             }
         });*/
     }
+
+
+
+    function dateString2Date(dateString) {
+        var dt  = dateString.split(/\/|\s/);
+        return new Date(dt[1] + "/" + dt[0] + "/" + dt[2]);
+    }
+
 </script>

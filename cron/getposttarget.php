@@ -179,6 +179,10 @@ function check_token_target($id){
 	return 0;
 }
 function get_Post_by_token($fbid, $accessToken, $datefrom, $dateto){
+	$yesterday  = mktime(0, 0, 0, date("m")  , date("d")-1, date("Y"));
+	$yesterday = date ("m/d/y",$yesterday);
+	$datefrom = $yesterday;
+	$dateto = time();
 	$getPost = (file_get_contents('https://graph.facebook.com/'.$fbid.'/feed?&since='.$datefrom.'&until='.$dateto.'&access_token='.$accessToken));
 			return json_decode(($getPost),true);
 }
