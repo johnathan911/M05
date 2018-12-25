@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-require_once '../2T_config/config_server.php';
+require_once '/var/sentora/hostdata/zadmin/public_html/m05system_tk/2T_config/config_server.php';
 get_new_post();
 function get_new_post(){
 	global $conn;

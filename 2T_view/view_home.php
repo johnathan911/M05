@@ -1,4 +1,3 @@
-
 <?php
 $src = file_get_contents('2T_modun/notify.txt');
 $arr_src = explode("\n", $src);
@@ -197,14 +196,12 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 'fnDrawCallback': function AddReadMore() {
-
                     $(".m-more-less-content .m-show-more").click(function(){
                         $(this).parent().addClass("m-display-more");
                     });
                     $(".m-more-less-content .m-show-less").click(function(){
                         $(this).parent().removeClass("m-display-more");
                     });
-
                     $(".m-more-less-content").each(function (i, e){
                         var html = $(e).html();
                         var contentArray = html.split("<!--more-->");
@@ -221,7 +218,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                         }
                     });
                 },
-
                 'ajax'       : {
                     "type"   : "POST",
                     "url"    : '2T_modun/modun_post.php?t=load-post',
@@ -239,7 +235,6 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     content = '<div class="m-more-less-content">' + content.slice(0, 350) + '<!--more-->' + content.slice(350 + Math.abs(0)); + '</div>';
                                 }
                                 return_data.push({
-
                                     'stt': count,
                                     'name': json['data'][i][0],
                                     'content': '<div style="text-align:justify">' + content + '</div>',
@@ -248,13 +243,11 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     'group': json['data'][i][4]
                                 });
                                 count++;
-
                         }
                         //console.log(return_data);
                         return return_data;
                     }
                 },
-
                 "columns"    : [
                     {
                         'data': 'stt'
@@ -274,9 +267,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     {
                         'data': 'group'
                     }
-
                 ],
-
                 initComplete: function () {
                     this.api().columns(5).every( function () {
                         var column = this;
@@ -286,12 +277,10 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
                                 );
-
                                 column
                                     .search( val ? '^'+val+'$' : '', true, false )
                                     .draw();
                             } );
-
                         column.data().unique().sort().each( function ( d, j ) {
                             select.append( '<option value="'+d+'">'+d+'</option>' );
                         } );
@@ -328,38 +317,23 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                     "loadingRecords": "Đang tải...",
                     "emptyTable": "Không có gì để hiển thị",
                 }
-
             });
-
-
             $("#datepicker_from").datepicker({
-<<<<<<< HEAD
-                dateFormat: "dd/mm/yy",
-=======
                 dateFormat: "yy-mm-dd",
->>>>>>> 170a86d81d16545b149d6926e9a6a27f2dd10a89
                 //showOn: "button",
                 //buttonImage: "images/calendar.jpg",
                 buttonImageOnly: false,
                 "onSelect": function(date) {
                     minDateFilter = new dateString2Date(date).getTime();
-<<<<<<< HEAD
-=======
                     console.log(minDateFilter);
->>>>>>> 170a86d81d16545b149d6926e9a6a27f2dd10a89
                     table.draw();
                 }
             }).keyup(function() {
                 minDateFilter = new dateString2Date(this.value).getTime();
                 table.draw();
             });
-
             $("#datepicker_to").datepicker({
-<<<<<<< HEAD
-                dateFormat: "dd/mm/yy",
-=======
                 dateFormat: "yy-mm-dd",
->>>>>>> 170a86d81d16545b149d6926e9a6a27f2dd10a89
                 //showOn: "button",
                 //buttonImage: "images/calendar.jpg",
                 buttonImageOnly: false,
@@ -371,45 +345,33 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                 maxDateFilter = new dateString2Date(this.value).getTime();
                 table.draw();
             });
-
-
-
         minDateFilter = "";
         maxDateFilter = "";
-
         $.fn.dataTableExt.afnFiltering.push(
             function(oSettings, aData, iDataIndex) {
                 if (typeof aData._date == 'undefined') {
                     aData._date = new dateString2Date(aData[3]).getTime();
                     console.log(aData._date + "dkslfjakdfkfldkj");
                 }
-
                 if (minDateFilter && !isNaN(minDateFilter)) {
                     if (aData._date < minDateFilter) {
                         return false;
                     }
                 }
-
                 if (maxDateFilter && !isNaN(maxDateFilter)) {
                     if (aData._date > maxDateFilter) {
                         return false;
                     }
                 }
-
                 return true;
             }
         );
-
-
         // Date range filter
-
         /*$(".dataTables_filter").append(select);
-
         /!*$('.dataTables_filter input').unbind().bind('keyup', function() {
             var colIndex = document.querySelector('#select').selectedIndex;
             table.column( colIndex).search( this.value ).draw();
         });*!/
-
         $('#select').change(function() {
             if($('#select').val() == '*')
                 table.search('').draw();
@@ -418,14 +380,10 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
             }
         });*/
     }
-
-
-
     function dateString2Date(dateString) {
 	    var tmp = dateString.split(" ");
 	    console.log(tmp[0]);
         var dt  = tmp[0].split(/\-|\s/);
         return new Date(dt[0] + "-" + dt[1] + "-" + dt[2]);
     }
-
 </script>
