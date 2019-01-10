@@ -26,6 +26,50 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
+	if ($t === 'new_list_keyword') {
+		/*if (isAdmin() == 0) {
+			$return['error'] = 1;
+			$return['msg']   = 'Bạn không phải admin.';
+			die(json_encode($return));
+		}*/
+		$name = _p($_POST['name']);
+		$desc = _p($_POST['mota']);
+		$list_keyword = _p($_POST['list_keyword']);
+		if (check_list_keyword($name, $_SESSION['id']) === 0) {
+			if (add_list_keyword($name, $desc, $list_keyword, $_SESSION['id'])) {
+				$return['msg'] = 'Thêm mới bộ từ khóa '.$name.' thành công!';
+				die(json_encode($return));
+			} else {
+				$return['error'] = 1;
+				$return['msg']   = 'Không thể thêm bộ từ khóa này, xin vui lòng thử lại';
+				die(json_encode($return));
+			}
+		} else {
+			$return['error'] = 1;
+			$return['msg']   = 'Tên bộ từ khóa này đã tồn tại, xin thử tên khác';
+			die(json_encode($return));
+		}
+	}
+	if ($t === 'get_list_keyword') {
+		$data = array();
+		$gP = get_list_keyword($_SESSION['id']);
+		$long = count($gP);
+		$count = 0;
+		if ($gP != 0) {
+			for ($i=0; $i < $long; $i++) {
+				$data[] = array(
+					$count +1,
+					$gP[$i]['name'],
+					$gP[$i]['description'],
+					'<textarea disabled class="form-control" rows="3">'.$gP[$i]['list_keyword'].'</textarea>',
+					$gP[$i]['id']
+				);
+				$count ++;
+			}
+		}
+		$return = array('data' => $data);
+		die(json_encode($return));
+	}
 	if ($t === 'get_package_nhom') {
 		$data = array();
 		$gP = get_package_nhom($_SESSION['id']);
@@ -64,6 +108,26 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
+	if ($t === 'update_list_keyword') {
+		/*if (isAdmin() == 0) {
+			$return['error'] = 1;
+			$return['msg']   = 'Bạn không phải admin.';
+			die(json_encode($return));
+		}*/
+		$id = _p($_POST['id']);
+		$name = _p($_POST['name']);
+		$mota = _p($_POST['mota']);
+		$list_keyword = _p($_POST['list_keyword']);
+		if (update_list_keyword($id, $name, $mota, $list_keyword)) {
+			$return['msg'] = 'Chỉnh sử bộ từ khóa Thành Công!';
+			die(json_encode($return));
+		}
+		else{
+            $return['error'] = 1;
+            $return['msg']   = 'Đã phát sinh lỗi';
+            die(json_encode($return));
+		}
+	}
 	if ($t === 'update_package_nhom') {
 		/*if (isAdmin() == 0) {
 			$return['error'] = 1;
@@ -85,6 +149,9 @@ if($_REQUEST){
 	}
 	if ($t === 'get_name_package_nhom') {
 		die(json_encode(get_package_nhom($_SESSION['id'])));
+	}
+	if ($t === 'get_name_list_keyword') {
+		die(json_encode(get_name_list_keyword($_SESSION['id'])));
 	}
 // Add target
 	if($t === 'add_target'){
@@ -186,6 +253,27 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
+	if ($t === 'update-target-new') {
+		$fbid  = _p($_POST['fbid']);
+		$name = _p($_POST['name']);
+		$nhom = _p($_POST['nhom']);
+		$group_id = get_id_nhom($nhom, $_SESSION['id']);
+		$update = update_Target_new($fbid, $name, $nhom, $group_id, $_SESSION['id']);
+		if ($update == 1) {
+			$return['msg'] = "Thêm đối tượng ".$name." vào nhóm theo dõi ".$nhom." thành công";
+			die(json_encode($return));
+		}
+		if ($update == -1){
+			$return['error'] = 1;
+			$return['msg'] = "Đối tượng ".$name." đã có trong danh sách theo dõi. Vui lòng chỉnh sửa đối tượng khác !";
+			die(json_encode($return));
+		}
+		else {
+			$return['error'] = 1;
+			$return['msg'] = "Không Thể Chỉnh Sửa";
+			die(json_encode($return));
+		}
+	}
 	if ($t === 'update-friend') {
 		$tokens = Get_all_token();
 		if($tokens == 0){
@@ -252,6 +340,43 @@ if($_REQUEST){
 			die(json_encode($return));
 		}
 	}
+	if ($t === 'load-target-new') {
+		$vip = get_target_new($_SESSION['id']);
+		$target = get_target($_SESSION['id']);
+		$leng = count($target);
+		$data = array();
+		$long = count($vip);
+		$stt = 0;
+		if ($vip !== 0) {
+			for ($i=0; $i < $long; $i++) {
+				$kt=0;
+				for($j = 0; $j <$leng; $j++){
+					if($vip[$i]['target_new_fbid'] == $target[$j]['fbid']) 
+					{
+						$kt =1;
+						break;
+					}
+				}
+				if($kt==0){
+					$link1 = "https://www.facebook.com/". $vip[$i]['target_new_fbid'];
+					$link2	= "https://www.facebook.com/". $vip[$i]['target_fbid'];
+                    $data[] = array(
+						$stt +1,
+						'<a href="'.$link1.'" target="_blank" title="">'.$vip[$i]['target_new_name'].'</a>',
+						'<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['target_name'].'</a>',
+						0,
+						$vip[$i]['target_new_fbid'],
+						$vip[$i]['target_new_name'],
+						$vip[$i]['target_fbid'],
+						$vip[$i]['target_name']
+                    );
+					$stt ++;
+				}
+			}
+			$return = array('data' => $data);
+			die(json_encode($return));
+		}
+	}
     if ($t === 'get-name'){
         $fbid = _p($_POST['fbid']);
         $tokens = get_tokens_random(20);
@@ -284,6 +409,72 @@ if($_REQUEST){
         }
 
     }
+// Fill by keyword
+	/*if ($t === 'fill_by_keyword') {
+		$keyword_name = _p($_POST['keyword_name']);
+		$keyword = array();
+		$keyword_list = get_keyword_list($keyword_name);
+		$keyword = explode("\n",$keyword_list);
+		$datefrom = _p($_POST['datefrom']);
+		$dateto = _p($_POST['dateto']);
+		$vip = get_target_new($_SESSION['id']);
+		$target = get_target($_SESSION['id']);
+		$leng = count($target);
+		$data = array();
+		$long = count($vip);
+		$stt = 0;
+		if ($vip !== 0) {
+			for ($i=0; $i < $long; $i++) {
+				$kt=0;
+				for($j = 0; $j <$leng; $j++){
+					if($vip[$i]['target_new_fbid'] == $target[$j]['fbid']) 
+					{
+						$kt =1;
+						break;
+					}
+				}
+				if($kt==0){
+					$access_token = get_tokens_live_random ();
+					if($access_token == 0){
+						$return['error'] = 1;
+						$return['msg']   = 'Tất cả token trong hệ thống đều die!!!';
+						//$return['msg']   = strtotime($datefrom);
+						die(json_encode($return));
+					}
+					else{
+						$posts = getPost($vip[$i]['target_new_fbid'], $access_token, strtotime($datefrom), strtotime($dateto));
+						$tongpost =  count($posts);
+						$dem = 0; 
+						for($k = 0; $k< $tongpost; $k++){
+							for ($m = 0; $m <count($keyword); $m++){
+								$kw= str_replace(" ","\s",$keyword[$m]);
+								$kw= "*".$kw."*";
+								if (preg_match(strtolower($kw), strtolower($posts[$k]['message']), $match)) :
+									$dem++;
+									break;
+								endif;
+							}
+						}
+						$tyle = (float) ($dem/$tongpost)*100."%";
+						$link1 = "https://www.facebook.com/". $vip[$i]['target_new_fbid'];
+						$link2	= "https://www.facebook.com/". $vip[$i]['target_fbid'];
+						$data[] = array(
+							$stt +1,
+							'<a href="'.$link1.'" target="_blank" title="">'.$vip[$i]['target_new_name'].'</a>',
+							'<a href="'.$link2.'" target="_blank" title="">'.$vip[$i]['target_name'].'</a>',
+							$tyle,
+							$vip[$i]['target_new_fbid'],
+							$vip[$i]['target_new_name'],
+							$vip[$i]['target_fbid'],
+							$vip[$i]['target_name']
+						);
+						$stt ++;
+					}
+					
+				}
+			}
+		}
+	}*/
 // Search by Keyword
 	if ($t === 'search_keyword') {
         //echo "<script type='text/javascript'>alert('abc');</script>";
@@ -387,12 +578,19 @@ if($_REQUEST){
                         $content = str_replace("\n", "<br>", $vip[$i]['content']);
                         $data[] = array(
 
-                            $name_user_post . '</br>' . $vip[$i]['privacy'], //$vip[$i]['targetname'],
+                            $name_user_post . '</br>' .$vip[$i]['type'].'</br>' . $vip[$i]['privacy'], //$vip[$i]['targetname'],
                             $content,
                             $vip[$i]['time_post'],
                             '<font color="blue">'. $vip[$i]['luot_thich'] .'</font>' . ':' . '<font color="green">'. $vip[$i]['luot_comment'] .'</font>' . ':' . '<font color="red">'. $vip[$i]['luot_share'] .'</font>',
                             $vip[$i]['groupname'],//$group[$j]['name'],
-                            $vip[$i]['id_post']//'<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $link . '</a></br>'
+                            $vip[$i]['id_post'],//'<a href="' . $link . '" target="_blank" title="Click để vào bài viết">' . $link . '</a></br>'
+							$vip[$i]['type'],
+							$vip[$i]['picture'],
+							$vip[$i]['link'],
+							$vip[$i]['video'],
+							$vip[$i]['title'],
+							$vip[$i]['caption'],
+							$vip[$i]['description']
                         );
 
                     //}

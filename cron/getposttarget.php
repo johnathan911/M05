@@ -10,6 +10,7 @@ function get_new_post(){
 	//echo mysqli_num_rows($vip).' ';
 	if ($vip) {
 		while ($row = mysqli_fetch_assoc($vip)) {
+			$kt = 0;
 			$TOKEN = array();
 			$now = time();
 			$id = $row['id']; // id target
@@ -27,6 +28,8 @@ function get_new_post(){
 					$checkToken = checkToken($token['access_token']);
 					if ($checkToken == 1) {
 						$ACCESS_TOKEN = $token['access_token'];
+						$now = time();
+						mysqli_query ($conn, "UPDATE access_token SET last_use = '$now' WHERE access_token = '$t'");
 						$kt= 1;
 						break;
 					}
@@ -43,6 +46,7 @@ function get_new_post(){
 					$checkToken = checkToken($token['access_token']);
 					if ($checkToken == 1) {
 						$ACCESS_TOKEN = $token['access_token'];
+						mysqli_query ($conn, "UPDATE access_token SET last_use = '$now' WHERE access_token = '$t'");
 						$kt= 1;
 						break;
 					}
@@ -227,8 +231,9 @@ function checkToken($token){
 	return 0;
 }
 function check_token_target($id){
-	global $conn; 
-	$result = mysqli_query ($conn, "SELECT * FROM access_token WHERE id in (SELECT token_id FROM tbl_token_target WHERE target_id = '$id')");
+	global $conn;
+	$t = time() - 60*5;
+	$result = mysqli_query ($conn, "SELECT * FROM access_token WHERE id in (SELECT token_id FROM tbl_token_target WHERE target_id = '$id') AND last_use < '$t'");
 	if(mysqli_num_rows($result) > 0){
 		return $result;
 	}
@@ -258,7 +263,8 @@ function count_time_to_current_in_day($now){
 }
 function get_tokens_random($limit){
     global $conn;
-    return mysqli_query($conn, "SELECT access_token FROM access_token ORDER BY RAND() LIMIT ".$limit);
+	$t = time() - 60*5;
+    return mysqli_query($conn, "SELECT access_token FROM access_token WHERE last_use < '$t' ORDER BY RAND() LIMIT ".$limit);
 }
 function has_used($token){
 	global $conn;

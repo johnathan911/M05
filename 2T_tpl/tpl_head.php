@@ -111,7 +111,7 @@
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">thumb_up</i>
-                            <span>CHỨC NĂNG CHÍNH</span>
+                            <span>CHỨC NĂNG CHÍNH 1</span>
                         </a>
                         <ul class="ml-menu">
 							<li>
@@ -124,10 +124,19 @@
                                 <a href="?act=manage-target">QUẢN LÝ ĐỐI TƯỢNG</a>
                             </li>
 							<li>
+                                <a href="?act=add-feed-site">THÊM TRANG LẤY TỪ KHÓA</a>
+                            </li>
+                        </ul>
+						<a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">thumb_up</i>
+                            <span>CHỨC NĂNG CHÍNH 2</span>
+                        </a>
+						 <ul class="ml-menu">
+							<li>
                                 <a href="?act=manage-new-target">XEM DS ĐỐI TƯỢNG MỚI</a>
                             </li>
 							<li>
-                                <a href="?act=add-feed-site">THÊM TRANG LẤY TỪ KHÓA</a>
+                                <a href="?act=add-list-keyword">THÊM BỘ TỪ KHÓA</a>
                             </li>
                         </ul>
                     </li>

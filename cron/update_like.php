@@ -4,11 +4,12 @@ require_once '/var/sentora/hostdata/zadmin/public_html/m05system_tk/2T_config/co
 get_new_post();
 function get_new_post(){
 	global $conn;
-	$t = time () -60*10;
+	$t = time () -60*60*5;
 	$t2 = time() - 60*60*24*7;
 	$post = mysqli_query($conn, "SELECT * FROM post_keyword WHERE last_update_like <'$t' AND time_post > '$t2' ORDER BY RAND() ");
 	if ($post) {
 		while ($row = mysqli_fetch_assoc($post)) {
+			$kt =0;
 			$TOKEN = array();
 			$now = time();
 			$id = $row['target_id'];
@@ -23,6 +24,7 @@ function get_new_post(){
 					$checkToken = checkToken($token['access_token']);
 					if ($checkToken == 1) {
 						$ACCESS_TOKEN = $token['access_token'];
+						mysqli_query ($conn, "UPDATE access_token SET last_use = '$now' WHERE access_token = '$t'");
 						$kt= 1;
 						break;
 					}
@@ -39,6 +41,7 @@ function get_new_post(){
 					$checkToken = checkToken($token['access_token']);
 					if ($checkToken == 1) {
 						$ACCESS_TOKEN = $token['access_token'];
+						mysqli_query ($conn, "UPDATE access_token SET last_use = '$now' WHERE access_token = '$t'");
 						$kt= 1;
 						break;
 					}
@@ -109,8 +112,9 @@ function checkToken($token){
 	return 0;
 }
 function check_token_target($id){
-	global $conn; 
-	$result = mysqli_query ($conn, "SELECT * FROM access_token WHERE id in (SELECT token_id FROM tbl_token_target WHERE target_id = '$id')");
+	global $conn;
+	$t = time() - 60*5;
+	$result = mysqli_query ($conn, "SELECT * FROM access_token WHERE id in (SELECT token_id FROM tbl_token_target WHERE target_id = '$id') AND last_use < '$t'");
 	if(mysqli_num_rows($result) > 0){
 		return $result;
 	}
@@ -136,7 +140,8 @@ function count_time_to_current_in_day($now){
 }
 function get_tokens_random($limit){
     global $conn;
-    return mysqli_query($conn, "SELECT access_token FROM access_token ORDER BY RAND() LIMIT ".$limit);
+	$t = time() - 60*5;
+    return mysqli_query($conn, "SELECT access_token FROM access_token WHERE last_use < '$t' ORDER BY RAND() LIMIT ".$limit);
 }
 function has_used($token){
 	global $conn;

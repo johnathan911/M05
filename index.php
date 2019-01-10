@@ -51,6 +51,9 @@ if ($_GET['act']) {
 	if ($_GET['act'] == 'search-post') {
 		require_once '2T_view/search_post.php';
 	}
+	if ($_GET['act'] == 'add-list-keyword') {
+		require_once '2T_view/add_list_keyword.php';
+	}
 	// Modun cu
 	if ($_GET['act'] == 'change-pass') {
 		require_once '2T_view/view_change_pass.php';

@@ -7,37 +7,71 @@
                             <h2>
                                <i class="fa fa-bars" aria-hidden="true"></i> Quản lý đối tượng mới<small>Danh sách các đối tượng mới đáng chú ý</small>
                             </h2>
-                            <ul class="header-dropdown m-r--5" style="display: none;" id="btn-action">
-                                <button type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target="#edit-vip"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</button>
-                                <button type="button" class="btn btn-danger waves-effect" onclick="del_target()">Xóa</button>
-
-                            </ul>
-                        </div>
-                        <div class="body table-responsive">
-                            <table class="table table-bordered" width="100%" id="result-vip">
-                                <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Facebook ID</th>
-                                    <th>Tên</th>
-                                    <th>Nhóm</th>
-                                    <th>abc</th>
-                                </tr>
-                                </thead>
-
-                                <tfoot>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Facebook ID</th>
-                                    <th>Tên</th>
-                                    <th>Nhóm</th>
-                                    <th>abc</th>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-						
-                    </div>
+							<div class="row clearfix add-package">
+									<div class="col-md-4">
+										<label for="input" class="control-label">Từ ngày</label>
+										<div class="form-group">
+											<div class="form-line">
+												<input type="date" id="datefrom" class="form-control" placeholder="Nhập từ khóa cần tìm">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label for="input" class="control-label">Đến ngày</label>
+										<div class="form-group">
+											<div class="form-line">
+												<input type="date" id="dateto" class="form-control" placeholder="Nhập từ khóa cần tìm">
+											</div>
+										</div>
+									</div>
+									 <div class="col-md-4">
+										<div class="form-group">
+											<label for="keyword_list" class="control-label">Chọn bộ từ khóa</label>
+											<select name="" id="keyword_list" onchange="update()" class="form-control" required="required">
+											</select>
+										</div>
+									</div>
+									<div class="col-md-12 text-center">
+										<button type="button" class="btn btn-success waves-effect" id="btn1" onclick="search();"><i class="fa fa-plus-square" aria-hidden="true"></i> Lọc theo bộ từ khóa</button>
+									</div>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="card animated bounceIn">
+									<div class="header">
+										<h2>
+										   <i class="fa fa-bars" aria-hidden="true"></i> Danh sách đối tượng mới liên quan đến bộ từ khóa<small></small>
+										</h2>
+										<ul class="header-dropdown m-r--5" style="display: none;" id="btn-action">
+											<button type="button" class="btn btn-primary waves-effect" data-toggle="modal" data-target="#edit-vip"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</button>
+											<button type="button" class="btn btn-danger waves-effect" onclick="del_target()">Xóa</button>
+										</ul>
+									</div>
+									<div class="body table-responsive">
+										<table class="table table-bordered" width="100%" id="result-vip">
+											<thead>
+												<tr>
+													<th>STT</th>
+													<th>Đối tượng mới</th>
+													<th>FB Quan hệ</th>
+													<th>Tỷ lệ bài viết</th>
+												</tr>
+											</thead>
+											<tfoot>
+												<tr>
+													<th>STT</th>
+													<th>Đối tượng mới</th>
+													<th>FB Quan hệ</th>
+													<th>Tỷ lệ bài viết</th>
+												</tr>
+											</tfoot>
+										</table>
+									</div>			
+								</div>
+							</div>
+						</div>
+					</div>
                 </div>
             </div>
             <div id="show-modal">
@@ -78,7 +112,7 @@
                         <div class="modal-dialog" role="document">\
                             <div class="modal-content">\
                                 <div class="modal-header">\
-                                    <h4 class="modal-title">Chỉnh Sửa Thông tin đối tượng '+data[0][2]+'</h4>\
+                                    <h4 class="modal-title">Chỉnh Sửa Thông tin đối tượng '+data[0][5]+'</h4>\
                                 </div>\
                                 <div class="modal-body">\
                                     <div class="row clearfix">\
@@ -88,7 +122,7 @@
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
                                             <div class="form-group">\
                                                 <div class="form-line">\
-                                                    <input type="text" disabled id="name-up" class="form-control" value="'+data[0][2]+'">\
+                                                    <input type="text" disabled id="name-up" class="form-control" value="'+data[0][5]+'">\
                                                 </div>\
                                             </div>\
                                         </div>\
@@ -100,14 +134,14 @@
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
                                             <div class="form-group">\
                                                 <div class="form-line">\
-                                                    <input type="text" disabled id="fbid-up" class="form-control" value="'+data[0][1]+'">\
+                                                    <input type="text" disabled id="fbid-up" class="form-control" value="'+data[0][4]+'">\
                                                 </div>\
                                             </div>\
                                         </div>\
                                     </div>\
 									 <div class="row clearfix">\
                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">\
-                                            <label for="package-nhom">CHỌN NHÓM</label>\
+                                            <label for="package-nhom">THÊM VÀO NHÓM</label>\
                                         </div>\
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">\
                                             <div class="form-group">\
@@ -124,6 +158,7 @@
 							</div>\
 						</div>';
                     $("#show-modal").html(tpl);
+					get_package_nhom();
                     get_package();
                     $('[data-toggle="tooltip"]').tooltip();
                 }
@@ -181,7 +216,7 @@
                 }
             })
 		}
-        function get_package(){
+		function get_package_nhom(){
             var option = '';
             var table  = '';
             $.ajax({
@@ -204,6 +239,63 @@
                 }
             })
         }
+		function search(){
+            var keyword_name = $("#keyword_list").val();
+			var datefrom = $("#datefrom").val();
+			var dateto = $("#dateto").val();
+			if (!keyword_name||!datefrom||!dateto) {
+                showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
+                return;
+            }
+            console.log('send');
+            $("#btn1").html('<i class="fa fa-refresh fa-spin"></i> Vui Lòng Đợi');
+            $.ajax({
+                url     : prefix+modun+ '/modun_post.php',
+                type    : 'POST',
+                dataType: 'JSON',
+                data    : {
+					t           : 'fill_by_keyword',
+                    keyword_name          : keyword_name,
+                    datefrom         : datefrom,
+                    dateto       : dateto
+                },
+                success : (data) => {
+                    $("#btn1").html('<i class="fa fa-check-square-o" aria-hidden="true"></i> Hoàn Thành');
+                    if (data.error) {
+                        showNotification('bg-red', data.msg);
+                    } else {
+                        showNotification('bg-green', data.msg);
+                        load_vip();
+                    }
+                    setTimeout(function(){
+                        $('#edit-package').modal('hide');
+                    }, 1000);
+                }
+            })
+        }
+        function get_package(){
+            var option = '';
+            var table  = '';
+            $.ajax({
+                url     : prefix+modun+ '/modun_post.php',
+                type    : 'POST',
+                dataType: 'JSON',
+                data    : {
+                    t           : 'get_name_list_keyword',
+                },
+                success : (data) => {
+                    _PACKAGE = data;
+                    $.each(data, (i, item) => {
+                        option += '<option value="'+item.name+'">'+item.name+'</option>';
+                    })
+
+                    setTimeout(function(){
+                        $("#keyword_list").html(option);
+                        $("#table-nhom").html(table);
+                    }, 500);
+                }
+            })
+        }
         function trim(s){
             while (s.substring(0,1) == "|"){
                 s = s.substring(1, s.length);
@@ -215,11 +307,9 @@
         }
         function update_target(){
             var data = $("#result-vip").DataTable().rows('.active').data();
-            var old_name = data[0][3];
             var fbid = $("#fbid-up").val();
             var name = $("#name-up").val();
             var nhom = $("#package-nhom").val();
-			var id = data[0][5];
             if (!name||!fbid||!nhom) {
                 showNotification('bg-red','Vui Lòng Điền Đầy Đủ Thông Tin!');
                 return;
@@ -230,10 +320,10 @@
                 type    : 'POST',
                 dataType: 'JSON',
                 data    : {
-                    t           : 'update-target',
-					id          :  id ,
+                    t           : 'update-target-new',
+					fbid		: fbid,
                     nhom         : nhom,
-                    old_name       : old_name
+					name		: name
                 },
                 success : (data) => {
                     $("#btn2").html('<i class="fa fa-check-square-o" aria-hidden="true"></i> Hoàn Thành');
@@ -292,7 +382,7 @@
         function load_vip(){
             $('#result-vip').DataTable({
                 destroy: true,
-                "ajax": '2T_modun/modun_post.php?t=load-target',
+                "ajax": '2T_modun/modun_post.php?t=load-target-new',
                 /*"columns": [{
                         title: "STT"
                     },

@@ -1,7 +1,22 @@
 <?php
 require_once '../2T_config/config_server.php';
 //Theo dõi Facebook
-
+function check_list_keyword($name, $user_id) {
+	global $conn;
+	$result = mysqli_query($conn, "SELECT id FROM keyword_list WHERE name = '$name' AND user_id = $user_id");
+	if (mysqli_num_rows($result) > 0)
+		return 1;
+	return 0;
+}
+function add_list_keyword($name, $desc, $list_keyword, $user_id) {
+	global $conn;
+	$t = time();
+	$t = date ('Y-m-d H:i:s',$t);
+	$result = mysqli_query($conn, "INSERT INTO keyword_list (name, description, list_keyword, user_id) VALUES ('$name', '$desc', '$list_keyword', '$user_id')");
+	if ($result)
+		return 1;
+	return 0;
+}
 function check_package($name, $user_id) {
 	global $conn;
 	$result = mysqli_query($conn, "SELECT id FROM package_nhom WHERE name = '$name' AND user_id = $user_id");
@@ -16,6 +31,30 @@ function add_package($name, $desc, $user_id) {
 	$result = mysqli_query($conn, "INSERT INTO package_nhom (name, description, user_id, create_time) VALUES ('$name', '$desc', '$user_id', '$t')");
 	if ($result)
 		return 1;
+	return 0;
+}
+function get_list_keyword($user_id) {
+	global $conn;
+	$return = array();
+	$result = mysqli_query($conn, "SELECT * FROM keyword_list WHERE user_id = '$user_id' ");
+	if (mysqli_num_rows($result) > 0) {
+		while ($row = mysqli_fetch_assoc($result)) {
+			$return[] = $row;
+		}
+		return $return;
+	}
+	return 0;
+}
+function get_name_list_keyword($user_id) {
+	global $conn;
+	$return = array();
+	$result = mysqli_query($conn, "SELECT * FROM keyword_list WHERE user_id = '$user_id' ");
+	if (mysqli_num_rows($result) > 0) {
+		while ($row = mysqli_fetch_assoc($result)) {
+			$return[] = $row;
+		}
+		return $return;
+	}
 	return 0;
 }
 function get_package_nhom($user_id) {
@@ -57,6 +96,13 @@ function delete_package_nhom($id) {
 	$result2 = mysqli_query($conn, "DELETE FROM tbl_group_target WHERE group_id = '$id'");
 	$result3 = mysqli_query($conn, "DELETE FROM package_nhom WHERE id = '$id'");
 	if ($result0 || $result1 || $result2 || $result3)
+		return 1;
+	return 0;
+}
+function update_list_keyword($id, $name, $mota, $list_keyword) {
+	global $conn;
+	$result = mysqli_query($conn, "UPDATE keyword_list SET name = '$name', description = '$mota', list_keyword = '$list_keyword' WHERE id = '$id'");
+	if ($result)
 		return 1;
 	return 0;
 }
@@ -171,6 +217,22 @@ function get_target($user_id) {
 		return $return;
 	}
 }
+function get_target_new($user_id) {
+	global $conn;
+	$return = array();
+	/*if ($name_manager == 'admin') {
+		$result = mysqli_query($conn, "SELECT * FROM target");
+	} else {
+		$result = mysqli_query($conn, "SELECT * FROM target WHERE manager = '$name_manager'");
+	}*/
+	$result = mysqli_query ($conn, "SELECT target.fbid as target_fbid, target.id as target_id, target.name as target_name, target_new.fbid as target_new_fbid, target_new.name as target_new_name, target_new.fbid_target_lien_quan FROM target, package_nhom, tbl_group_target, target_new WHERE target_new.fbid_target_lien_quan = target.fbid AND target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND package_nhom.user_id = '$user_id'"); // '
+	if (mysqli_num_rows($result) > 0) {
+		while ($row = mysqli_fetch_assoc($result)) {
+			$return[] = $row;
+		}
+		return $return;
+	}
+}
 function updateTarget($id, $nhom, $group_id_old, $user_id){
 	global $conn;
 	$idnhom = get_id_nhom($nhom, $user_id);
@@ -178,6 +240,31 @@ function updateTarget($id, $nhom, $group_id_old, $user_id){
 	if ($result2)
 		return 1;
 	return 0;
+}
+function update_Target_new($fbid, $name, $nhom, $group_id, $user_id){
+	global $conn;
+	//$idnhom = get_id_nhom($nhom, $user_id);
+	$select =  mysqli_query ($conn, "SELECT * FROM target WHERE fbid = '$fbid' LIMIT 1");
+	if (mysqli_num_rows($select) == 0) {
+		$insert = mysqli_query ($conn, "INSERT INTO target (fbid,name) VALUES ('$fbid', '$name')");
+		$select =  mysqli_query ($conn, "SELECT * FROM target WHERE fbid = '$fbid' LIMIT 1");
+		$row = mysqli_fetch_assoc ($select);
+		$target_id = $row['id']; 
+		$insert2 = mysqli_query ($conn, "INSERT INTO tbl_group_target (group_id,target_id) VALUES ('$group_id', '$target_id')");
+		if ($insert2)
+			return 1;
+		return 0;
+	}
+	else{
+		$select =  mysqli_query ($conn, "SELECT * FROM target WHERE fbid = '$fbid' LIMIT 1");
+		$row = mysqli_fetch_assoc ($select);
+		$target_id = $row['id']; 
+		$insert2 = mysqli_query ($conn, "INSERT INTO tbl_group_target (group_id,target_id) VALUES ('$group_id', '$target_id')");
+		if ($insert2)
+			return 1;
+		return 0;
+	}
+		return -1;
 }
 function Get_all_token(){
 	global $conn;
@@ -246,6 +333,15 @@ function get_id_group_by_name($name_group, $user_id){
     return 0;
 }
 // Search Keyword
+function get_keyword_list($keyword_name){
+    global $conn;
+    $result = mysqli_query($conn, "SELECT * FROM keyword_list WHERE name = '$keyword_name'");
+    if (mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_assoc($result);
+        return $row['list_keyword'];
+    }
+    return 0;
+}
 function xoa_post_by_user($user){
 	global $conn;
 	$result = mysqli_query($conn, "DELETE FROM post_keyword WHERE manager = '$user' ");
@@ -318,7 +414,15 @@ function checkToken($token){
     }
     return 0;
 }
-
+function get_tokens_live_random(){
+    global $conn;
+	$tokens = mysqli_query($conn, "SELECT access_token FROM access_token ORDER BY RAND");
+    while($token = mysqli_fetch_assoc ($tokens)){
+		if( checkToken($token['access_token']) == 1 )
+			return $token['access_token'];
+	}
+	return 0;
+}
 function get_tokens_random($limit){
     global $conn;
     return mysqli_query($conn, "SELECT access_token FROM access_token ORDER BY RAND() LIMIT ".$limit);
@@ -342,7 +446,7 @@ function dem_post_theo_tu_khoa($user){
 function load_post($user_id) {
 	global $conn;
 	$return = array();
-	$result = mysqli_query($conn, "SELECT target.name as targetname, target.fbid as targetid, post_keyword.name as content, post_keyword.luot_thich, post_keyword.luot_comment, post_keyword.luot_share, post_keyword.time_post, package_nhom.name as groupname, post_keyword.id_post, post_keyword.id_user_post, post_keyword.name_user_post, privacy FROM post_keyword, target, package_nhom, tbl_group_target  WHERE post_keyword.target_id = target.id AND target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND package_nhom.user_id = '$user_id' ORDER BY time_post");
+	$result = mysqli_query($conn, "SELECT target.name as targetname, target.fbid as targetid, post_keyword.name as content, post_keyword.luot_thich, post_keyword.luot_comment, post_keyword.luot_share, post_keyword.time_post, package_nhom.name as groupname, post_keyword.id_post, post_keyword.id_user_post, post_keyword.name_user_post, privacy, type, post_detail.picture, post_detail.link, post_detail.video, post_detail.title, post_detail.caption, post_detail.description FROM post_keyword, target, package_nhom, tbl_group_target, post_detail  WHERE post_keyword.target_id = target.id AND post_detail.id_post = post_keyword.id_post AND target.id = tbl_group_target.target_id AND tbl_group_target.group_id = package_nhom.id AND package_nhom.user_id = '$user_id' ORDER BY time_post");
 	if (mysqli_num_rows($result) > 0) {
 		while ($row = mysqli_fetch_assoc($result)) {
 			$return[] = $row;
