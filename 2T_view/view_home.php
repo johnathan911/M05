@@ -241,7 +241,7 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                                     var img_arr = json['data'][i][7].split("\n");
                                     for(var j = 0; j < img_arr.length; j++){
                                         var img = img_arr[j].split("|");
-                                        content = content + '</br>' + '<img class = "two" src=' + img[0] + ' >';
+                                        content = content + '</br>' + '<img style="display:block; width:100%; height:auto" src=' + img[0] + ' >';
                                     }
                                 }
 
