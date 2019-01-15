@@ -1,8 +1,7 @@
 <?php
-	/*$xml = simplexml_load_file("https://chantroimoimedia.com/feed/");
-	foreach($xml->channel->item as $itm){
-		$title = $itm->title;
-		echo $title.'<br>';
-	}*/
-echo time().' '.strtotime("2018/11/30");
+$yesterday  = mktime(0, 0, 0, date("m")  , date("d")-1, date("Y"));
+		$yesterday = date ("m/d/y",$yesterday);
+		$yesterdaytime = strtotime($yesterday);
+		//$date = getdate();
+		echo $yesterdaytime.' '.time().' '.strtotime('1/14/19');
 ?>
