@@ -6,10 +6,6 @@ select#select {
   display: inline-block;
 }
 
-img.two {
-  height: 50%;
-  width: 50%;
-}
 .m-more-less-content span {
     display: inline;
 }
