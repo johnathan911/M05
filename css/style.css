@@ -4569,10 +4569,19 @@ section.content {
   margin-bottom: 0; }
 
 /* Tables ====================================== */
+table{
+  margin: 0 auto;
+  width: 100%;
+  clear: both;
+  border-collapse: collapse;
+  table-layout: fixed; // ***********add this
+word-wrap:break-word; // ***********and this
+}
 .table tbody tr td, .table tbody tr th {
   padding: 10px;
   border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee; }
+  border-bottom: 1px solid #eee;
+}
 
 .table tbody tr.primary td, .table tbody tr.primary th {
   background-color: #1f91f3;

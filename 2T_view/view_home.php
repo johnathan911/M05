@@ -229,19 +229,22 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                         var count = 1;
                         var content;
                         for(var i=0;i< json['data'].length; i++){
+
                                 link = '<a href="https://www.facebook.com/' + json['data'][i][5] + '" target="_blank" title="Click để vào bài viết">https://www.facebook.com/' + json['data'][i][5] + '</a></br>';
                                 content = link + json['data'][i][1];
-								content = content + '</br>';
-								if(json['data'][i][6] == 'photo'){
-									var img_arr = json['data'][i][7].split("\n");
-									for(var j = 0; j < img_arr.length; j++){
-										var img = img_arr[j].split("|");
-										content = content + '</br>' + '<img class = "two" src=' + img[0] + ' >';
-									}
-								}
+                            
                                 if (content.length > 400){
-                                    content = '<div class="m-more-less-content">' + content.slice(0, 400) + '<!--more-->' + content.slice(350 + Math.abs(0)); + '</div>';
+                                    content = '<div class="m-more-less-content">' + content.slice(0, 400) + '<!--more-->' + content.slice(350 + Math.abs(0)) + '</div>';
                                 }
+                                content += '</br>';
+                                if(json['data'][i][6] == 'photo'){
+                                    var img_arr = json['data'][i][7].split("\n");
+                                    for(var j = 0; j < img_arr.length; j++){
+                                        var img = img_arr[j].split("|");
+                                        content = content + '</br>' + '<img class = "two" src=' + img[0] + ' >';
+                                    }
+                                }
+
                                 return_data.push({
                                     'stt': count,
                                     'name': json['data'][i][0],
@@ -256,6 +259,14 @@ for ($i=count($arr_src)-2; $i >= 0; $i--) {
                         return return_data;
                     }
                 },
+                "columnDefs": [
+                    { "width": "5%", "targets": 0 },
+                    { "width": "10%", "targets": 1 },
+                    { "width": "55%", "targets": 2 },
+                    { "width": "10%", "targets": 3 },
+                    { "width": "10%", "targets": 4 },
+                    { "width": "10%", "targets": 5 }
+                ],
                 "columns"    : [
                     {
                         'data': 'stt'
