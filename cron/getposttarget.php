@@ -75,9 +75,23 @@ function get_new_post(){
 							//echo 'STORY is '.$story.' '.strpos($story, 'shared').' '. substr($story,8, strlen($story) -7).' ';
 							$noidung = $getPost['data'][$i]['message'];
 							$type = $getPost['data'][$i]['type'];
-							if (strpos($story, 'shared') > 0) $type = substr($story,strpos($story, 'shared'), strlen($story) - strpos($story, 'shared') -1);
+							$ktsharepost = 0;
+							if (strpos($story, 'shared') > 0) {
+								$type = substr($story,strpos($story, 'shared'), strlen($story) - strpos($story, 'shared') -1);
+								if(strpos($story, 'shared a post') > 0
+									$ktsharepost =1;
+							}
 							//echo "TYPPE is ".$type.' ';
 							$description = $getPost['data'][$i]['description'];
+							$user_id_post='';
+							$name_post = '';
+							if($ktsharepost == 1){
+								$tmp = $getPost['data'][$i]['story_tags'][1]['id'];
+								$tmparr= array();
+								$tmparr = explode("_",$tmp);
+								$user_id_post = $tmparr[0];
+								$name_post = GetFbName($ACCESS_TOKEN, $user_id_post);
+							}
 							if($noidung !="" || $description !="" ){
 								$privacy = $getPost['data'][$i]['privacy']['value'];
 								$datecreate = $getPost['data'][$i]['created_time'];
@@ -87,7 +101,7 @@ function get_new_post(){
 								$shares = 0;
 								// Get Ảnh và video trong bài viết
 								$count_attachments= count($getPost['data'][$i]['attachments']['data']['subattachments']['data']);
-								if($count_attachments>0){
+								if($count_attachments>0){ // Có đính kèm ảnh hoặc video
 									$link= $getPost['data'][$i]['link'];
 									$title= $getPost['data'][$i]['attachments']['data']['subattachments']['data']['title'];
 									$caption=$getPost['data'][$i]['caption'];
@@ -100,7 +114,9 @@ function get_new_post(){
 											array_push($picture_arr,$tmppt);
 										}
 										if($getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['type'] == "video"){
-											$tmppt = $getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['url'].'|'.$getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['media']['image']['height'].'|'.$getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['media']['image']['width'];
+											$url = $getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['url'];
+											$scoure_video = GetScoureVideo($url,$ACCESS_TOKEN);
+											$tmppt = $scoure_video.'|'.$getPost['data'][$i]['attachments']['data'][''subattachments]['data'][$j]['media']['image']['height'].'|'.$getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['media']['image']['width'];
 											array_push($video_arr,$tmppt);
 										}
 									}
@@ -109,7 +125,7 @@ function get_new_post(){
 									//echo $sttID.' '.$picture.' '.$video.' '.$link.' '.$title.' '.$caption.' '.$description.'</br>';
 									$insert = mysqli_query($conn, "INSERT INTO post_detail (id_post, picture,link, video, title, caption, description) VALUES ('$sttID', '$picture', '$link', '$video', '$title', '$caption', '$description')");// Chỉnh lại cho đúng bảng
 								}
-								else{
+								else{ // Không đính kèm ảnh video
 									$count_attachments = count($getPost['data'][$i]['attachments']['data']);
 									$picture_arr= array();
 									$video_arr= array();
@@ -124,14 +140,15 @@ function get_new_post(){
 											array_push($picture_arr,$tmppt);
 										}
 										if($getPost['data'][$i]['attachments']['data'][$j]['type'] == "video" || $getPost['data'][$i]['attachments']['data'][$j]['type'] == "share"){
-											$tmppt = $getPost['data'][$i]['attachments']['data'][$j]['url'].'|'.$getPost['data'][$i]['attachments']['data'][$j]['media']['image']['height'].'|'.$getPost['data'][$i]['attachments']['data'][$j]['media']['image']['width'];
+											$url = $getPost['data'][$i]['attachments']['data'][$j]['url'];
+											$scoure_video = GetScoureVideo($url,$ACCESS_TOKEN);
+											$tmppt = $scoure_video.'|'.$getPost['data'][$i]['attachments']['data'][$j]['media']['image']['height'].'|'.$getPost['data'][$i]['attachments']['data'][$j]['media']['image']['width'];
 											array_push($video_arr,$tmppt);
 										}
 									}
 									$picture = implode("\n",$picture_arr);
 									$video = implode("\n",$video_arr);
-									//echo $sttID.' '.$picture.' '.$video.' '.$link.' '.$title.' '.$caption.' '.$description.'</br>';
-									$insert = mysqli_query($conn, "INSERT INTO post_detail (id_post, picture,link, video, title, caption, description) VALUES ('$sttID', '$picture', '$link', '$video', '$title', '$caption', '$description')");// Chỉnh lại cho đúng bảng
+									$insert = mysqli_query($conn, "INSERT INTO post_detail (id_post, picture,link, video, title, caption, description,user_id_post,name_post) VALUES ('$sttID', '$picture', '$link', '$video', '$title', '$caption', '$description', '$user_id_post', '$name_post')");// Chỉnh lại cho đúng bảng
 								}
 								if($getContentPost['likes']['count'] != 0) $likes = $getContentPost['likes']['count'];
 								if($getContentPost['comments']['count'] != 0) $comments = $getContentPost['comments']['count'];
@@ -244,7 +261,7 @@ function get_Post_by_token($fbid, $accessToken, $datefrom, $dateto){
 	$yesterday = date ("m/d/y",$yesterday);
 	$datefrom = $yesterday;
 	$dateto = time();
-	$getPost = (file_get_contents('https://graph.facebook.com/v2.1/'.$fbid.'/feed?fields=from,id,likes,message,attachments,comments,shares,privacy,type,story,story_tags,description,link,name,caption&since='.$datefrom.'&until='.$dateto.'&access_token='.$accessToken));
+	$getPost = (file_get_contents('https://graph.facebook.com/v2.1/'.$fbid.'/feed?fields=from,id,likes{data},message,attachments,comments,shares,privacy,type,story,story_tags,description,link,name,caption&since='.$datefrom.'&until='.$dateto.'&access_token='.$accessToken));
 			return json_decode(($getPost),true);
 }
 function saveFile($txt){
@@ -284,5 +301,22 @@ function count_react($post_id, $token){
     } else {
         return 0;
     }
+}
+function GetFbName($token, $fbid){
+    $getName = json_decode(file_get_contents('https://graph.facebook.com/'. $fbid . '?access_token=' . $token));
+    if($getName->id){
+        return $getName->name;
+    }
+    return 0;
+}
+function GetScoureVideo($url, $token){
+	$tmp = array();
+	$tmp = explode('/',$url);
+	$video_id = $tmp[5];
+    $getName = json_decode(file_get_contents('https://graph.facebook.com/'. $video_id . '?access_token=' . $token));
+    if($getName->source){
+        return $getName->source;
+    }
+    return 0;
 }
 ?>
