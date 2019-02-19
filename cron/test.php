@@ -1,8 +1,8 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 require_once '../2T_config/config_server.php';
-$url = 'https://www.facebook.com/100008289978359/videos/2359527447666898/';
-$token = 'EAAAAUaZA8jlABAHjBUzZBLUrB8WqDXAZCoG92zyZAk2hzGiz1iNaNRwrZCpRprrG7BQI4HATCnFHrZBwK06VptuoLff877LE2nYEAqP9mc72MlTZCGjVj1SuoqRMHx7LOsQff2hc6dNYJwRwhiyqewo4xN3Ub37mSNuqvJYH3qRnTcZApbaZBBm7W';
+$url = 'https://www.facebook.com/QuatTv/videos/2483981641642232/';
+$token = 'EAAAAUaZA8jlABAEMFuPziV6j3ARQSk36Wqn3OfjI4Sa2KZAeBEgldq3Sj45nWcSHMb5mRoZA6FlqTQC9eoc55X0lTPf1HEEVaUiCc1ngTcnngwvsJaOSw9BSspRZB3j1AtCX4VZAZCVZAbanL8ZCUZCrxO8XBYFV5cxl1lOWRuCH3tAZDZD';
 $scoure = GetScoureVideo($url,$token);
 echo $scoure;
 

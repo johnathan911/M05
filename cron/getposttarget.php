@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-//require_once '../2T_config/config_server.php';
-require_once '/var/sentora/hostdata/zadmin/public_html/m05system_tk/2T_config/config_server.php';
+require_once '../2T_config/config_server.php';
+//require_once '/var/sentora/hostdata/zadmin/public_html/m05system_tk/2T_config/config_server.php';
 get_new_post();
 function get_new_post(){
 	global $conn;
@@ -78,8 +78,8 @@ function get_new_post(){
 							$ktsharepost = 0;
 							if (strpos($story, 'shared') > 0) {
 								$type = substr($story,strpos($story, 'shared'), strlen($story) - strpos($story, 'shared') -1);
-								if(strpos($story, 'shared a post') > 0
-									$ktsharepost =1;
+								if(strpos($story, 'shared a post') > 0)
+									$ktsharepost = 1;
 							}
 							//echo "TYPPE is ".$type.' ';
 							$description = $getPost['data'][$i]['description'];
@@ -116,7 +116,7 @@ function get_new_post(){
 										if($getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['type'] == "video"){
 											$url = $getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['url'];
 											$scoure_video = GetScoureVideo($url,$ACCESS_TOKEN);
-											$tmppt = $scoure_video.'|'.$getPost['data'][$i]['attachments']['data'][''subattachments]['data'][$j]['media']['image']['height'].'|'.$getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['media']['image']['width'];
+											$tmppt = $scoure_video.'|'.$getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['media']['image']['height'].'|'.$getPost['data'][$i]['attachments']['data']['subattachments']['data'][$j]['media']['image']['width'];
 											array_push($video_arr,$tmppt);
 										}
 									}
@@ -148,7 +148,7 @@ function get_new_post(){
 									}
 									$picture = implode("\n",$picture_arr);
 									$video = implode("\n",$video_arr);
-									$insert = mysqli_query($conn, "INSERT INTO post_detail (id_post, picture,link, video, title, caption, description,user_id_post,name_post) VALUES ('$sttID', '$picture', '$link', '$video', '$title', '$caption', '$description', '$user_id_post', '$name_post')");// Chỉnh lại cho đúng bảng
+									$insert = mysqli_query($conn, "INSERT INTO post_detail (id_post, picture,link, video, title, caption, description) VALUES ('$sttID', '$picture', '$link', '$video', '$title', '$caption', '$description')");// Chỉnh lại cho đúng bảng
 								}
 								if($getContentPost['likes']['count'] != 0) $likes = $getContentPost['likes']['count'];
 								if($getContentPost['comments']['count'] != 0) $comments = $getContentPost['comments']['count'];
